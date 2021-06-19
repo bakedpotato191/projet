@@ -1,0 +1,28 @@
+<div class="home-wrapper h-100">
+    <div class="container">
+        <div id="profile-container">
+            <div id="profile">
+                <div id="profile-picture">
+                    <img src="https://t4.ftcdn.net/jpg/02/15/84/43/360_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg"
+                        alt="profile_picture">
+                </div>
+                <div id="profile-name">
+                    <h3>{{ user.nom }} {{ user.prenom }}</h3>
+                </div>
+                <div id="profile-data">
+                    Number of posts: {{ posts.length }}
+                </div>
+                <div id="upload-button"><button mat-fab aria-label="" (click)="openDialog()">
+                        <mat-icon>upload</mat-icon>
+                    </button></div>
+            </div>
+        </div>
+        <div id="posts-container">
+            <div id="posts">
+                <mat-grid-list cols="3" rowHeight="1:1">
+                    <mat-grid-tile *ngFor="let post of posts"><img src="{{ post.url }}"></mat-grid-tile>
+                  </mat-grid-list>  
+            </div>
+        </div>
+    </div>
+</div>

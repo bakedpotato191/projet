@@ -1,0 +1,113 @@
+<div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+    <mat-card class="box">
+        <mat-card-header>
+            <mat-card-title>Registration</mat-card-title>
+        </mat-card-header>
+
+        <form 
+        class="example-form" 
+        *ngIf="!isSuccessful" 
+        name="form" 
+        (ngSubmit)="f.form.valid && onSubmit()" 
+        #f="ngForm" 
+        novalidate>
+
+            <mat-card-content>
+                <mat-form-field class="example-full-width">
+                    <input
+                    matInput
+                    class="form-control" 
+                    type="text" 
+                    placeholder="Nom"
+                    name="nom"
+                    [(ngModel)]="form.nom"
+                    required
+                    minlength="2"
+                    maxlength="16"
+                    #nom="ngModel"
+                    >
+                    <mat-error>Saisir un nom</mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="example-full-width">
+                    <input 
+                    matInput
+                    class="form-control"
+                    type="text" 
+                    placeholder="Prenom"
+                    name="prenom"
+                    [(ngModel)]="form.prenom"
+                    required
+                    minlength="2"
+                    maxlength="16"
+                    #prenom="ngModel"
+                    >
+                    <mat-error>
+                        Saisir un prénom
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="example-full-width">
+                    <input 
+                    matInput
+                    class="form-control"
+                    placeholder="Username"
+                    type="text"
+                    name="username"
+                    [(ngModel)]="form.username"
+                    required
+                    maxlength="32"
+                    #username="ngModel"
+                    >
+                    <mat-error>
+                        Saisir un nom d'utilisateur valid
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="example-full-width">
+                    <input 
+                    matInput
+                    class="form-control"
+                    placeholder="Email"
+                    type="email"
+                    name="email"
+                    [(ngModel)]="form.email"
+                    required
+                    email
+                    maxlength="50"
+                    #email="ngModel"
+                    >
+                    <mat-error>
+                        Saisir une adresse email valide
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="example-full-width">
+                    <input
+                    matInput
+                    class="form-control"
+                    placeholder="Password"
+                    type="password"
+                    name="password"
+                    [(ngModel)]="form.password"
+                    required
+                    minlength="6"
+                    maxlength="40"
+                    #password="ngModel"
+                    >
+                    <mat-error>
+                        Saisir un mot de passe
+                    </mat-error>
+                </mat-form-field>
+            </mat-card-content>
+            <button mat-stroked-button class="btn-block">Register</button>
+
+        </form>
+        <div class="alert alert-success" *ngIf="isSuccessful">
+            Your registration is successful!
+        </div>
+        <mat-card-footer class="card-footer" *ngIf="!isSuccessful">
+            <div>Already have an account? <span><a routerLink="/login">Sign In</a></span></div>
+        </mat-card-footer>
+    </mat-card>
+</div>

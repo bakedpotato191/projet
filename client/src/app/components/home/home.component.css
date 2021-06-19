@@ -1,0 +1,169 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 975px;
+  margin: 0 auto;
+  padding: 25px 0 0 0;
+  height: 100%;
+}
+
+#profile-container{
+    padding: 0;
+}
+
+#profile {
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  border: 1px solid #686868;
+  border-radius: 10px;
+}
+
+#profile-picture {
+  height: 200px;
+  width: 200px;
+}
+
+#profile-picture img {
+  display: block;
+  height: 100%;
+  border: 1px solid #fff;
+  border-radius: 10px;
+}
+
+#profile-name {
+  padding: 0 0 0 20px;
+  color: #e1b649;
+}
+
+#profile-data {
+    margin-top:auto;
+    color: white;
+}
+
+#upload-button {
+  margin-left: auto;
+}
+
+/* Upload dialog css */
+
+::ng-deep.mat-card {
+  box-shadow: none !important;
+}
+
+::ng-deep mat-card-header {
+  text-align: center;
+}
+
+::ng-deep mat-form-field {
+  width: 100% !important;
+}
+
+::ng-deep mat-label {
+  color: white !important;
+}
+
+::ng-deep mat-card-header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+::ng-deep mat-error {
+  display: unset !important;
+}
+
+.preview {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+::ng-deep .preview > img {
+  display: block;
+  margin: 0 auto;
+  object-fit: scale-down !important;
+}
+
+::ng-deep input[type="file"] {
+  margin: 20px 0 20px 0 !important;
+}
+
+::ng-deep .cdk-overlay-pane {
+  max-width: unset !important;
+}
+
+::ng-deep .upload {
+  background-color: #7c647c;
+}
+
+::ng-deep .cancel {
+  color: black;
+  margin-top: 20px !important;
+  background-color: #e1e1e1;
+}
+
+/* file input butotn */
+
+:ng-deep .custom-file-input {
+  color: transparent;
+}
+
+:ng-deep .custom-file-input::-webkit-file-upload-button {
+  visibility: hidden;
+}
+:ng-deep .custom-file-input::before {
+  content: "Select some files";
+  color: black;
+  display: inline-block;
+  background: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);
+  border: 1px solid #999;
+  border-radius: 3px;
+  padding: 5px 8px;
+  outline: none;
+  white-space: nowrap;
+  cursor: pointer;
+  text-shadow: 1px 1px #fff;
+  font-weight: 700;
+  font-size: 10pt;
+}
+
+:ng-deep .custom-file-input:hover::before {
+  border-color: black;
+}
+:ng-deep .custom-file-input:active {
+  outline: 0;
+}
+:ng-deep .custom-file-input:active::before {
+  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+}
+
+/* user posts */
+
+#posts-container {
+    height: 100%;
+    padding: 0;
+}
+
+#posts {
+    padding: 10px;
+}
+
+::ng-deep .mat-grid-tile {
+    background-color: #303030!important;
+}
+
+::ng-deep .mat-grid-tile-content{
+    padding: 10px!important;
+}
+
+::ng-deep .mat-grid-tile-content > img {
+    display: block!important;
+    max-width:100%!important;
+    max-height:100%!important;
+    width: auto;
+    height: auto;
+
+}
+
