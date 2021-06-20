@@ -85,10 +85,15 @@
 		  <version>${org.mapstruct.version}</version> 
 		</dependency>
 		<dependency>
-		  <groupId>commons-io</groupId>
-		  <artifactId>commons-io</artifactId>
-		  <version>2.10.0</version>
-	</dependency>
+	   		<groupId>com.fasterxml.jackson.datatype</groupId>
+	   		<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+		<dependency>
+		    <groupId>commons-io</groupId>
+		    <artifactId>commons-io</artifactId>
+		    <version>2.10.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>

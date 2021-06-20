@@ -8,8 +8,8 @@ import com.example.demo.validation.ValidPassword;
 
 public class SignupDto {
 	
-	@NotNull
-	@Size(min = 2)
+	@NotNull(message="nom est requis")
+	@Size(min = 2, message="le nom doit contenir au moins 2 lettres")
 	private String nom;
 	
 	@NotNull
@@ -21,8 +21,6 @@ public class SignupDto {
 	private String username;
 
 	@ValidEmail
-    @NotNull
-    @Size(min = 5)
     private String email;
 
     @ValidPassword

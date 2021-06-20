@@ -18,7 +18,7 @@ import javax.validation.Payload;
 @Retention(RUNTIME)
 public @interface ValidPassword {
 
-    String message() default "Invalid Password";
+    String message() default "Password length must be between 8 and 32 characters, it must have at least 1 uppercase and lowercase letter, 1 digit and 1 special character";
 
     Class<?>[] groups() default {};
 

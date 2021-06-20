@@ -11,13 +11,12 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
-@Table(name= "post" )
+@Table(name= "post")
 public class Post implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -8369347335051158514L;
 
 	@Id
@@ -30,7 +29,8 @@ public class Post implements Serializable {
 	
 	private Timestamp date;
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional=false)
+	@JsonBackReference
+	@ManyToOne(fetch = FetchType.LAZY, optional=true)
 	private User utilisateur;
 
 	public Post() {

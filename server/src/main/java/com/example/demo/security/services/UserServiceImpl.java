@@ -7,14 +7,23 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.demo.exceptions.EntityNotFoundException;
+import com.example.demo.exceptions.HttpUnauthorizedException;
+import com.example.demo.mapstruct.dto.LoginDto;
 import com.example.demo.mapstruct.dto.SignupDto;
-import com.example.demo.misc.error.UserAlreadyExistException;
+import com.example.demo.payload.response.JwtResponse;
 import com.example.demo.persistence.models.PasswordResetToken;
 import com.example.demo.persistence.models.User;
 import com.example.demo.persistence.models.VerificationToken;
@@ -22,17 +31,24 @@ import com.example.demo.persistence.repository.PasswordResetTokenRepository;
 import com.example.demo.persistence.repository.RoleRepository;
 import com.example.demo.persistence.repository.UserRepository;
 import com.example.demo.persistence.repository.VerificationTokenRepository;
+import com.example.demo.security.jwt.JwtUtils;
 
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
 	
 	@Autowired
+	private AuthenticationManager authenticationManager;
+	
+    @Autowired
+	private JwtUtils jwtUtils;
+	
+	@Autowired
     private UserRepository userRepository;
 	
 	@Autowired
     private RoleRepository roleRepository;
-	
+
     @Autowired
     private SessionRegistry sessionRegistry;
 	
@@ -44,7 +60,7 @@ public class UserServiceImpl implements UserService {
     
     @Autowired
     private PasswordEncoder passwordEncoder;
-    
+
     public static final String TOKEN_INVALID = "invalidToken";
     public static final String TOKEN_EXPIRED = "expired";
     public static final String TOKEN_VALID = "valid";
@@ -53,7 +69,7 @@ public class UserServiceImpl implements UserService {
     public User registerNewUserAccount(final SignupDto signupDto) {
 		
         if (emailExists(signupDto.getEmail())) {
-        	throw new UserAlreadyExistException("There is an account with that email address: " + signupDto.getEmail());
+        	return null;
         }
         
 		var user = new User();
@@ -197,7 +213,48 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public boolean checkIfUserEnabled(final String email) {
-		return userRepository.findByEmail(email).isEnabled();
+	public boolean isValidEmail(final String email) {
+		
+		var user = findUserByEmail(email);
+		
+		if (user == null) {
+			return false;
+		}
+		
+		return user.isEnabled();
+	}
+	
+	@Override
+	public JwtResponse authenticateUser(LoginDto request) {
+		
+		if (!emailExists(request.getEmail())  || !isValidEmail(request.getEmail())) {
+			
+			throw new HttpUnauthorizedException("Invalid email or password");
+		}
+		
+		var authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		String jwt = jwtUtils.generateJwtToken(authentication);
+		var userDetails = (UserDetailsImpl) authentication.getPrincipal();
+		List<String> roles = userDetails.getAuthorities().stream()
+				.map(GrantedAuthority::getAuthority)
+				.collect(Collectors.toList());
+		
+		return new JwtResponse(jwt, userDetails.getId(), userDetails.getEmail(), roles);	
+	}
+	
+	@Override
+	public User getUserData(String username){
+		
+		var user = userRepository.findByUsername(username);
+		
+		if(user == null)
+		{
+            throw new EntityNotFoundException(User.class, "username", username);
+        }
+		
+		return user;
+		
 	}
 }

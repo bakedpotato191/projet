@@ -3,7 +3,9 @@ package com.example.demo.security.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.demo.mapstruct.dto.LoginDto;
 import com.example.demo.mapstruct.dto.SignupDto;
+import com.example.demo.payload.response.JwtResponse;
 import com.example.demo.persistence.models.PasswordResetToken;
 import com.example.demo.persistence.models.User;
 import com.example.demo.persistence.models.VerificationToken;
@@ -41,7 +43,11 @@ public interface UserService {
     String validateVerificationToken(String token);
 
     List<String> getUsersFromSessionRegistry();
-    
-    boolean checkIfUserEnabled(String email);
+
+	User getUserData(String username);
+
+	JwtResponse authenticateUser(LoginDto request);
+	
+	boolean isValidEmail(String email);
 
 }

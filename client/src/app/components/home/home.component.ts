@@ -4,8 +4,6 @@ import { User } from 'src/app/class/user';
 import { UserService } from 'src/app/services/user.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Post } from 'src/app/class/post';
-
 
 export interface DialogData {
   animal: string;
@@ -20,7 +18,6 @@ export interface DialogData {
 export class HomeComponent implements OnInit {
 
   user!: User;
-  posts!: Post[];
 
   constructor(private userService: UserService, private route: ActivatedRoute, public dialog: MatDialog) { }
 
@@ -38,8 +35,7 @@ export class HomeComponent implements OnInit {
 
   getUserData(username: String){
     this.userService.getUser(username).subscribe(data => {
-      this.user = data[0];
-      this.posts = data[1];
+      this.user = data;
     });
   }
 }

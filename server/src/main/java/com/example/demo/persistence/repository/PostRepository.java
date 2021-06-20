@@ -11,7 +11,7 @@ import com.example.demo.persistence.models.User;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-	List<Post> findAllByUtilisateurOrderByDateDesc(User utilisateur);
+	List<Post> findAllByUtilisateurOrderByDateDesc(User user);
 	
 	@Override
 	void delete(Post post);

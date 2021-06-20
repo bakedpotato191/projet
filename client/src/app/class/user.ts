@@ -1,6 +1,8 @@
+import { Post } from "./post";
+
 export class User {
     nom!: String;
     prenom!: String;
-    email!: String;
     username!: String;
+    posts!: Post[];
 }

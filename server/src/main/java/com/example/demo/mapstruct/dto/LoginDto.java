@@ -1,14 +1,11 @@
 package com.example.demo.mapstruct.dto;
 
-import javax.validation.constraints.NotNull;
-
 import com.example.demo.validation.ValidEmail;
 import com.example.demo.validation.ValidPassword;
 
 public class LoginDto {
 	
 	@ValidEmail
-	@NotNull
 	private String email;
 
     @ValidPassword

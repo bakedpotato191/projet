@@ -1,19 +1,21 @@
 package com.example.demo.security.services;
 
-import java.nio.file.Path;
-import java.util.stream.Stream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.MalformedURLException;
 
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.demo.exceptions.IncorrectFileExtensionException;
+import com.example.demo.persistence.models.Post;
+
 public interface FileStorageService {
-	public void init();
 
-	  public void save(MultipartFile file, String description);
+	Post save(MultipartFile file, String description) throws IncorrectFileExtensionException, IOException;
 
-	  public Resource load(String filename);
+	Resource load(String filename) throws MalformedURLException, FileNotFoundException;
 
-	  public void deleteAll();
+	void init();
 
-	  public Stream<Path> loadAll();
 }

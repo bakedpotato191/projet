@@ -16,8 +16,9 @@ public interface MapStructMapper {
 	@Mapping(target = "nom", ignore = true)
     @Mapping(target = "prenom", ignore = true)
 	@Mapping(target = "roles", ignore = true)
-    @Mapping(target = "userPosts", ignore = true)
+	@Mapping(target="posts", ignore=true)
 	User userImplToUser(UserDetailsImpl user);
 	
 	List<PostDto> postListToPostListDto(List<Post> post);
+	
 }

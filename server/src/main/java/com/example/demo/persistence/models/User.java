@@ -1,9 +1,9 @@
 package com.example.demo.persistence.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,28 +19,29 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "utilisateur")
 public class User implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 5284328707299338410L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(unique = true, nullable = false)
 	@JsonIgnore
-	@GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
 	private String nom;
 
     private String prenom;
     
+    @JsonIgnore
+    @Column(length=128)
     private String email;
     
+    @Column(unique=true)
     private String username;
 
     @JsonIgnore
@@ -52,7 +53,8 @@ public class User implements Serializable {
 
     //
     
-    @ManyToMany(fetch = FetchType.EAGER)
+	@JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "utilisateur_roles", 
     			joinColumns = @JoinColumn(
     					name = "user_id", 
@@ -62,12 +64,12 @@ public class User implements Serializable {
     					referencedColumnName = "id"))
     private Collection<Role> roles;
     
-    @JsonIgnore
+	@JsonManagedReference
     @OneToMany(
     		mappedBy="utilisateur", 
-    		fetch = FetchType.EAGER, 
+    		fetch = FetchType.LAZY,
     		cascade = CascadeType.ALL)
-    private Set<Post> userPosts = new HashSet<>();
+    private List<Post> posts = new ArrayList<>();
 
 	public User() { 
 		super();
@@ -145,12 +147,12 @@ public class User implements Serializable {
 		this.roles = roles;
 	}
 	
-	public Set<Post> getUserPosts() {
-		return userPosts;
+	public List<Post> getPosts() {
+		return posts;
 	}
 
-	public void setUserPosts(Set<Post> userPosts) {
-		this.userPosts = userPosts;
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
 	}
 
 	@Override
@@ -174,5 +176,5 @@ public class User implements Serializable {
         }
         var user = (User) obj;
         return getEmail().equals(user.getEmail());
-    }
+    }   
 }
