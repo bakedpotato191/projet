@@ -50,13 +50,5 @@ public class JwtResponse {
 
 	public List<String> getRoles() {
 		return roles;
-	}
-
-	@Override
-	public String toString() {
-		return "JwtResponse [token=" + token + ", type=" + type + ", id=" + id + ", username=" + username + ", roles="
-				+ roles + "]";
-	}
-	
-	
+	}		
 }
