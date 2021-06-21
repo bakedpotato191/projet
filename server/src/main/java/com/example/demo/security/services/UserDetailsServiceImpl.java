@@ -1,4 +1,4 @@
-package com.example.demo.security.services;
+package com.example.demo.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,10 +17,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private UserRepository userRepository;
 
 	@Override
-	public UserDetails loadUserByUsername(final String email) throws UsernameNotFoundException {
-            var user = userRepository.findByEmail(email);
+	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
+            var user = userRepository.findByUsername(username);
             if (user == null) {
-                throw new UsernameNotFoundException("No user found with email: " + email);
+                throw new UsernameNotFoundException("No user found with email: " + username);
             }
 
             return new UserDetailsImpl(user);
