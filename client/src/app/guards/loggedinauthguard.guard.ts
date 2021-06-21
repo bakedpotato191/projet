@@ -12,7 +12,7 @@ export class LoggedInAuthGuard implements CanActivate {
   canActivate(): boolean {
       if (this.authService.getToken() !== null) {
         const user = this.authService.getUser();
-        this.router.navigate([`/profile/${user.email}`]);
+        this.router.navigate([`/profile/${user.username}`]);
         return false
     } else {
         return true

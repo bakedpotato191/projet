@@ -49,7 +49,7 @@ public class User implements Serializable {
 	private String password;
 	
 	@JsonIgnore
-    private boolean enabled;
+    private boolean enabled = false;
 
     //
     
@@ -72,8 +72,7 @@ public class User implements Serializable {
     private List<Post> posts = new ArrayList<>();
 
 	public User() { 
-		super();
-        this.enabled = false;	
+
 	}
 	
 	public User(String email, String username, String password) {
@@ -86,7 +85,7 @@ public class User implements Serializable {
 		return id;
 	}
 
-	public void setId(final Long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -94,7 +93,7 @@ public class User implements Serializable {
 		return nom;
 	}
 
-	public void setNom(final String nom) {
+	public void setNom(String nom) {
 		this.nom = nom;
 	}
 
@@ -102,7 +101,7 @@ public class User implements Serializable {
 		return prenom;
 	}
 
-	public void setPrenom(final String prenom) {
+	public void setPrenom(String prenom) {
 		this.prenom = prenom;
 	}
 
@@ -110,7 +109,7 @@ public class User implements Serializable {
 		return email;
 	}
 
-	public void setEmail(final String email) {
+	public void setEmail(String email) {
 		this.email = email;
 	}
 	
@@ -126,7 +125,7 @@ public class User implements Serializable {
 		return password;
 	}
 
-	public void setPassword(final String password) {
+	public void setPassword(String password) {
 		this.password = password;
 	}
 	
@@ -135,7 +134,7 @@ public class User implements Serializable {
 		return enabled;
 	}
 
-	public void setEnabled(final boolean enabled) {
+	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
 	

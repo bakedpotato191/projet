@@ -48,6 +48,6 @@ public interface UserService {
 
 	JwtResponse authenticateUser(LoginDto request);
 	
-	boolean isValidEmail(String email);
+	boolean isUserEnabled(String email);
 
 }

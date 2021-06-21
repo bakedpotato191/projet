@@ -7,6 +7,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -63,6 +65,8 @@ public class UserServiceImpl implements UserService {
     public static final String TOKEN_EXPIRED = "expired";
     public static final String TOKEN_VALID = "valid";
 	
+    private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
+    
 	@Override
     public User registerNewUserAccount(final SignupDto signupDto) {
 		
@@ -79,6 +83,25 @@ public class UserServiceImpl implements UserService {
         user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
         return userRepository.save(user);
     }
+	
+	@Override
+	public JwtResponse authenticateUser(LoginDto request) {
+		
+		if (!emailExists(request.getEmail())  || !isUserEnabled(request.getEmail())) {
+			
+			throw new HttpUnauthorizedException("Invalid email or password");
+		}
+		
+		var authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		String jwt = jwtUtils.generateJwtToken(authentication);
+		var userDetails = (UserDetailsImpl) authentication.getPrincipal();
+		List<String> roles = userDetails.getAuthorities().stream()
+				.map(GrantedAuthority::getAuthority)
+				.collect(Collectors.toList());
+		return new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles);	
+	}
 
     private boolean emailExists(final String email) {
         return userRepository.findByEmail(email) != null;
@@ -211,7 +234,7 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public boolean isValidEmail(final String email) {
+	public boolean isUserEnabled(final String email) {
 		
 		var user = findUserByEmail(email);
 		
@@ -220,26 +243,6 @@ public class UserServiceImpl implements UserService {
 		}
 		
 		return user.isEnabled();
-	}
-	
-	@Override
-	public JwtResponse authenticateUser(LoginDto request) {
-		
-		if (!emailExists(request.getEmail())  || !isValidEmail(request.getEmail())) {
-			
-			throw new HttpUnauthorizedException("Invalid email or password");
-		}
-		
-		var authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-		String jwt = jwtUtils.generateJwtToken(authentication);
-		var userDetails = (UserDetailsImpl) authentication.getPrincipal();
-		List<String> roles = userDetails.getAuthorities().stream()
-				.map(GrantedAuthority::getAuthority)
-				.collect(Collectors.toList());
-		
-		return new JwtResponse(jwt, userDetails.getId(), userDetails.getEmail(), roles);	
 	}
 	
 	@Override
