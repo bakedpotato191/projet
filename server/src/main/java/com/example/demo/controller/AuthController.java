@@ -32,7 +32,7 @@ public class AuthController {
     private ApplicationEventPublisher eventPublisher;
     
     @PostMapping("/signin")
-    public JwtResponse authenticateUser(@RequestBody @Valid final LoginDto request){
+    public JwtResponse authenticateUser(@RequestBody final LoginDto request){
 
 		return userService.authenticateUser(request);
     }

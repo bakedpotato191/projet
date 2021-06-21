@@ -18,7 +18,7 @@
     background-position: center;
     background-repeat: no-repeat;
     overflow: hidden;
-    filter: brightness(40%) grayscale(1) contrast(0.6);
+    filter: brightness(60%) grayscale(1) blur(8px);
   }
   
   .wrapper {

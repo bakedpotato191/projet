@@ -4,8 +4,7 @@
         <mat-card-title class="card-title">Sign In</mat-card-title>
     </mat-card-header>
     <mat-card-content class="card-content">
-        <form class="form" *ngIf="!isLoggedIn" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm"
-            novalidate>
+        <form class="form" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
             <mat-form-field class="form-field">
                 <input matInput class="form-control input" placeholder="Email" type="email" name="email"
                     [(ngModel)]="form.email" required email maxlength="50" #email="ngModel">

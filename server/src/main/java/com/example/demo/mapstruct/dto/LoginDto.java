@@ -1,14 +1,9 @@
 package com.example.demo.mapstruct.dto;
 
-import com.example.demo.validation.ValidEmail;
-import com.example.demo.validation.ValidPassword;
-
 public class LoginDto {
 	
-	@ValidEmail
 	private String email;
 
-    @ValidPassword
 	private String password;
 
 	public String getEmail() {

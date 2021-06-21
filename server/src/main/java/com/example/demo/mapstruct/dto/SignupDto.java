@@ -17,7 +17,7 @@ public class SignupDto {
 	private String prenom;
 	
 	@NotNull
-    @Size(min = 2, max=32)
+    @Size(min = 3, max=20)
 	private String username;
 
 	@ValidEmail

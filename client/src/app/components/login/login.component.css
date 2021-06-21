@@ -18,7 +18,7 @@
     background-position: center;
     background-repeat: no-repeat;
     overflow: hidden;
-    filter: brightness(50%) grayscale(1);
+    filter: brightness(60%) grayscale(1) blur(8px);
   }
   
   .wrapper {
@@ -88,7 +88,7 @@
   }
   
   .btn-block {
-    margin: 10px auto;
+    margin-top: 20px;
     display: block;
     width: 100%;
     color: #424242;
@@ -142,5 +142,18 @@
     display: block;
     height: 100%;
   }
+
+/* snackbar on login fail */
+::ng-deep .custom-style{
+  background-color:#e4b948;
+  color:#914747;
+  font-weight: 500;
+  border: 1px solid #424242;
+  border-radius: 10px;
+}
+
+::ng-deep .custom-style .mat-simple-snackbar-action  {
+  color: #424242;
+}
   
   
