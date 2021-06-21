@@ -19,7 +19,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "utilisateur")
@@ -30,7 +29,6 @@ public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(unique = true, nullable = false)
-	@JsonIgnore
     private Long id;
 
 	private String nom;
@@ -47,6 +45,8 @@ public class User implements Serializable {
     @JsonIgnore
 	@Column(length = 60)
 	private String password;
+    
+    private String avatar;
 	
 	@JsonIgnore
     private boolean enabled = false;
@@ -63,7 +63,6 @@ public class User implements Serializable {
     					referencedColumnName = "id"))
     private Collection<Role> roles;
     
-	@JsonManagedReference
     @OneToMany(
     		mappedBy="utilisateur", 
     		fetch = FetchType.LAZY,
@@ -151,6 +150,14 @@ public class User implements Serializable {
 
 	public void setPosts(List<Post> posts) {
 		this.posts = posts;
+	}
+	
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
 	}
 
 	@Override

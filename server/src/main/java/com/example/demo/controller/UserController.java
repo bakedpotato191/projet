@@ -60,4 +60,9 @@ public class UserController {
 				.body(file);
 	}
 	
+	@GetMapping(value= "/p/{postID}")
+    public Post userPage(@PathVariable("postID") Long id) {
+		return userService.getPostByID(id);
+    }
+	
 }

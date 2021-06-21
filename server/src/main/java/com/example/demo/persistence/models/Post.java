@@ -1,6 +1,8 @@
 package com.example.demo.persistence.models;
 
 import java.io.Serializable;
+
+
 import java.sql.Timestamp;
 
 import javax.persistence.Entity;
@@ -11,7 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name= "post")
@@ -29,8 +31,8 @@ public class Post implements Serializable {
 	
 	private Timestamp date;
 	
-	@JsonBackReference
-	@ManyToOne(fetch = FetchType.LAZY, optional=true)
+	@ManyToOne(fetch = FetchType.EAGER, optional=true)
+	@JsonIgnoreProperties("posts")
 	private User utilisateur;
 
 	public Post() {

@@ -22,9 +22,11 @@ import com.example.demo.mapstruct.dto.LoginDto;
 import com.example.demo.mapstruct.dto.SignupDto;
 import com.example.demo.payload.response.JwtResponse;
 import com.example.demo.persistence.models.PasswordResetToken;
+import com.example.demo.persistence.models.Post;
 import com.example.demo.persistence.models.User;
 import com.example.demo.persistence.models.VerificationToken;
 import com.example.demo.persistence.repository.PasswordResetTokenRepository;
+import com.example.demo.persistence.repository.PostRepository;
 import com.example.demo.persistence.repository.RoleRepository;
 import com.example.demo.persistence.repository.UserRepository;
 import com.example.demo.persistence.repository.VerificationTokenRepository;
@@ -42,6 +44,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
     private UserRepository userRepository;
+	
+	@Autowired
+	private PostRepository postRepository;
 	
 	@Autowired
     private RoleRepository roleRepository;
@@ -248,5 +253,20 @@ public class UserServiceImpl implements UserService {
 		
 		return user;
 		
+	}
+	
+	@Override
+	public Post getPostByID(Long id){
+		
+		var post = postRepository.findById(id);
+		
+		if(post.isPresent())
+		{
+	
+			return post.get();
+        }
+		else {
+			throw new EntityNotFoundException(Post.class, "id", id.toString());
+		}	
 	}
 }

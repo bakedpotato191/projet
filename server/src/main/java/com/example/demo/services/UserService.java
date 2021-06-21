@@ -7,6 +7,7 @@ import com.example.demo.mapstruct.dto.LoginDto;
 import com.example.demo.mapstruct.dto.SignupDto;
 import com.example.demo.payload.response.JwtResponse;
 import com.example.demo.persistence.models.PasswordResetToken;
+import com.example.demo.persistence.models.Post;
 import com.example.demo.persistence.models.User;
 import com.example.demo.persistence.models.VerificationToken;
 
@@ -50,4 +51,5 @@ public interface UserService {
 	
 	boolean isUserEnabled(String email);
 
+	Post getPostByID(Long id);
 }
