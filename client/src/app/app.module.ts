@@ -29,6 +29,7 @@ import { DialogOverviewExampleDialog, HomeComponent } from './components/home/ho
 import { AuthGuard } from './guards/AuthGuard.guard';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { PostComponent } from './components/post/post.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     RegisterComponent,
     LoginComponent,
     HomeComponent,
-    DialogOverviewExampleDialog
+    DialogOverviewExampleDialog,
+    PostComponent
   ],
   imports: [
     BrowserModule,

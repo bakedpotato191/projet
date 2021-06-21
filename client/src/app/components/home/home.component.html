@@ -19,8 +19,8 @@
         </div>
         <div id="posts-container">
             <div id="posts">
-                <mat-grid-list cols="3" rowHeight="1:1">
-                    <mat-grid-tile *ngFor="let post of user.posts"><img src="{{ post.url }}"></mat-grid-tile>
+                <mat-grid-list #grid [cols]="cols" rowHeight="1:1" [gutterSize]="'20px'">
+                    <mat-grid-tile class="grid-tile" matRipple *ngFor="let post of user.posts"><img src="{{ post.url }}"></mat-grid-tile>
                   </mat-grid-list>  
             </div>
         </div>

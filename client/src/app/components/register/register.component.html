@@ -1,11 +1,11 @@
-<div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
-    <mat-card class="box">
-        <mat-card-header>
-            <mat-card-title>Registration</mat-card-title>
+<div class="wrapper image" fxLayout="column" fxLayout="row" fxLayoutAlign="center center">
+    <mat-card class="card box">
+        <mat-card-header class="card-header">
+            <mat-card-title class="card-title">Registration</mat-card-title>
         </mat-card-header>
 
         <form 
-        class="example-form" 
+        class="form" 
         *ngIf="!isSuccessful" 
         name="form" 
         (ngSubmit)="f.form.valid && onSubmit()" 
@@ -13,7 +13,7 @@
         novalidate>
 
             <mat-card-content>
-                <mat-form-field class="example-full-width">
+                <mat-form-field class="form-field">
                     <input
                     matInput
                     class="form-control" 
@@ -29,7 +29,7 @@
                     <mat-error>Saisir un nom</mat-error>
                 </mat-form-field>
 
-                <mat-form-field class="example-full-width">
+                <mat-form-field class="form-field">
                     <input 
                     matInput
                     class="form-control"
@@ -47,7 +47,7 @@
                     </mat-error>
                 </mat-form-field>
 
-                <mat-form-field class="example-full-width">
+                <mat-form-field class="form-field">
                     <input 
                     matInput
                     class="form-control"
@@ -64,7 +64,7 @@
                     </mat-error>
                 </mat-form-field>
 
-                <mat-form-field class="example-full-width">
+                <mat-form-field class="form-field">
                     <input 
                     matInput
                     class="form-control"
@@ -82,7 +82,7 @@
                     </mat-error>
                 </mat-form-field>
 
-                <mat-form-field class="example-full-width">
+                <mat-form-field class="form-field">
                     <input
                     matInput
                     class="form-control"
@@ -107,7 +107,7 @@
             Your registration is successful!
         </div>
         <mat-card-footer class="card-footer" *ngIf="!isSuccessful">
-            <div>Already have an account? <span><a routerLink="/login">Sign In</a></span></div>
+            <div class="card-footer-element">Already have an account? <span><a routerLink="/login">Sign In</a></span></div>
         </mat-card-footer>
     </mat-card>
 </div>

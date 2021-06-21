@@ -7,4 +7,8 @@ public class HttpUnauthorizedException extends RuntimeException {
 	public HttpUnauthorizedException(String errorMessage) {
         super(errorMessage);
     }
+	
+	public HttpUnauthorizedException(String errorMessage, Throwable cause) {
+        super(errorMessage, cause);
+    }
 }

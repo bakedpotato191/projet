@@ -3,8 +3,10 @@ package com.example.demo.exceptions;
 import com.example.demo.apierror.ApiError;
 
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.core.env.Environment;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,7 +21,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
-import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -27,7 +28,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.IllegalFormatException;
 
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 
@@ -41,8 +41,11 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
+	@Autowired
+	private Environment env;
+	
     /**
-     * Handle MissingServletRequestParameterException. Triggered when a 'required' request parameter is missing.
+     * Handle MissingServletRequestPartException. Triggered when a 'required' request part is missing.
      *
      * @param ex      MissingServletRequestPartException
      * @param headers HttpHeaders
@@ -119,7 +122,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     /**
-     * Handles javax.validation.ConstraintViolationException. Thrown when @Validated fails.
+     * Handles javax.validation.ConstraintViolationException. 
+     * Thrown when @Validated fails.
      *
      * @param ex the ConstraintViolationException
      * @return the ApiError object
@@ -147,7 +151,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
     
     /**
-     * Handles HttpUnauthorizedException. Happens when invalid credentials are passed to controller handling the sign in.
+     * Handles HttpUnauthorizedException.Happens when user is trying to sign in, but the email either does not exist in the db or is not verified.
      *
      * @param ex the HttpUnauthorizedException
      * @return the ApiError object
@@ -223,37 +227,39 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     /**
-     * Handle Exception, handle generic Exception.class
+     * Handle MethodArgumentTypeMismatchException.
      *
-     * @param ex the Exception
+     * @param ex the MethodArgumentTypeMismatchException
      * @return the ApiError object
      */
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    protected ResponseEntity<Object> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex,
-                                                                      WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex, WebRequest request) {
         var apiError = new ApiError(BAD_REQUEST);
         apiError.setMessage(String.format("The parameter '%s' of value '%s' could not be converted to type '%s'", ex.getName(), ex.getValue(), ex.getRequiredType().getSimpleName()));
         apiError.setDebugMessage(ex.getMessage());
         return buildResponseEntity(apiError);
     }
     
-    @ExceptionHandler(MultipartException.class)
-    protected ResponseEntity<Object> handleMaxSizeException(MultipartException ex) {
-    	
-    	var apiError = new ApiError(EXPECTATION_FAILED);
-    	apiError.setMessage("Unable to upload. File is too large!");
-    	apiError.setDebugMessage(ex.getMessage());
-    	return buildResponseEntity(apiError);
-    }
-
+    /**
+     * Handle MaxUploadSizeExceededException. Happens when the file size exceeds the configured maximum.
+     *
+     * @param ex the MaxUploadSizeExceededException
+     * @return the ApiError object
+     */
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public ResponseEntity<Object> handleMaxSizeException(MaxUploadSizeExceededException ex) {
     	var apiError = new ApiError(EXPECTATION_FAILED);
-    	apiError.setMessage("Unable to upload. File is too large!");
-    	apiError.setDebugMessage(ex.getMessage());
+    	apiError.setMessage("Unabled to upload. File is too large");
+    	apiError.setDebugMessage("Maximum upload size exceeded, the configured maximum is: " + env.getProperty("spring.servlet.multipart.max-file-size"));
     	return buildResponseEntity(apiError);
     }
     
+    /**
+     * Handle IOException.
+     *
+     * @param ex the IOException
+     * @return the ApiError object
+     */
     @ExceptionHandler(IOException.class)
     public ResponseEntity<Object> handleIoException(IOException ex) {
     	var apiError = new ApiError(INTERNAL_SERVER_ERROR);
@@ -270,22 +276,26 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(apiError);
     }
     
-    @ExceptionHandler(IllegalFormatException.class)
-    public ResponseEntity<Object> handleFileFormatException(IllegalFormatException ex) {
-        var apiError = new ApiError(EXPECTATION_FAILED);
-        apiError.setMessage("Invalid file extension. Only PNG/JPEG files are allowed");
-        apiError.setDebugMessage(ex.getMessage());
-        return buildResponseEntity(apiError);
-    }
-    
+    /**
+     * Handle IncorrectFileExtensionException. Happens when received file extension is not accepted.
+     *
+     * @param ex the IncorrectFileExtensionException
+     * @return the ApiError object
+     */
     @ExceptionHandler(IncorrectFileExtensionException.class)
     public ResponseEntity<Object> handleIncorrectFileExtension(IncorrectFileExtensionException ex) {
         var apiError = new ApiError(EXPECTATION_FAILED);
-        apiError.setMessage("Invalid file extension. Only PNG/JPEG files are allowed");
+        apiError.setMessage("Server received the file but rejected it.");
         apiError.setDebugMessage(ex.getMessage());
         return buildResponseEntity(apiError);
     }
     
+    /**
+     * Handle FileNotFoundException. Happens when server fails to find the requested file.
+     *
+     * @param ex the FileNotFoundException
+     * @return the ApiError object
+     */
     @ExceptionHandler(FileNotFoundException.class)
     public ResponseEntity<Object> handleFileNotFoundException(FileNotFoundException ex) {
         var apiError = new ApiError(NOT_FOUND);

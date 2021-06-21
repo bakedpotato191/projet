@@ -1,5 +1,5 @@
 <div mat-dialog-content>
-
+    <button class="close" mat-button (click)="onNoClick()">X</button>
     <mat-card class="box">
         <mat-card-header>
             <mat-card-title>Upload a photo</mat-card-title>
@@ -11,7 +11,7 @@
                     <img [src]="imgFile" style="width:400px; height:250px">
                   </div>
 
-                    <input type="file" class="form-control file-input custom-file-input" (change)="onImageChange($event)" formControlName="file" accept="image/png, image/jpeg">
+                    <input type="file" class="form-control file-input" (change)="onImageChange($event)" formControlName="file" accept="image/png, image/jpeg">
 
                 <mat-form-field color="accent">
                     <textarea matInput class="form-control" type="text" formControlName="description" placeholder="Description" maxlength="2048"></textarea>
@@ -19,6 +19,5 @@
             </mat-card-content>
             <button mat-raised-button class="btn-block upload" type="submit">Upload</button>
         </form>
-        <button class="cancel" mat-raised-button mat-dialog-close>Cancel</button>
     </mat-card>
 </div>
