@@ -134,11 +134,4 @@ public class PasswordResetToken {
         }
         return true;
     }
-
-    @Override
-    public String toString() {
-        var builder = new StringBuilder();
-        builder.append("Token [String=").append(token).append("]").append("[Expires").append(expiryDate).append("]");
-        return builder.toString();
-    }
 }

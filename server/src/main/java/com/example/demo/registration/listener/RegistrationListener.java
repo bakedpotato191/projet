@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 import com.example.demo.persistence.models.User;
 import com.example.demo.registration.OnRegistrationCompleteEvent;
-import com.example.demo.security.services.UserService;
+import com.example.demo.services.UserService;
 
 @Component
 public class RegistrationListener implements ApplicationListener<OnRegistrationCompleteEvent> {

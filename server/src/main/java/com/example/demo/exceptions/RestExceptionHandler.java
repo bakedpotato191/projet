@@ -20,6 +20,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartException;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -40,6 +41,23 @@ import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
+    /**
+     * Handle MissingServletRequestParameterException. Triggered when a 'required' request parameter is missing.
+     *
+     * @param ex      MissingServletRequestPartException
+     * @param headers HttpHeaders
+     * @param status  HttpStatus
+     * @param request WebRequest
+     * @return the ApiError object
+     */
+    @Override
+    protected ResponseEntity<Object> handleMissingServletRequestPart(
+            MissingServletRequestPartException ex, HttpHeaders headers,
+            HttpStatus status, WebRequest request) {
+        String error = ex.getRequestPartName() + " part is missing";
+        return buildResponseEntity(new ApiError(BAD_REQUEST, error, ex));
+    }
+    
     /**
      * Handle MissingServletRequestParameterException. Triggered when a 'required' request parameter is missing.
      *

@@ -1,4 +1,4 @@
-package com.example.demo.security.services;
+package com.example.demo.services;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -7,12 +7,9 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,7 +33,7 @@ import com.example.demo.security.jwt.JwtUtils;
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
-	
+
 	@Autowired
 	private AuthenticationManager authenticationManager;
 	
@@ -65,8 +62,6 @@ public class UserServiceImpl implements UserService {
     public static final String TOKEN_EXPIRED = "expired";
     public static final String TOKEN_VALID = "valid";
 	
-    private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
-    
 	@Override
     public User registerNewUserAccount(final SignupDto signupDto) {
 		
@@ -91,16 +86,12 @@ public class UserServiceImpl implements UserService {
 			
 			throw new HttpUnauthorizedException("Invalid email or password");
 		}
-		
 		var authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		String jwt = jwtUtils.generateJwtToken(authentication);
 		var userDetails = (UserDetailsImpl) authentication.getPrincipal();
-		List<String> roles = userDetails.getAuthorities().stream()
-				.map(GrantedAuthority::getAuthority)
-				.collect(Collectors.toList());
-		return new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), roles);	
+		return new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getAuthorities());	
 	}
 
     private boolean emailExists(final String email) {

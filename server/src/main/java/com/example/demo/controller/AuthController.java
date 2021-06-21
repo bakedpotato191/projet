@@ -17,7 +17,7 @@ import com.example.demo.mapstruct.dto.SignupDto;
 import com.example.demo.payload.response.JwtResponse;
 import com.example.demo.payload.response.MessageResponse;
 import com.example.demo.registration.OnRegistrationCompleteEvent;
-import com.example.demo.security.services.UserService;
+import com.example.demo.services.UserService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController

@@ -21,8 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.persistence.models.Post;
 import com.example.demo.persistence.models.User;
-import com.example.demo.security.services.FileStorageService;
-import com.example.demo.security.services.UserService;
+import com.example.demo.services.FileStorageService;
+import com.example.demo.services.UserService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController

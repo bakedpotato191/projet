@@ -12,17 +12,17 @@ import com.example.demo.persistence.repository.UserRepository;
 @Service
 @Transactional
 public class UserDetailsServiceImpl implements UserDetailsService {
-	
+
     @Autowired
     private UserRepository userRepository;
 
 	@Override
-	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-            var user = userRepository.findByUsername(username);
-            if (user == null) {
-                throw new UsernameNotFoundException("No user found with email: " + username);
-            }
-
+	public UserDetails loadUserByUsername(final String email) throws UsernameNotFoundException {
+		var user = userRepository.findByEmail(email);
+	
+		if (user == null) {
+                throw new UsernameNotFoundException("No user found with email: " + email);
+        }
             return new UserDetailsImpl(user);
 	}
 }

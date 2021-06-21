@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 import com.example.demo.mapstruct.dto.PostDto;
 import com.example.demo.persistence.models.Post;
 import com.example.demo.persistence.models.User;
-import com.example.demo.security.services.UserDetailsImpl;
+import com.example.demo.services.UserDetailsImpl;
 
 @Mapper(componentModel = "spring")
 public interface MapStructMapper {

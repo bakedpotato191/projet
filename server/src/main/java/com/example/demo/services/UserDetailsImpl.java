@@ -1,4 +1,4 @@
-package com.example.demo.security.services;
+package com.example.demo.services;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -19,13 +19,6 @@ public class UserDetailsImpl implements UserDetails {
 		this.user = user;
 	}
 
-	@Override
-	public Collection<GrantedAuthority> getAuthorities() {
-		return user.getRoles().stream()
-				.map(role -> new SimpleGrantedAuthority(role.getName()))
-				.collect(Collectors.toList());
-	}
-
 	public Long getId() {
 		return user.getId();
 	}
@@ -42,6 +35,13 @@ public class UserDetailsImpl implements UserDetails {
 	@Override
 	public String getUsername() {
 		return user.getUsername();
+	}
+	
+	@Override
+	public Collection<GrantedAuthority> getAuthorities() {
+		return user.getRoles().stream()
+				.map(role -> new SimpleGrantedAuthority(role.getName()))
+				.collect(Collectors.toList());
 	}
 
 	@Override

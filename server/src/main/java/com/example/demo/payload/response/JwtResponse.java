@@ -1,15 +1,17 @@
 package com.example.demo.payload.response;
 
-import java.util.List;
+import java.util.Collection;
+
+import org.springframework.security.core.GrantedAuthority;
 
 public class JwtResponse {
 	private String token;
 	private String type = "Bearer";
 	private Long id;
 	private String username;
-	private List<String> roles;
+	private Collection<GrantedAuthority> roles;
 
-	public JwtResponse(String accessToken, Long id, String username, List<String> roles) {
+	public JwtResponse(String accessToken, Long id, String username, Collection<GrantedAuthority> roles) {
 		this.token = accessToken;
 		this.id = id;
 		this.username = username;
@@ -48,7 +50,7 @@ public class JwtResponse {
 		this.username = username;
 	}
 
-	public List<String> getRoles() {
+	public Collection<GrantedAuthority> getRoles() {
 		return roles;
 	}		
 }

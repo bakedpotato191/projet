@@ -82,11 +82,4 @@ public class Role implements Serializable {
         var role = (Role) obj;
         return getName().equals(role.getName());
     }
-
-    @Override
-    public String toString() {
-        var builder = new StringBuilder();
-        builder.append("Role [name=").append(name).append("]").append("[id=").append(id).append("]");
-        return builder.toString();
-    }
 }
