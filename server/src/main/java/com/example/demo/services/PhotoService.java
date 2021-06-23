@@ -7,13 +7,15 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.mapstruct.dto.CommentDto;
 import com.example.demo.persistence.models.Comment;
+import com.example.demo.persistence.models.Like;
 import com.example.demo.persistence.models.Post;
 import com.example.demo.persistence.repository.CommentRepository;
+import com.example.demo.persistence.repository.LikeRepository;
 import com.example.demo.persistence.repository.PostRepository;
 
 @Service
 @Transactional
-public class PostService {
+public class PhotoService {
 	
 	@Autowired
 	private CommentRepository commentRepository;
@@ -23,6 +25,9 @@ public class PostService {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private LikeRepository likeRepository;
 	
 	public Comment addComment(final CommentDto comment) {
 		
@@ -37,6 +42,22 @@ public class PostService {
 		}
 		else {
 			throw new EntityNotFoundException(Post.class, "id", comment.getId());
+		}		
+	}
+	
+	public Like likePhoto(final String id) {
+		
+		var post = postRepository.findById(Long.valueOf(id));
+		
+		if (post.isPresent()) {
+			var like = new Like();
+			like.setUtilisateur(userService.getUserFromSession());
+			like.setPost(post.get());
+			
+			return likeRepository.save(like);
+		}
+		else {
+			throw new EntityNotFoundException(Post.class, "id", id);
 		}		
 	}
 }

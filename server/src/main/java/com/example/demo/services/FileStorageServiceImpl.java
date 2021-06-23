@@ -58,7 +58,7 @@ public class FileStorageServiceImpl implements FileStorageService {
 			Files.copy(file.getInputStream(), this.root.resolve(generatedName));
 			
 			var post = new Post();
-			post.setUrl("http://localhost:8081/api/user/photos/" + generatedName);
+			post.setUrl("http://localhost:8081/api/post/view/" + generatedName);
 			post.setDate(new Timestamp(System.currentTimeMillis()));
 			post.setDescription(description);
 			post.setUtilisateur(userService.getUserFromSession());

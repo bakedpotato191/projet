@@ -1,3 +1,4 @@
+import { Commentaire } from "./commentaire";
 import { User } from "./user";
 
 export class Post {
@@ -6,5 +7,6 @@ export class Post {
     description!: string;
     date!: string;
     utilisateur!: User;
-    comments!: Comment[];
+    comments!: Commentaire[];
+    isLiked!: boolean;
 }

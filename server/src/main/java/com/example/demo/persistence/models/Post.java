@@ -41,6 +41,8 @@ public class Post implements Serializable {
 	@OneToMany(fetch=FetchType.EAGER)
 	@JsonManagedReference
 	private Set<Comment> comments = new HashSet<>();
+	
+	private boolean isLiked;
 
 	public Post() {
 		super();
@@ -100,5 +102,13 @@ public class Post implements Serializable {
 
 	public void setComments(Set<Comment> comments) {
 		this.comments = comments;
+	}
+
+	public boolean isLiked() {
+		return isLiked;
+	}
+
+	public void setLiked(boolean isLiked) {
+		this.isLiked = isLiked;
 	}
 }

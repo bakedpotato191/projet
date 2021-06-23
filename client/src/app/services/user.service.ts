@@ -1,9 +1,8 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { analyzeAndValidateNgModules } from '@angular/compiler';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
-import { Comment } from '../class/comment';
+import { Commentaire } from '../class/commentaire';
 import { TokenStorageService } from './token-storage.service';
 
 @Injectable({
@@ -17,21 +16,26 @@ export class UserService {
   errorMessage = '';
   roles: string[] = [];
 
-  constructor(private http: HttpClient, private tokenStorage: TokenStorageService) { }
+  constructor(private http: HttpClient, private tokenStorage: TokenStorageService, private matSnackBar: MatSnackBar) { }
 
   public getUser(username: String): Observable<any>{
     return this.http.get(`${this.baseUrl}/${username}`);
   }
 
-  public postPhoto(form: FormData): Observable<any>{
-    return this.http.post(this.baseUrl+ '/upload', form);
+  public reloadPage(){
+    window.location.reload();
   }
 
-  public getPostById(id: any): Observable<any>{
-    return this.http.get(`${this.baseUrl}/p/${id}`);
-  }
+  public showSnackbar(content: any, action: any, duration: number) {
+    let sb = this.matSnackBar.open(content, action, {
+      duration,
+      panelClass: ["custom-style"],
+      verticalPosition: 'top', // Allowed values are  'top' | 'bottom'
+      horizontalPosition: 'center', // Allowed values are 'start' | 'center' | 'end' | 'left' | 'right');
+    });
 
-  public submitComment(comment: Comment): Observable<any>{
-    return this.http.post(this.baseUrl + '/addcomment', comment);
+    sb.onAction().subscribe(() => {
+      sb.dismiss();
+    });
   }
 }

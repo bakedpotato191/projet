@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Post } from 'src/app/class/post';
-import { Comment } from 'src/app/class/comment';
+import { Commentaire } from 'src/app/class/commentaire';
 import { UserService } from 'src/app/services/user.service';
+import { PostService } from 'src/app/services/post.service';
 
 @Component({
   selector: 'app-post',
@@ -13,9 +14,10 @@ export class PostComponent implements OnInit {
 
   id!: Number;
   post: Post = new Post();
-  comment: Comment = new Comment();
+  comment: Commentaire = new Commentaire();
 
-  constructor(private userService: UserService, 
+  constructor(private userService: UserService,
+              private postService: PostService, 
               private route: ActivatedRoute) { }
 
   ngOnInit(): void {
@@ -25,7 +27,7 @@ export class PostComponent implements OnInit {
         this.id = parseInt(a);
       }
     });
-    this.userService.getPostById(this.id).subscribe(
+    this.postService.getPostById(this.id).subscribe(
       data => {
         this.post = data;
       },
@@ -37,14 +39,17 @@ export class PostComponent implements OnInit {
 
   onSubmit(){
     this.comment.id = this.id;
-    this.userService.submitComment(this.comment).subscribe(
+    this.postService.submitComment(this.comment).subscribe(
       data => {
-        console.log(data);
+        this.userService.reloadPage();
       },
       error => {
-        console.log(error);
+        return this.userService.showSnackbar("Unknown error occured", 'Dismiss', 7000);
       }
     );
   }
- 
+
+  likePost() {
+    this.postService.likePost(this.id);
+  }
 }

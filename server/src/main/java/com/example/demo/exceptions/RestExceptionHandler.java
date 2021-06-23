@@ -3,6 +3,7 @@ package com.example.demo.exceptions;
 import com.example.demo.apierror.ApiError;
 
 import org.hibernate.exception.ConstraintViolationException;
+import org.hibernate.exception.SQLGrammarException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -28,6 +29,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
+
+import javax.mail.AuthenticationFailedException;
 
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 
@@ -309,7 +312,21 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         apiError.setMessage(ex.getMessage());
         return buildResponseEntity(apiError);
     }
-
+    
+    @ExceptionHandler(AuthenticationFailedException.class)
+    public ResponseEntity<Object> handleSMTPAuthenticationException(AuthenticationFailedException ex) {
+        var apiError = new ApiError(INTERNAL_SERVER_ERROR);
+        apiError.setMessage("Unknown error occured.");
+        return buildResponseEntity(apiError);
+    }
+    
+    @ExceptionHandler(SQLGrammarException.class)
+    public ResponseEntity<Object> handleMalformedURLException(SQLGrammarException ex) {
+        var apiError = new ApiError(INTERNAL_SERVER_ERROR);
+        apiError.setMessage("Unknown error occured.");
+        return buildResponseEntity(apiError);
+    }
+     
     private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
         return new ResponseEntity<>(apiError, apiError.getStatus());
     }

@@ -7,6 +7,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Post } from 'src/app/class/post';
+import { PostService } from 'src/app/services/post.service';
 
 @Component({
   selector: 'app-home',
@@ -68,14 +69,14 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  openDialog(): void {
-    this.dialog.open(DialogOverviewExampleDialog);
-  }
-
   getUserData(username: String) {
     this.userService.getUser(username).subscribe(data => {
       this.user = data;
     });
+  }
+
+  openDialog(): void {
+    this.dialog.open(DialogOverviewExampleDialog);
   }
 
   openPostPage(id: number){
@@ -99,7 +100,7 @@ export class DialogOverviewExampleDialog {
 
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
-    private userService: UserService,
+    private postService: PostService,
     private matSnackBar: MatSnackBar) { }
 
   get uf() {
@@ -132,12 +133,12 @@ export class DialogOverviewExampleDialog {
     formData.append("photo", this.fileData);
     formData.append("description", this.uploadForm.get('description')?.value);
 
-    this.userService.postPhoto(formData).subscribe(
+    this.postService.postPhoto(formData).subscribe(
       data => {
         this.reloadPage()
       },
       error => {
-        this.showSnackbar(JSON.stringify(error.error.apierror.message), 'Dismiss', 7000);
+        this.showSnackbar("Unknown error occured. Please retry", 'Dismiss', 7000);
       }
     );
   }

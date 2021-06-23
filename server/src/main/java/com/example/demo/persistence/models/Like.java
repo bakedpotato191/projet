@@ -2,39 +2,43 @@ package com.example.demo.persistence.models;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-public class Comment implements Serializable {
+@Table(name="postlikes")
+public class Like implements Serializable {
 	
-	private static final long serialVersionUID = 8127543175542885029L;
+	private static final long serialVersionUID = -4538179406393643986L;
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(length=128)
-	private String text;
-	
 	@ManyToOne(fetch = FetchType.LAZY, optional=false)
 	@JsonIgnoreProperties("posts")
 	private User utilisateur;
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional=false)
-	@JsonBackReference
+	@ManyToOne(fetch = FetchType.EAGER, optional=false)
+	@JsonIgnoreProperties({"utilisateur", "comments"})
 	private Post post;
 
-	public Comment() {
+	public Like() {
 		super();
+	}
+
+	public Like(Long id, User utilisateur, Post post) {
+		super();
+		this.id = id;
+		this.utilisateur = utilisateur;
+		this.post = post;
 	}
 
 	public Long getId() {
@@ -43,14 +47,6 @@ public class Comment implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
 	}
 
 	public User getUtilisateur() {

@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -47,7 +48,7 @@ public class User implements Serializable {
 	@Column(length = 60)
 	private String password;
     
-    private String avatar;
+    private String avatar = "https://t4.ftcdn.net/jpg/02/15/84/43/360_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg";
 	
 	@JsonIgnore
     private boolean enabled = false;
@@ -55,16 +56,14 @@ public class User implements Serializable {
 	@Transient
 	private Long postCount;
 	
-    //
-    
 	@JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "utilisateur_roles", 
     			joinColumns = @JoinColumn(
-    					name = "user_id", 
-    					referencedColumnName = "id"), 
+    					name = "role_id",
+    					referencedColumnName = "id"),
     			inverseJoinColumns = @JoinColumn(
-    					name = "role_id", 
+    					name = "user_id",
     					referencedColumnName = "id"))
     private Collection<Role> roles;
     
@@ -74,7 +73,17 @@ public class User implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy="utilisateur", cascade = CascadeType.ALL)
     private List<Comment> comments;
+    
+    @JsonIgnore
+    @OneToMany(mappedBy="utilisateur", cascade = CascadeType.ALL)
+    private List<Like> likes;
+    
+    @Transient
+    @OneToOne(mappedBy="utilisateur", cascade = CascadeType.ALL)
+    private VerificationToken token;
 
+    //
+    
 	public User() { 
 
 	}
