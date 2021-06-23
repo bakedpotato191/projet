@@ -24,8 +24,9 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 import { HeaderComponent } from './components/header/header.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
-import { DialogOverviewExampleDialog, HomeComponent } from './components/home/home.component';
+import { HomeComponent } from './components/home/home.component';
 import { PostComponent } from './components/post/post.component';
+import { UploadComponent } from './components/upload/upload.component';
 
 /* Helpers */
 import { authInterceptorProviders } from './helpers/auth.interceptor';
@@ -36,17 +37,9 @@ import { AuthGuard } from './guards/AuthGuard.guard';
 
 /* ngx infinite scroll */
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { UploadformService } from './services/uploadform.service';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HeaderComponent,
-    RegisterComponent,
-    LoginComponent,
-    HomeComponent,
-    DialogOverviewExampleDialog,
-    PostComponent
-  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -62,7 +55,20 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     MatInputModule,
     InfiniteScrollModule
   ],
-  providers: [authInterceptorProviders, LoggedInAuthGuard, AuthGuard],
+  declarations: [
+    AppComponent,
+    HeaderComponent,
+    RegisterComponent,
+    LoginComponent,
+    HomeComponent,
+    PostComponent,
+    UploadComponent
+  ],
+  exports: [
+    UploadComponent
+  ],
+  entryComponents: [UploadComponent],
+  providers: [authInterceptorProviders, LoggedInAuthGuard, AuthGuard, UploadformService],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

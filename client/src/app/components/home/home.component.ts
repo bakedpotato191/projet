@@ -2,12 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/class/user';
 import { UserService } from 'src/app/services/user.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Post } from 'src/app/class/post';
-import { PostService } from 'src/app/services/post.service';
+import { UploadComponent } from '../upload/upload.component';
+import { UploadformService } from 'src/app/services/uploadform.service';
 
 @Component({
   selector: 'app-home',
@@ -29,11 +28,11 @@ export class HomeComponent implements OnInit {
   user!: User;
   post!: Post;
 
-  constructor(private userService: UserService, 
+  constructor(private userService: UserService,
+              private uploadService: UploadformService, 
               private route: ActivatedRoute, 
-              public dialog: MatDialog, 
-              private breakpointObserver: BreakpointObserver, 
-              private router:Router) {
+              private router:Router,
+              private breakpointObserver: BreakpointObserver) {
 
     this.breakpointObserver.observe([
       Breakpoints.XSmall,
@@ -76,86 +75,10 @@ export class HomeComponent implements OnInit {
   }
 
   openDialog(): void {
-    this.dialog.open(DialogOverviewExampleDialog);
+    this.uploadService.open();
   }
 
   openPostPage(id: number){
     this.router.navigate(['p', id]);
-  }
-}
-
-@Component({
-  selector: 'dialog-overview-example-dialog',
-  templateUrl: './dialog-overview-example-dialog.html',
-})
-export class DialogOverviewExampleDialog {
-
-  imgFile!: String;
-  fileData!: Blob;
-
-  uploadForm = new FormGroup({
-    file: new FormControl('', [Validators.required]),
-    description: new FormControl('', [Validators.nullValidator])
-  });
-
-  constructor(
-    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
-    private postService: PostService,
-    private matSnackBar: MatSnackBar) { }
-
-  get uf() {
-    return this.uploadForm.controls;
-  }
-
-  onImageChange(e: any) {
-    const reader = new FileReader();
-
-    if (e.target.files && e.target.files.length) {
-      this.fileData = e.target.files[0];
-      reader.readAsDataURL(this.fileData);
-
-      reader.onload = () => {
-        this.imgFile = reader.result as string;
-        this.uploadForm.patchValue({
-          imgSrc: reader.result
-        });
-
-      };
-    }
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-  submit() {
-    var formData: any = new FormData();
-    formData.append("photo", this.fileData);
-    formData.append("description", this.uploadForm.get('description')?.value);
-
-    this.postService.postPhoto(formData).subscribe(
-      data => {
-        this.reloadPage()
-      },
-      error => {
-        this.showSnackbar("Unknown error occured. Please retry", 'Dismiss', 7000);
-      }
-    );
-  }
-
-  reloadPage(): void {
-    window.location.reload();
-  }
-
-  showSnackbar(content: any, action: any, duration: number) {
-    let sb = this.matSnackBar.open(content, action, {
-      duration,
-      panelClass: ["custom-style"],
-      verticalPosition: 'top', // Allowed values are  'top' | 'bottom'
-      horizontalPosition: 'center', // Allowed values are 'start' | 'center' | 'end' | 'left' | 'right');
-    });
-
-    
-
   }
 }
