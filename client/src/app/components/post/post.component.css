@@ -1,0 +1,91 @@
+.wrapper {
+    height: 100%;
+    max-width: 975px;
+    width: 100%;
+    margin: 50px auto 0 auto;
+  }
+
+.card, .card2 {
+    width: 60%;
+    border: 1px solid #7c7156;
+    border-radius: 10px;
+    margin: 0 auto;
+}
+
+.card-avatar {
+    height: 50px;
+    width: 50px;
+}
+
+.card-header{
+    border-bottom: 1px solid #353535;
+}
+
+.card-content{
+    border-top: 1px solid #353535;
+    padding: 10px;
+}
+
+.card-actions {
+  padding: 10px!important;
+  margin: inherit;
+}
+
+.card-footer {
+    display: flex;
+    flex-direction: column;
+}
+
+::ng-deep .mat-card-header-text {
+    margin: 0!important;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    padding: 10px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.form > button {
+    width: 120px;
+}
+
+
+
+.form-field {
+    padding: 10px;
+}
+
+.card-image {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    max-height: 500px;
+    margin: 15px 0;
+}
+  
+.image {
+    display: block;
+    max-width: 100%;
+    width: 100%;
+
+    object-fit: cover;
+    margin: 0 0 0 0;
+
+}
+
+.avatar {
+    display: block;
+    height: 100%;
+    max-width: 100%;
+    width: 100%;
+    object-fit: cover;
+    margin: 0 0 0 0;
+}
+
+.image:first-child{
+    margin-top: 0;
+}

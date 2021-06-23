@@ -43,9 +43,10 @@ export class LoginComponent implements OnInit {
         this.reloadPage();
       },
       error => {
-        this.errorMessage = error.message;
         this.isLoginFailed = true;
-        this.showSnackbar(JSON.stringify(error.error.message), 'Dismiss', 7000);
+        if (error.status === 401) {
+          return this.showSnackbar("Invalid email or password", 'Dismiss', 7000);
+        }
       }
     );
   }
@@ -57,7 +58,7 @@ export class LoginComponent implements OnInit {
       verticalPosition: 'top', // Allowed values are  'top' | 'bottom'
       horizontalPosition: 'center', // Allowed values are 'start' | 'center' | 'end' | 'left' | 'right');
     });
-    
+
     sb.onAction().subscribe(() => {
       sb.dismiss();
     });

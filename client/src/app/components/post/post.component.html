@@ -1,1 +1,49 @@
-<p>post works!</p>
+<div class="wrapper">
+        <mat-card class="card">
+        <mat-card-header class="card-header">
+          <div mat-card-avatar class="card-avatar">
+              <img class="avatar" src="{{ post.utilisateur.avatar }}">
+          </div>
+          <mat-card-title>{{ post.utilisateur.prenom }} {{ post.utilisateur.nom }}</mat-card-title>
+          <mat-card-subtitle>@{{ post.utilisateur.username }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-image class="card-image">
+            <img class="image" mat-card-image src="{{ post.url }}" alt="{{ post.description }}">
+        </mat-card-image>
+        <mat-card-content class="card-content">
+          <p>
+            {{ post.description }}
+          </p>
+        </mat-card-content>
+        <mat-card-actions class="card-actions">
+          <button mat-button>LIKE</button>
+          <button mat-button>SHARE</button>
+        </mat-card-actions>
+      </mat-card>
+      <mat-card class="card2">
+        <mat-card-header class="card-header2">
+          <form class="form" name="form" (ngSubmit)="onSubmit()" novalidate >
+            <input type="hidden" name="post_id" ng-value="post.id" [(ngModel)]="comment.id" required>
+            <mat-form-field class="form-field">
+              <textarea 
+                matInput
+                name="text" 
+                class="form-control" 
+                placeholder="Comment" 
+                type="text"
+                minlength="2" 
+                maxlength="128" 
+                required
+                [(ngModel)]="comment.text"
+                ></textarea>
+                <mat-error>
+                  Le commentaire doit comporter de 2 à 128 caractères au plus
+                </mat-error>
+            </mat-form-field>
+            <button mat-stroked-button class="btn-block">Add comment</button>
+        </form>
+        </mat-card-header>
+        <mat-card-content></mat-card-content>
+      </mat-card>
+      
+</div>

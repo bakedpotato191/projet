@@ -13,6 +13,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
 	List<Post> findAllByUtilisateurOrderByDateDesc(User user);
 	
+	Long countByUtilisateur(User user);
+	
 	@Override
 	void delete(Post post);
 }

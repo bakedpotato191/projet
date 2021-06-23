@@ -1,5 +1,10 @@
+import { User } from "./user";
+
 export class Post {
-    url!: String;
-    description!: String;
-    date!: String;
+    id!: number;
+    url!: string;
+    description!: string;
+    date!: string;
+    utilisateur!: User;
+    comments!: Comment[];
 }

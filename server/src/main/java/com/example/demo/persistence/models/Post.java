@@ -2,8 +2,9 @@ package com.example.demo.persistence.models;
 
 import java.io.Serializable;
 
-
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,9 +12,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name= "post")
@@ -31,9 +34,13 @@ public class Post implements Serializable {
 	
 	private Timestamp date;
 	
-	@ManyToOne(fetch = FetchType.EAGER, optional=true)
+	@ManyToOne(optional=false)
 	@JsonIgnoreProperties("posts")
 	private User utilisateur;
+	
+	@OneToMany(fetch=FetchType.EAGER)
+	@JsonManagedReference
+	private Set<Comment> comments = new HashSet<>();
 
 	public Post() {
 		super();
@@ -55,11 +62,11 @@ public class Post implements Serializable {
 		this.id = id;
 	}
 
-	public String getdescription() {
+	public String getDescription() {
 		return description;
 	}
 
-	public void setdescription(String description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 
@@ -85,5 +92,13 @@ public class Post implements Serializable {
 
 	public void setDate(Timestamp date) {
 		this.date = date;
+	}
+
+	public Set<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(Set<Comment> comments) {
+		this.comments = comments;
 	}
 }

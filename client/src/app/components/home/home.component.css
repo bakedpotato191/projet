@@ -90,9 +90,11 @@
   margin: 20px 0 20px 0 !important;
 }
 
-::ng-deep .cdk-overlay-pane {
+::ng-deep mat-dialog-container {
+  border: 1px solid #e4b948!important;
+  border-radius: 10px;
   position: relative!important;
-  max-width: unset !important;
+  max-width: unset!important;
 }
 
 ::ng-deep .upload {
@@ -141,6 +143,19 @@
   max-height:100%;
   width: auto;
   height: auto;
+}
+
+/* snackbar  */
+::ng-deep .custom-style{
+  background-color:#424242;
+  color:#fff;
+  font-weight: 500;
+  border: 1px solid #e4b948;
+  border-radius: 10px;
+}
+
+::ng-deep .custom-style .mat-simple-snackbar-action  {
+  color: #e4b948;
 }
 
 

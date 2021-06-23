@@ -52,4 +52,6 @@ public interface UserService {
 	boolean isUserEnabled(String email);
 
 	Post getPostByID(Long id);
+
+	User getUserFromSession();
 }

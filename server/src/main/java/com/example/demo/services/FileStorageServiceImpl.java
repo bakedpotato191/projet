@@ -15,13 +15,11 @@ import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.exceptions.IncorrectFileExtensionException;
-import com.example.demo.mapstruct.mappers.MapStructMapper;
 import com.example.demo.persistence.models.Post;
 import com.example.demo.persistence.repository.PostRepository;
 
@@ -36,7 +34,7 @@ public class FileStorageServiceImpl implements FileStorageService {
 	private PostRepository postRepository;
 
 	@Autowired
-	private MapStructMapper mapstructMapper;
+	private UserService userService;
 
 	public void init() {
 		try {
@@ -56,16 +54,14 @@ public class FileStorageServiceImpl implements FileStorageService {
 		if (contentTypes.contains(fileContentType)) {
 			String generatedName = UUID.randomUUID().toString() + '.'
 					+ FilenameUtils.getExtension(file.getOriginalFilename());
-
+			
 			Files.copy(file.getInputStream(), this.root.resolve(generatedName));
-
-			var user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
+			
 			var post = new Post();
 			post.setUrl("http://localhost:8081/api/user/photos/" + generatedName);
 			post.setDate(new Timestamp(System.currentTimeMillis()));
-			post.setdescription(description);
-			post.setUtilisateur(mapstructMapper.userImplToUser(user));
+			post.setDescription(description);
+			post.setUtilisateur(userService.getUserFromSession());
 
 			postRepository.save(post);
 

@@ -1,15 +1,12 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/class/user';
 import { UserService } from 'src/app/services/user.service';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-
-export interface DialogData {
-  animal: string;
-  name: string;
-}
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Post } from 'src/app/class/post';
 
 @Component({
   selector: 'app-home',
@@ -17,9 +14,9 @@ export interface DialogData {
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  
-  cols! : number;
-  
+
+  cols!: number;
+
   gridByBreakpoint = {
     xl: 3,
     lg: 3,
@@ -29,8 +26,14 @@ export class HomeComponent implements OnInit {
   }
 
   user!: User;
+  post!: Post;
 
-  constructor(private userService: UserService, private route: ActivatedRoute, public dialog: MatDialog, private breakpointObserver: BreakpointObserver) {
+  constructor(private userService: UserService, 
+              private route: ActivatedRoute, 
+              public dialog: MatDialog, 
+              private breakpointObserver: BreakpointObserver, 
+              private router:Router) {
+
     this.breakpointObserver.observe([
       Breakpoints.XSmall,
       Breakpoints.Small,
@@ -56,12 +59,12 @@ export class HomeComponent implements OnInit {
         }
       }
     });
-   }
+  }
 
   ngOnInit(): void {
     const username = this.route.snapshot.paramMap.get('username');
     if (username !== null) {
-      this.getUserData(username);  
+      this.getUserData(username);
     }
   }
 
@@ -69,10 +72,14 @@ export class HomeComponent implements OnInit {
     this.dialog.open(DialogOverviewExampleDialog);
   }
 
-  getUserData(username: String){
+  getUserData(username: String) {
     this.userService.getUser(username).subscribe(data => {
       this.user = data;
     });
+  }
+
+  openPostPage(id: number){
+    this.router.navigate(['p', id]);
   }
 }
 
@@ -93,7 +100,7 @@ export class DialogOverviewExampleDialog {
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
     private userService: UserService,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
+    private matSnackBar: MatSnackBar) { }
 
   get uf() {
     return this.uploadForm.controls;
@@ -101,17 +108,17 @@ export class DialogOverviewExampleDialog {
 
   onImageChange(e: any) {
     const reader = new FileReader();
-    
-    if(e.target.files && e.target.files.length) {
+
+    if (e.target.files && e.target.files.length) {
       this.fileData = e.target.files[0];
       reader.readAsDataURL(this.fileData);
-    
+
       reader.onload = () => {
         this.imgFile = reader.result as string;
         this.uploadForm.patchValue({
           imgSrc: reader.result
         });
-   
+
       };
     }
   }
@@ -120,21 +127,34 @@ export class DialogOverviewExampleDialog {
     this.dialogRef.close();
   }
 
-  submit(){
-    console.log(this.uploadForm.get('file'));
-
+  submit() {
     var formData: any = new FormData();
     formData.append("photo", this.fileData);
     formData.append("description", this.uploadForm.get('description')?.value);
 
     this.userService.postPhoto(formData).subscribe(
-      (response: any) => this.reloadPage(),
-      (error: any) => console.log(error)
-    )
+      data => {
+        this.reloadPage()
+      },
+      error => {
+        this.showSnackbar(JSON.stringify(error.error.apierror.message), 'Dismiss', 7000);
+      }
+    );
   }
 
   reloadPage(): void {
     window.location.reload();
   }
 
+  showSnackbar(content: any, action: any, duration: number) {
+    let sb = this.matSnackBar.open(content, action, {
+      duration,
+      panelClass: ["custom-style"],
+      verticalPosition: 'top', // Allowed values are  'top' | 'bottom'
+      horizontalPosition: 'center', // Allowed values are 'start' | 'center' | 'end' | 'left' | 'right');
+    });
+
+    
+
+  }
 }

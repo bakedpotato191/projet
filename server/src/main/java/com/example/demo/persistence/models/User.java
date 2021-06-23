@@ -1,7 +1,6 @@
 package com.example.demo.persistence.models;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -17,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -27,8 +27,9 @@ public class User implements Serializable {
 	private static final long serialVersionUID = 5284328707299338410L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique = true, nullable = false)
+	@JsonIgnore
     private Long id;
 
 	private String nom;
@@ -50,9 +51,13 @@ public class User implements Serializable {
 	
 	@JsonIgnore
     private boolean enabled = false;
-
+	
+	@Transient
+	private Long postCount;
+	
     //
     
+	@JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "utilisateur_roles", 
     			joinColumns = @JoinColumn(
@@ -63,11 +68,12 @@ public class User implements Serializable {
     					referencedColumnName = "id"))
     private Collection<Role> roles;
     
-    @OneToMany(
-    		mappedBy="utilisateur", 
-    		fetch = FetchType.LAZY,
-    		cascade = CascadeType.ALL)
-    private List<Post> posts = new ArrayList<>();
+    @OneToMany(mappedBy="utilisateur",cascade = CascadeType.ALL)
+    private List<Post> posts;
+    
+    @JsonIgnore
+    @OneToMany(mappedBy="utilisateur", cascade = CascadeType.ALL)
+    private List<Comment> comments;
 
 	public User() { 
 
@@ -158,6 +164,22 @@ public class User implements Serializable {
 
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
+	}
+	
+	public Long getPostCount() {
+		return postCount;
+	}
+
+	public void setPostCount(Long postCount) {
+		this.postCount = postCount;
+	}
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
 	}
 
 	@Override

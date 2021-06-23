@@ -5,4 +5,6 @@ export class User {
     prenom!: String;
     username!: String;
     posts!: Post[];
+    avatar!: String;
+    postCount!: String;
 }

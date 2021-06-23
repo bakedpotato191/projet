@@ -10,18 +10,18 @@
                     <h3>{{ user.nom }} {{ user.prenom }}</h3>
                 </div>
                 <div id="profile-data">
-                    Number of posts: {{ user.posts.length }}
+                    Number of posts: {{ user.postCount }}
                 </div>
-                <div id="upload-button"><button mat-fab aria-label="" (click)="openDialog()">
-                        <mat-icon>upload</mat-icon>
-                    </button></div>
+                <div id="upload-button">
+                    <button mat-stroked-button color="accent" (click)="openDialog()">Create a new post</button>
+                </div>
             </div>
         </div>
         <div id="posts-container">
             <div id="posts">
                 <mat-grid-list #grid [cols]="cols" rowHeight="1:1" [gutterSize]="'20px'">
-                    <mat-grid-tile class="grid-tile" matRipple *ngFor="let post of user.posts"><img src="{{ post.url }}"></mat-grid-tile>
-                  </mat-grid-list>  
+                    <mat-grid-tile class="grid-tile" matRipple *ngFor="let post of user.posts" (click)="openPostPage(post.id)"><img src="{{ post.url }}"></mat-grid-tile>
+                  </mat-grid-list>
             </div>
         </div>
     </div>

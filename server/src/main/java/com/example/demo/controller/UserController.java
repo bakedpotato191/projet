@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.IllegalFormatException;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -14,14 +16,17 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.demo.mapstruct.dto.CommentDto;
 import com.example.demo.persistence.models.Post;
 import com.example.demo.persistence.models.User;
 import com.example.demo.services.FileStorageService;
+import com.example.demo.services.PostService;
 import com.example.demo.services.UserService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -34,6 +39,9 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private PostService postService;
 
 	@GetMapping(value= "/{username}")
     public User userPage(@PathVariable("username") String username) {
@@ -41,17 +49,12 @@ public class UserController {
     }
 
 	@PostMapping(path="/upload")
-	public ResponseEntity<Post> uploadFile(@RequestPart("photo") MultipartFile file, @RequestPart(name="description", required=false) String description) throws IllegalFormatException, IOException {
-		return new ResponseEntity<>(storageService.save(file, description), HttpStatus.CREATED);
+	public ResponseEntity<HttpStatus> uploadFile(@RequestPart("photo") MultipartFile file, @RequestPart(name="description", required=false) String description) throws IllegalFormatException, IOException {
+		storageService.save(file, description);
+		return new ResponseEntity<>(HttpStatus.CREATED);
 
 	}
 
-	/*@GetMapping("/posts/{id}")
-	public Post getPost(@PathVariable String id) {
-		
-		
-	}*/
-	
 	@GetMapping("/photos/{filename:.+}")
 	public ResponseEntity<Resource> getFile(@PathVariable String filename) throws MalformedURLException, FileNotFoundException {
 		Resource file = storageService.load(filename);
@@ -64,5 +67,11 @@ public class UserController {
     public Post userPage(@PathVariable("postID") Long id) {
 		return userService.getPostByID(id);
     }
+	
+	@PostMapping(path="/addcomment")
+	public ResponseEntity<HttpStatus> addComment(@RequestBody @Valid final CommentDto comment) {
+		postService.addComment(comment);
+		return new ResponseEntity<>(HttpStatus.CREATED);
+	}
 	
 }

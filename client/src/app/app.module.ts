@@ -34,6 +34,9 @@ import { authInterceptorProviders } from './helpers/auth.interceptor';
 import { LoggedInAuthGuard } from './guards/loggedinauthguard.guard';
 import { AuthGuard } from './guards/AuthGuard.guard';
 
+/* ngx infinite scroll */
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -56,7 +59,8 @@ import { AuthGuard } from './guards/AuthGuard.guard';
     MatCardModule,
     MatDialogModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    InfiniteScrollModule
   ],
   providers: [authInterceptorProviders, LoggedInAuthGuard, AuthGuard],
   bootstrap: [AppComponent],

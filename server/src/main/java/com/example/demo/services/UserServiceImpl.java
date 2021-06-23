@@ -20,11 +20,13 @@ import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.HttpUnauthorizedException;
 import com.example.demo.mapstruct.dto.LoginDto;
 import com.example.demo.mapstruct.dto.SignupDto;
+import com.example.demo.mapstruct.mappers.MapStructMapper;
 import com.example.demo.payload.response.JwtResponse;
 import com.example.demo.persistence.models.PasswordResetToken;
 import com.example.demo.persistence.models.Post;
 import com.example.demo.persistence.models.User;
 import com.example.demo.persistence.models.VerificationToken;
+import com.example.demo.persistence.repository.CommentRepository;
 import com.example.demo.persistence.repository.PasswordResetTokenRepository;
 import com.example.demo.persistence.repository.PostRepository;
 import com.example.demo.persistence.repository.RoleRepository;
@@ -62,6 +64,12 @@ public class UserServiceImpl implements UserService {
     
     @Autowired
     private PasswordEncoder passwordEncoder;
+    
+    @Autowired
+    private MapStructMapper mapstructMapper;
+    
+    @Autowired
+    private CommentRepository commentRepository;
 
     public static final String TOKEN_INVALID = "invalidToken";
     public static final String TOKEN_EXPIRED = "expired";
@@ -230,6 +238,12 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
+	public User getUserFromSession() {
+		var user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return (mapstructMapper.userImplToUser(user));
+	}
+	
+	@Override
 	public boolean isUserEnabled(final String email) {
 		
 		var user = findUserByEmail(email);
@@ -251,19 +265,20 @@ public class UserServiceImpl implements UserService {
             throw new EntityNotFoundException(User.class, "username", username);
         }
 		
-		return user;
-		
+		user.setPostCount(postRepository.countByUtilisateur(user));
+		return user;	
 	}
 	
 	@Override
 	public Post getPostByID(Long id){
 		
-		var post = postRepository.findById(id);
+		var found = postRepository.findById(id);
 		
-		if(post.isPresent())
-		{
-	
-			return post.get();
+		if(found.isPresent())
+			
+		{	var post = found.get();
+			post.setComments(commentRepository.findAllByPost(post));
+			return post;
         }
 		else {
 			throw new EntityNotFoundException(Post.class, "id", id.toString());
