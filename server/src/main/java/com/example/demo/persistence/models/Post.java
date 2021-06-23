@@ -35,11 +35,11 @@ public class Post implements Serializable {
 	
 	private Timestamp date;
 	
-	@ManyToOne(optional=false)
+	@ManyToOne(optional=false) //important
 	@JsonIgnoreProperties("posts")
 	private User utilisateur;
 	
-	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
 	@JsonManagedReference
 	private Set<Comment> comments = new HashSet<>();
 	

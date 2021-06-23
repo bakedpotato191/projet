@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
 
   isLoggedIn = false;
   isLoginFailed = false;
+  isLoading!: boolean;
   errorMessage = '';
   roles: string[] = [];
 
@@ -32,7 +33,7 @@ export class LoginComponent implements OnInit {
 
   onSubmit(): void {
     const { email, password } = this.form;
-
+    this.isLoading = true;
     this.authService.login(email, password).subscribe(
       data => {
         this.tokenStorage.saveToken(data.accessToken);
@@ -45,6 +46,7 @@ export class LoginComponent implements OnInit {
       },
       error => {
         this.isLoginFailed = true;
+        this.isLoading = false;
         if (error.status === 401) {
           return this.userService.showSnackbar("Invalid email or password", 'Dismiss', 7000);
         }

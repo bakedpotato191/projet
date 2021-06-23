@@ -243,7 +243,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User getUserFromSession() {
 		var user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		log.info(user.toString());
 		return (mapstructMapper.userImplToUser(user));
 	}
 	
@@ -254,7 +253,7 @@ public class UserServiceImpl implements UserService {
 		
 		if(user.isPresent())
 		{	
-			var my = new User();
+			var my = user.get();
 			my.setPostCount(postRepository.countByUtilisateur(user.get()));
 			my.setPosts(user.get().getPosts());
 			return my;	

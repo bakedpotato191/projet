@@ -10,14 +10,14 @@
 
 #profile-container{
     padding: 0;
+    background: rgba(36,36,36,255);
+    border-radius: 5px;
 }
 
 #profile {
   display: flex;
   flex-direction: row;
   padding: 10px;
-  border: 1px solid #686868;
-  border-radius: 10px;
 }
 
 #profile-picture {
@@ -54,12 +54,27 @@
 }
 
 #posts {
-  padding: 10px;
+  margin-top:20px;
+}
+
+.noposts {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #d9d9d9;
+  text-align: center;
+  font-weight: 500;
+}
+
+::ng-deep.noposts mat-icon {
+  height: 60px;
+  width: 60px;
+  font-size: 60px;
 }
 
 .grid-tile {
   cursor: pointer;
-  background-color: #303030;
+  background-color: rgba(36,36,36,255);
   -webkit-transition: all 0.5s ease;
    -moz-transition: all 0.5s ease;
    -o-transition: all 0.5s ease;

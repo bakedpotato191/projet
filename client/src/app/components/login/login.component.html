@@ -21,12 +21,14 @@
                 </mat-error>
             </mat-form-field>
             <button mat-stroked-button class="btn-block">Sign In</button>
+            <mat-spinner *ngIf="isLoading"></mat-spinner>
         </form>
     </mat-card-content>
     <mat-card-footer class="card-footer">
         <div class="card-footer-element">Dont have an account yet? <span><a routerLink="/signup">Sign Up</a></span>
         </div>
-        <div><span><a routerLink="/restore">Restore Password</a></span></div>
+        <mat-divider></mat-divider>
+        <div class="restore"><span><a routerLink="/restore">Restore Password</a></span></div>
     </mat-card-footer>
 </mat-card>
 </div>

@@ -39,7 +39,7 @@ import { AuthGuard } from './guards/AuthGuard.guard';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { UploadformService } from './services/uploadform.service';
 
-
+import { NgTimePastPipeModule } from 'ng-time-past-pipe';
 
 @NgModule({
   imports: [
@@ -55,7 +55,8 @@ import { UploadformService } from './services/uploadform.service';
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    NgTimePastPipeModule
   ],
   declarations: [
     AppComponent,
@@ -64,8 +65,7 @@ import { UploadformService } from './services/uploadform.service';
     LoginComponent,
     HomeComponent,
     PostComponent,
-    UploadComponent,
-    Ng2TimeagoFrPipe
+    UploadComponent
   ],
   exports: [
     UploadComponent

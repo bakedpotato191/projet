@@ -59,7 +59,7 @@ export class UploadComponent {
         this.reloadPage()
       },
       error => {
-        this.showSnackbar("Unknown error occured. Please retry", 'Dismiss', 7000);
+        this.showSnackbar(JSON.stringify(error.error.apierror.message), 'Dismiss', 7000);
       }
     );
   }

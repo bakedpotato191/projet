@@ -155,5 +155,10 @@
   ::ng-deep .custom-style .mat-simple-snackbar-action  {
     color: #e4b948;
   }
+
+  .restore {
+    padding-top: 20px;
+  }
+
   
   

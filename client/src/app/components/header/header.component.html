@@ -1,12 +1,12 @@
 <header>
     <div class="wrapper flex flex-row">
-        <div class="flex">
+        <div class="flex flex-center">
             <a href="#">
                 <img id="logo" src="../../assets/images/logo.png" alt="logo">
             </a>
         </div>
-        <nav>
-            <div class="flex flex-row h-100">
+        <nav class="flex">
+            <div>
                 <ul *ngIf="isLoggedIn" class="flex flex-row">
                     <li class="flex"><a class="flex" href="#" routerLink="" href="#"><mat-icon aria-hidden="false" aria-label="home icon">home</mat-icon></a></li>
                     <li class="flex"><a class="flex" (click)="logout()" href="#"><mat-icon aria-hidden="false" aria-label="Example home icon">logout</mat-icon></a></li>

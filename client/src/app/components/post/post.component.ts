@@ -52,4 +52,8 @@ export class PostComponent implements OnInit {
   likePost() {
     this.postService.likePost(this.id);
   }
+
+  onScroll(){
+    console.log('scrolled!!');
+  }
 }

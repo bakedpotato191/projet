@@ -43,12 +43,17 @@
         </mat-card-actions>
         <mat-divider></mat-divider>
         <mat-card-footer>
-          <mat-list *ngIf="post.comments.length > 0; else elseBlock">
+          <mat-list 
+          *ngIf="post.comments.length > 0; else elseBlock"
+            infiniteScroll
+            [infiniteScrollDistance]="2"
+            [infiniteScrollThrottle]="50"
+            (scrolled)="onScroll()">
             <mat-list-item class="comment" *ngFor="let comment of post.comments">
               <span matLine class="comment-username demo-2"> {{comment.utilisateur.username }} </span>
-              <span matLine class="comment-date demo-2"> {{ comment.date | timeago }} </span>
+              <span matLine class="comment-date demo-2"> {{ comment.date | timePast }} </span>
               <div class="avatar-container">
-              <img class="comment-avatar" src="{{ comment.utilisateur.avatar }}">
+              <img matListAvatar src="{{ comment.utilisateur.avatar }}">
             </div>
               <p matLine class="comment-text">
                 <span class=""> {{ comment.text }} </span>

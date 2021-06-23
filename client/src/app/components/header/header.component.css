@@ -2,7 +2,7 @@ header {
     display: flex;
     padding: 0;
     margin: 0;
-    background-color: #3e3e3e;
+    background-color: rgba(36,36,36,255);
     border-bottom: 1px solid rgb(96, 96, 96);
     justify-content: center;
 }
@@ -14,6 +14,7 @@ header {
 
 nav {
     margin-left: auto;
+    align-items: center;
 }
 
 nav ul {
@@ -41,7 +42,6 @@ nav img {
     padding: 5px;
     max-width: 975px;
     width: 100%;
-    align-self: center;
 }
 
 .wrapper a img {
