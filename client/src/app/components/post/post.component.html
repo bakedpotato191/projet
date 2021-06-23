@@ -2,9 +2,9 @@
         <mat-card *ngIf="post.utilisateur" class="card">
         <mat-card-header class="card-header">
           <div mat-card-avatar class="card-avatar">
-              <img class="avatar" src="{{ post.utilisateur.avatar }}">
+              <a routerLink="/profile/{{post.utilisateur.username}}"><img class="avatar" src="{{ post.utilisateur.avatar }}"></a>
           </div>
-          <mat-card-title>{{ post.utilisateur.prenom }} {{ post.utilisateur.nom }}</mat-card-title>
+          <mat-card-title><a routerLink="/profile/{{post.utilisateur.username}}">{{ post.utilisateur.prenom }} {{ post.utilisateur.nom }}</a></mat-card-title>
           <mat-card-subtitle>@{{ post.utilisateur.username }}</mat-card-subtitle>
         </mat-card-header>
         <mat-divider></mat-divider>
@@ -46,6 +46,7 @@
           <mat-list *ngIf="post.comments.length > 0; else elseBlock">
             <mat-list-item class="comment" *ngFor="let comment of post.comments">
               <span matLine class="comment-username demo-2"> {{comment.utilisateur.username }} </span>
+              <span matLine class="comment-date demo-2"> {{ comment.date | timeago }} </span>
               <div class="avatar-container">
               <img class="comment-avatar" src="{{ comment.utilisateur.avatar }}">
             </div>

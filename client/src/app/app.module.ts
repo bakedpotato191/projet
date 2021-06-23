@@ -39,6 +39,8 @@ import { AuthGuard } from './guards/AuthGuard.guard';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { UploadformService } from './services/uploadform.service';
 
+
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -62,7 +64,8 @@ import { UploadformService } from './services/uploadform.service';
     LoginComponent,
     HomeComponent,
     PostComponent,
-    UploadComponent
+    UploadComponent,
+    Ng2TimeagoFrPipe
   ],
   exports: [
     UploadComponent

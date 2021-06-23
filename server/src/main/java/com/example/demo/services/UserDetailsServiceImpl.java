@@ -16,13 +16,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
-	@Override
+    @Override
 	public UserDetails loadUserByUsername(final String email) throws UsernameNotFoundException {
 		var user = userRepository.findByEmail(email);
 	
-		if (user == null) {
-                throw new UsernameNotFoundException("No user found with email: " + email);
+		if (user.isPresent()) {
+			return new UserDetailsImpl(user.get());
         }
-            return new UserDetailsImpl(user);
+		else {
+			throw new UsernameNotFoundException("No user found with email: " + email);
+		}       
 	}
 }

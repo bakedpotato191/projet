@@ -57,15 +57,14 @@ public class FileStorageServiceImpl implements FileStorageService {
 			
 			Files.copy(file.getInputStream(), this.root.resolve(generatedName));
 			
+			var user = userService.getUserFromSession();
+			
 			var post = new Post();
 			post.setUrl("http://localhost:8081/api/post/view/" + generatedName);
 			post.setDate(new Timestamp(System.currentTimeMillis()));
 			post.setDescription(description);
-			post.setUtilisateur(userService.getUserFromSession());
-
-			postRepository.save(post);
-
-			return post;
+			post.setUtilisateur(user);
+			return postRepository.save(post);
 		} else {
 			throw new IncorrectFileExtensionException(
 					"Invalid file extension. Only PNG/JPEG files are allowed");

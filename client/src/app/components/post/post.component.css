@@ -5,11 +5,19 @@
     margin: 50px auto 0 auto;
   }
 
-.card, .card2 {
-    width: 60%;
+.card {
     border: 1px solid #7c7156;
     border-radius: 10px;
     margin: 0 auto;
+    box-shadow: 0px 0px 10px 0px#1f1f1f;
+}
+
+.card a{
+    color: white;
+}
+
+.card a:hover{
+    text-decoration: underline;
 }
 
 .card-avatar {

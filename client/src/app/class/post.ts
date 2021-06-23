@@ -5,7 +5,7 @@ export class Post {
     id!: number;
     url!: string;
     description!: string;
-    date!: string;
+    date!: Date;
     utilisateur!: User;
     comments!: Commentaire[];
     isLiked!: boolean;

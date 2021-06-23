@@ -7,6 +7,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -74,43 +76,44 @@ public class UserServiceImpl implements UserService {
     public static final String TOKEN_INVALID = "invalidToken";
     public static final String TOKEN_EXPIRED = "expired";
     public static final String TOKEN_VALID = "valid";
-	
+	private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 	@Override
     public User registerNewUserAccount(final SignupDto signupDto) {
 		
-        if (emailExists(signupDto.getEmail())) {
+		var user = findUserByEmail(signupDto.getEmail());
+		
+        if (user.isPresent()) {
         	return null;
         }
         
-		var user = new User();
-        user.setNom(signupDto.getNom());
-        user.setPrenom(signupDto.getPrenom());
-        user.setPassword(passwordEncoder.encode(signupDto.getPassword()));
-        user.setUsername(signupDto.getUsername());
-        user.setEmail(signupDto.getEmail());
-        user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
-        return userRepository.save(user);
+		var newuser = new User();
+		newuser.setNom(signupDto.getNom());
+		newuser.setPrenom(signupDto.getPrenom());
+		newuser.setPassword(passwordEncoder.encode(signupDto.getPassword()));
+		newuser.setUsername(signupDto.getUsername());
+		newuser.setEmail(signupDto.getEmail());
+		newuser.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
+        return userRepository.save(newuser);
     }
 	
 	@Override
 	public JwtResponse authenticateUser(LoginDto request) {
+
+		var user = findUserByEmail(request.getEmail());
 		
-		if (!emailExists(request.getEmail())  || !isUserEnabled(request.getEmail())) {
-			
-			throw new HttpUnauthorizedException("Invalid email or password");
+		if (user.isPresent()  && user.get().isEnabled()) {
+			var authentication = authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+			String jwt = jwtUtils.generateJwtToken(authentication);
+			var userDetails = (UserDetailsImpl) authentication.getPrincipal();
+			return new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getAuthorities());	
 		}
-		var authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-		String jwt = jwtUtils.generateJwtToken(authentication);
-		var userDetails = (UserDetailsImpl) authentication.getPrincipal();
-		return new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getAuthorities());	
+		else {
+			throw new HttpUnauthorizedException("Invalid email or password");
+		}	
 	}
 
-    private boolean emailExists(final String email) {
-        return userRepository.findByEmail(email) != null;
-    }
-	
 	@Override
 	public User getUser(final String verificationToken) {
 		final VerificationToken token = tokenRepository.findByToken(verificationToken);
@@ -170,7 +173,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User findUserByEmail(final String email) {
+	public Optional<User> findUserByEmail(final String email) {
 		return userRepository.findByEmail(email);
 	}
 
@@ -240,19 +243,8 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User getUserFromSession() {
 		var user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		log.info(user.toString());
 		return (mapstructMapper.userImplToUser(user));
-	}
-	
-	@Override
-	public boolean isUserEnabled(final String email) {
-		
-		var user = findUserByEmail(email);
-		
-		if (user == null) {
-			return false;
-		}
-		
-		return user.isEnabled();
 	}
 	
 	@Override
@@ -260,13 +252,16 @@ public class UserServiceImpl implements UserService {
 		
 		var user = userRepository.findByUsername(username);
 		
-		if(user == null)
-		{
-            throw new EntityNotFoundException(User.class, "username", username);
+		if(user.isPresent())
+		{	
+			var my = new User();
+			my.setPostCount(postRepository.countByUtilisateur(user.get()));
+			my.setPosts(user.get().getPosts());
+			return my;	
         }
-		
-		user.setPostCount(postRepository.countByUtilisateur(user));
-		return user;	
+		else {
+			throw new EntityNotFoundException(User.class, "username", username);
+		}
 	}
 	
 	@Override
@@ -277,7 +272,7 @@ public class UserServiceImpl implements UserService {
 		if(found.isPresent())
 			
 		{	var post = found.get();
-			post.setComments(commentRepository.findAllByPost(post));
+			post.setComments(commentRepository.findAllByPostOrderByDateDesc(post));
 			return post;
         }
 		else {

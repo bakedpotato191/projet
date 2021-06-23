@@ -33,7 +33,6 @@ public class AuthController {
     
     @PostMapping("/signin")
     public JwtResponse authenticateUser(@RequestBody final LoginDto request){
-
 		return userService.authenticateUser(request);
     }
     

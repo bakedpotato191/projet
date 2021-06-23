@@ -17,7 +17,7 @@ export class PostService {
   }
 
   public getPostById(id: Number): Observable<any>{
-    return this.http.get(`${this.baseUrl}/p/${id}`);
+    return this.http.get(`${this.baseUrl}/${id}`);
   }
 
   public submitComment(comment: Commentaire): Observable<any>{

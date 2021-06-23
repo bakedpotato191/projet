@@ -1,5 +1,7 @@
 package com.example.demo.services;
 
+import java.sql.Timestamp;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,9 +20,6 @@ import com.example.demo.persistence.repository.PostRepository;
 public class PhotoService {
 	
 	@Autowired
-	private CommentRepository commentRepository;
-	
-	@Autowired
 	private PostRepository postRepository;
 
 	@Autowired
@@ -29,15 +28,19 @@ public class PhotoService {
 	@Autowired
 	private LikeRepository likeRepository;
 	
+	@Autowired
+	private CommentRepository commentRepository;
+	
 	public Comment addComment(final CommentDto comment) {
 		
 		var post = postRepository.findById(Long.valueOf(comment.getId()));
 		
 		if (post.isPresent()) {
 			var comm = new Comment();
-			comm.setPost(post.get());
 			comm.setUtilisateur(userService.getUserFromSession());
 			comm.setText(comment.getText());
+			comm.setDate(new Timestamp(System.currentTimeMillis()));
+			comm.setPost(post.get());
 			return commentRepository.save(comm);
 		}
 		else {

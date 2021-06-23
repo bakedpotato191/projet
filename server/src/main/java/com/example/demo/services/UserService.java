@@ -29,7 +29,7 @@ public interface UserService {
 
     void createPasswordResetTokenForUser(User user, String token);
 
-    User findUserByEmail(String email);
+    Optional<User> findUserByEmail(String email);
 
     PasswordResetToken getPasswordResetToken(String token);
 
@@ -49,8 +49,6 @@ public interface UserService {
 
 	JwtResponse authenticateUser(LoginDto request);
 	
-	boolean isUserEnabled(String email);
-
 	Post getPostByID(Long id);
 
 	User getUserFromSession();

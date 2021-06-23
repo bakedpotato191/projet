@@ -11,5 +11,5 @@ import com.example.demo.persistence.models.Post;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 	
-	Set<Comment> findAllByPost(Post post);
+	Set<Comment> findAllByPostOrderByDateDesc(Post post);
 }

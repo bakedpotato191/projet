@@ -42,7 +42,7 @@ public class PostController {
 	@Autowired
 	private PhotoService photoService;
 	
-	@PostMapping(path="/create")
+	@PostMapping("/create")
 	public ResponseEntity<HttpStatus> uploadFile(@RequestPart("photo") MultipartFile file, @RequestPart(name="description", required=false) String description) throws IllegalFormatException, IOException {
 		storageService.save(file, description);
 		return new ResponseEntity<>(HttpStatus.CREATED);
@@ -57,18 +57,18 @@ public class PostController {
 				.body(file);
 	}
 	
-	@GetMapping(value= "/p/{postID}")
+	@GetMapping("/{postID}")
     public Post userPage(@PathVariable("postID") Long id) {
 		return userService.getPostByID(id);
     }
 	
-	@PostMapping(path="/addcomment")
+	@PostMapping("/addcomment")
 	public ResponseEntity<HttpStatus> addComment(@RequestBody @Valid final CommentDto comment) {
 		photoService.addComment(comment);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 	
-	@PostMapping(path="/like")
+	@PostMapping("/like")
 	public ResponseEntity<HttpStatus> likePost(@RequestBody @Valid final String id) {
 		photoService.likePhoto(id);
 		return new ResponseEntity<>(HttpStatus.OK);

@@ -14,9 +14,13 @@ import com.example.demo.services.UserDetailsImpl;
 public interface MapStructMapper {
 	
 	@Mapping(target = "nom", ignore = true)
-    @Mapping(target = "prenom", ignore = true)
+	@Mapping(target = "prenom", ignore = true)
+	@Mapping(target = "comments", ignore = true)
+	@Mapping(target = "likes", ignore = true)
+	@Mapping(target = "postCount", ignore = true)
+	@Mapping(target = "avatar", ignore = true)
+	@Mapping(target = "posts", ignore = true)
 	@Mapping(target = "roles", ignore = true)
-	@Mapping(target="posts", ignore=true)
 	User userImplToUser(UserDetailsImpl user);
 	
 	List<PostDto> postListToPostListDto(List<Post> post);

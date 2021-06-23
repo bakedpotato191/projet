@@ -1,6 +1,7 @@
 package com.example.demo.persistence.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -67,16 +68,16 @@ public class User implements Serializable {
     					referencedColumnName = "id"))
     private Collection<Role> roles;
     
-    @OneToMany(mappedBy="utilisateur",cascade = CascadeType.ALL)
-    private List<Post> posts;
+    @OneToMany(mappedBy="utilisateur", cascade = CascadeType.ALL)
+    private List<Post> posts = new ArrayList<>();
     
     @JsonIgnore
     @OneToMany(mappedBy="utilisateur", cascade = CascadeType.ALL)
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
     
     @JsonIgnore
     @OneToMany(mappedBy="utilisateur", cascade = CascadeType.ALL)
-    private List<Like> likes;
+    private List<Like> likes = new ArrayList<>();
     
     @Transient
     @OneToOne(mappedBy="utilisateur", cascade = CascadeType.ALL)
@@ -142,7 +143,6 @@ public class User implements Serializable {
 		this.password = password;
 	}
 	
-	
 	public boolean isEnabled() {
 		return enabled;
 	}
@@ -166,7 +166,7 @@ public class User implements Serializable {
 	public void setPosts(List<Post> posts) {
 		this.posts = posts;
 	}
-	
+
 	public String getAvatar() {
 		return avatar;
 	}
@@ -190,12 +190,20 @@ public class User implements Serializable {
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
 	}
+	
+	public List<Like> getLikes() {
+		return likes;
+	}
+
+	public void setLikes(List<Like> likes) {
+		this.likes = likes;
+	}
 
 	@Override
 	public int hashCode() {
 		var prime = 31;
 		var result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
 
@@ -208,11 +216,19 @@ public class User implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		User other = (User) obj;
-		if (id == null) {
-			if (other.id != null)
+		if (username == null) {
+			if (other.username != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!username.equals(other.username))
 			return false;
 		return true;
-	} 
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", email=" + email + ", username=" + username
+				+ "]";
+	}
+	
+	
 }

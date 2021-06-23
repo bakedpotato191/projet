@@ -2,6 +2,8 @@ package com.example.demo.apierror;
 
 import java.io.Serializable;
 
+import javax.persistence.Transient;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 
@@ -13,6 +15,7 @@ public class ApiValidationError extends ApiSubError implements Serializable {
 	private String object;
 	private String field;
 
+	@Transient
 	private Object rejectedValue;
 	private String message;
 

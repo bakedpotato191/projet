@@ -88,4 +88,11 @@ public class UserDetailsImpl implements UserDetails {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "UserDetailsImpl [user=" + user.toString() + "]";
+	}
+	
+	
 }

@@ -1,5 +1,6 @@
 package com.example.demo.persistence.models;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -12,7 +13,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 @Entity
-public class VerificationToken {
+public class VerificationToken implements Serializable {
+
+	private static final long serialVersionUID = -6173670752723289498L;
+
 	private static final int EXPIRATION = 60 * 24;
 
     @Id
