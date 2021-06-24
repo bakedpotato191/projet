@@ -2,8 +2,6 @@ package com.example.demo.services;
 
 import java.sql.Timestamp;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +32,7 @@ public class PostServiceImpl implements PostService {
 	private UserService userService;
 
 	//
-	private static final Logger log = LoggerFactory.getLogger(PostServiceImpl.class);
+	
 	@Override
 	public Post createPost(String generatedName, String description) {
 		var user = userService.getUserFromSession();
@@ -102,7 +100,7 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public void processLike(Long id) {
-		log.info("in like processing method");
+
 		var post = postRepository.findById(id);
 
 		if (post.isPresent()) {

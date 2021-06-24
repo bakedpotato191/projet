@@ -7,8 +7,6 @@ import java.util.IllegalFormatException;
 
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -28,13 +26,12 @@ import com.example.demo.mapstruct.dto.CommentDto;
 import com.example.demo.persistence.models.Post;
 import com.example.demo.services.FileStorageService;
 import com.example.demo.services.PostService;
-import com.example.demo.services.PostServiceImpl;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/post")
 public class PostController {
-	private static final Logger log = LoggerFactory.getLogger(PostController.class);
+
 	@Autowired
 	private FileStorageService storageService;
 	
@@ -77,7 +74,6 @@ public class PostController {
 	
 	@PostMapping(value = {"/like", "/dislike"})
 	public ResponseEntity<HttpStatus> likePost(@RequestBody @Valid final Long id) {
-		log.info("hit controller");
 		postService.processLike(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
