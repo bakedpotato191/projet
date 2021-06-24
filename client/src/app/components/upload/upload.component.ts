@@ -13,6 +13,7 @@ export class UploadComponent {
 
   imgFile!: String;
   fileData!: Blob;
+  isSending!: boolean;
 
   uploadForm = new FormGroup({
     file: new FormControl('', [Validators.required]),
@@ -45,7 +46,7 @@ export class UploadComponent {
     }
   }
 
-  onNoClick(): void {
+  closeDialog() {
     this.dialogRef.close();
   }
 
@@ -53,12 +54,13 @@ export class UploadComponent {
     var formData: any = new FormData();
     formData.append("photo", this.fileData);
     formData.append("description", this.uploadForm.get('description')?.value);
-
+    this.isSending = true;
     this.postService.postPhoto(formData).subscribe(
-      data => {
+      _data => {
         this.reloadPage()
       },
       error => {
+        this.isSending = false;
         this.showSnackbar(JSON.stringify(error.error.apierror.message), 'Dismiss', 7000);
       }
     );
@@ -69,9 +71,9 @@ export class UploadComponent {
   }
 
   showSnackbar(content: any, action: any, duration: number) {
-    let sb = this.matSnackBar.open(content, action, {
+    this.matSnackBar.open(content, action, {
       duration,
-      panelClass: ["custom-style"],
+      panelClass: "custom-modalbox",
       verticalPosition: 'top', // Allowed values are  'top' | 'bottom'
       horizontalPosition: 'center', // Allowed values are 'start' | 'center' | 'end' | 'left' | 'right');
     });

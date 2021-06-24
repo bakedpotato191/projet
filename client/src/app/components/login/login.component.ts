@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { UserService } from 'src/app/services/user.service';
@@ -11,10 +11,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class LoginComponent implements OnInit {
 
-  form: any = {
-    email: null,
-    password: null
-  };
+  loginForm!: FormGroup;
 
   isLoggedIn = false;
   isLoginFailed = false;
@@ -22,19 +19,30 @@ export class LoginComponent implements OnInit {
   errorMessage = '';
   roles: string[] = [];
 
-  constructor(private authService: AuthService, private tokenStorage: TokenStorageService, private userService: UserService) { }
+  constructor(private authService: AuthService, 
+              private tokenStorage: TokenStorageService, 
+              private userService: UserService,
+              private fb: FormBuilder) { }
 
   ngOnInit(): void {
+    this.initLoginForm();
     if (this.tokenStorage.getToken()) {
       this.isLoggedIn = true;
+      console.log(this.isLoggedIn);
       this.roles = this.tokenStorage.getUser().roles;
     }
   }
 
+  initLoginForm() {
+    this.loginForm = this.fb.group({
+      email: ["", [Validators.required, Validators.email]],
+      password: ["", Validators.required]
+    });
+  }
+
   onSubmit(): void {
-    const { email, password } = this.form;
     this.isLoading = true;
-    this.authService.login(email, password).subscribe(
+    this.authService.login(this.loginForm.value).subscribe(
       data => {
         this.tokenStorage.saveToken(data.accessToken);
         this.tokenStorage.saveUser(data);

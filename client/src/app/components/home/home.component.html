@@ -6,11 +6,13 @@
                     <img src="https://t4.ftcdn.net/jpg/02/15/84/43/360_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg"
                         alt="profile_picture">
                 </div>
-                <div id="profile-name">
-                    <h3>{{ user.nom }} {{ user.prenom }}</h3>
-                </div>
-                <div id="profile-data">
-                    Number of posts: {{ user.postCount }}
+                <div class="profile-flex" fxLayout="column">
+                    <div id="profile-name">
+                        <h3>{{ user.nom }} {{ user.prenom }}</h3>
+                    </div>
+                    <div fxLayout="row">
+                        <div id="profile-data">{{ user.postCount }} publications</div>
+                </div>  
                 </div>
                 <div id="upload-button">
                     <button mat-stroked-button color="accent" (click)="openDialog()">Create a new post</button>

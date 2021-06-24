@@ -6,6 +6,7 @@
   }
 
 .card {
+    background: rgba(36,36,36,255);
     border: 1px solid #7c7156;
     border-radius: 10px;
     margin: 0 auto;
@@ -32,7 +33,6 @@
 
 .card-content{
     margin:10px 0 10px 0!important;
-    border-top: 1px solid #353535;
     padding: 10px;
 }
 
@@ -45,8 +45,8 @@
     flex-direction: column;
 }
 
-::ng-deep .mat-card-header-text {
-    margin: 0!important;
+.card-header .mat-card-header-text {
+    margin: 0;
 }
 
 .form {
@@ -71,7 +71,7 @@ textarea {
     padding: 10px;
 }
 
-.card-image {
+.card .card-image {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -79,7 +79,7 @@ textarea {
     margin: 15px 0;
 }
   
-.image {
+.card .image {
     display: block;
     max-width: 100%;
     width: 100%;
@@ -88,7 +88,7 @@ textarea {
 
 }
 
-.avatar {
+.card .avatar {
     display: block;
     height: 100%;
     max-width: 100%;
@@ -97,21 +97,24 @@ textarea {
     margin: 0 0 0 0;
 }
 
+.card h4, h5 {
+    margin: 0;
+}
+
 .image:first-child{
     margin-top: 0;
 }
 
-.comment-avatar {
-    padding: 0!important;
+.card .comment-avatar {
+    padding: 0;
 }
 
-.comment-text {
-    font-size:  16px!important;
-    margin: 14px!important;
+.card .comment-text {
+    font-size:  16px;
+    margin: 20px 0 20px 60px;
 }
 
-.comment-username {
-    font-size: 12px!important;
+.card .comment-username {
     color:rgb(158, 158, 158);
 }
 
@@ -135,23 +138,25 @@ textarea {
     word-wrap: normal;
 }
 
-::ng-deep .mat-list-item-content {
-    display: flex!important;
-    flex-direction: row-reverse!important;
+.comment-date{
+    color:rgb(158, 158, 158);
+    font-size: 6px;
 }
 
-::ng-deep .mat-list-text {
+.namedate{
+    margin-left: 20px;
+}
+
+.container .mat-list-text {
     padding: 10px!important;
 }
 
 .avatar-container {
     height: inherit;
 }
-
-.comment {
-    margin: 10px 0 0 0;
+.wrapper .mat-list-text {
+    padding: 0;
 }
-
   /* snackbar on login fail */
   ::ng-deep .custom-style{
     background-color:#424242;

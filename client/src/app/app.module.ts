@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 
 /* Routing */
@@ -12,7 +12,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatFormFieldModule, MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
 /* Forms */
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -35,11 +35,9 @@ import { authInterceptorProviders } from './helpers/auth.interceptor';
 import { LoggedInAuthGuard } from './guards/loggedinauthguard.guard';
 import { AuthGuard } from './guards/AuthGuard.guard';
 
-/* ngx infinite scroll */
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { UploadformService } from './services/uploadform.service';
 
-import { NgTimePastPipeModule } from 'ng-time-past-pipe';
+import { TimeSinceModule } from '@thisissoon/angular-timesince';
 
 @NgModule({
   imports: [
@@ -55,8 +53,7 @@ import { NgTimePastPipeModule } from 'ng-time-past-pipe';
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
-    InfiniteScrollModule,
-    NgTimePastPipeModule
+    TimeSinceModule
   ],
   declarations: [
     AppComponent,
@@ -71,7 +68,14 @@ import { NgTimePastPipeModule } from 'ng-time-past-pipe';
     UploadComponent
   ],
   entryComponents: [UploadComponent],
-  providers: [authInterceptorProviders, LoggedInAuthGuard, AuthGuard, UploadformService],
+  providers: [
+    authInterceptorProviders, 
+    LoggedInAuthGuard, 
+    AuthGuard,
+    Title,
+    UploadformService,
+    {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' }}
+  ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

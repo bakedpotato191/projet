@@ -1,146 +1,156 @@
 /* Login and Registration Page */
 .image{
-    height: 100% !important;
-    width: 100%;
-    position:relative;
+    height: inherit;
+    width: inherit;
   }
   
-  .image::before{
-    content:"";
-    z-index:-1;
-    position:absolute;
-    left:0;
-    top:0;
-    width:100%;
-    height:100%;
-    background: url(https://i.pinimg.com/originals/c3/7e/a3/c37ea3938c666ce4fd7cb3e906a46504.jpg);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    overflow: hidden;
-    filter: brightness(60%) grayscale(1) blur(8px);
+.image::before {
+  content:"";
+  z-index:-1;
+  position:absolute;
+  left:0;
+  top:0;
+  width:100%;
+  height:100%;
+  background: url(https://images8.alphacoders.com/642/thumb-1920-642030.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  filter: brightness(60%) grayscale(1) blur(8px);
+}
+  
+.wrapper {
+  height: 100%;
+  max-width: 975px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.wrapper .card {
+  position: relative;
+  margin: 6em auto 0 auto;
+  padding: 40px 40px 0 40px;
+  width: 100%;
+  max-width: 30rem;
+  background: rgba(36,36,36,255);
+  box-shadow: 0 3px 6px rgb(0, 0, 0), 0 3px 6px rgb(115, 100, 70);
+  z-index: 5;
+  border: 1px solid rgb(96, 96, 96);
+  border-radius: 10px;
+  transform: scale(1);
+  -webkit-transform: scale(1);
+  -ms-transform: scale(1);
   }
   
-  .wrapper {
-    height: 100%;
-    max-width: 975px;
-    width: 100%;
-    margin: 0 auto;
-  }
-  
-  .box{
-    position: relative;
-    top: 0;
-    opacity: 1;
-    float: left;
-    padding: 60px 50px 40px 50px;
-    width: 100%;
-    border-radius: 10px;
-    z-index: 5;
-    max-width: 500px;
-    transform: scale(1);
-    -webkit-transform: scale(1);
-    -ms-transform: scale(1);
-  }
-  
-  .card{
-    border: 1px solid #e4b948;
-    padding: 20px 60px;
-    box-shadow: 0 3px 6px rgb(0, 0, 0), 0 3px 6px rgb(115, 100, 70);
-  }
-  
-  .card-header {
-    display: block;
-    text-align: center;
-  }
+.card-header {
+  display: block;
+  text-align: center;
+}
     
-  .card-header .card-title {
-    margin: inherit;
-    font-size: 30px;
-  }
+.card-header .card-title {
+  margin: inherit;
+  font-size: 30px;
+}
   
-  .card .card-content {
-    margin: 30px 0;
-  }
+.card .card-content {
+  margin: 30px 0;
+}
     
-  .card .mat-stroked-button {
-    border: 1px solid currentColor;
-    line-height: 54px;
-    background: #e4b948;
-  }
+.card .mat-stroked-button {
+  border: 1px solid currentColor;
+  line-height: 54px;
+  background: #e4b948;
+}
+
+.card-header .mat-card-header-text {
+  margin: 0 auto;
+}
   
-  .mat-input-element {
-    caret-color: #fff;
-  }
+.mat-input-element {
+  caret-color: #fff;
+}
   
-  ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-infix {
-    padding: 0.8375em 0 !important;
-  }
+.form-field .mat-form-field-flex:hover {
+  color: #e4b948!important;
+}
   
-  ::ng-deep .mat-focused .mat-form-field-label {
-  /*change color of label*/
-    color: #e4b948!important;
-  }
-    
-  ::ng-deep .mat-form-field-ripple {
-    /*change color of underline when focused*/
-    background-color: #e4b948 !important;
-  }
+.card .btn-block {
+  margin-top: 20px;
+  display: block;
+  width: 100%;
+  color: rgba(36,36,36,255);
+  border-radius: 10px;
+}
   
-  .btn-block {
-    margin: 10px auto;
-    display: block;
-    width: 100%;
-    color: #424242;
-  }
+.card .btn-block:hover {
+  color: #e4b948;
+  background: rgba(36,36,36,255);
+  -webkit-transition: background-color 0.5s ease;
+  -ms-transition: background-color 0.5s ease;
+  transition: background-color 0.5s ease;
+}
+
+.card .mat-form-field{
+  margin-bottom: 10px;
+}
+
   
-  .btn-block:hover {
-    color: #e4b948;
-    background: #424242!important;
-    -webkit-transition: background-color 0.5s ease!important;
-    -ms-transition: background-color 0.5s ease!important;
-    transition: background-color 0.5s ease!important;
-  }
+.login-wrapper input {
+  caret-color: white;
+}
   
-  .login-wrapper input {
-    caret-color: white;
-  }
+.form-field {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+ 
+.card-footer {
+  text-align: center;
+  margin: 10px;
+}
   
-  .form-field {
-    width: 100%;
-    margin-bottom: 30px!important;
-  }
+.card-footer-element {
+  margin-bottom: 20px;
+}
   
-  .card-footer {
-    text-align: center;
-    margin: 10px!important;
-  }
+.form {
+  margin-bottom: 20px;
+}
   
-  .card-footer-element {
-    margin-bottom: 20px;
-  }
+.card-footer a {
+  color: #86a73c;
+}
   
-  .form {
-    margin-bottom: 20px!important;
-  }
+label {
+  display: block;
+  margin-top: 10px;
+}
+
+/* snackbar on login fail */
+.custom-style{
+  background-color:#424242;
+  color:#fff;
+  font-weight: 500;
+  border: 1px solid #e4b948;
+  border-radius: 10px;
+}
   
-  .card-footer a {
-    color: #86a73c;
-  }
-  
-  label {
-    display: block;
-    margin-top: 10px;
-  }
-    
-  .card-container.card {
-    max-width: 400px !important;
-    padding: 40px 40px;
-  }
-  
-  .box img {
-    display: block;
-    height: 100%;
-  }
+.custom-style .mat-simple-snackbar-action  {
+  color: #e4b948;
+}
+
+.restore {
+  padding-top: 20px;
+}
+
+.card .alert {
+  padding-bottom: 30px;
+  font-size: 1em;
+  color:lightgreen;
+  text-align: center;
+}
+
   
   

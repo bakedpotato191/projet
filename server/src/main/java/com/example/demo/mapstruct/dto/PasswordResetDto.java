@@ -1,6 +1,7 @@
 package com.example.demo.mapstruct.dto;
 
-import com.example.demo.validation.ValidPassword;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 public class PasswordResetDto {
 	
@@ -8,7 +9,8 @@ public class PasswordResetDto {
 
     private  String token;
 
-    @ValidPassword
+    @NotNull
+    @Size(min=8, max=32)
     private String newPassword;
 
     public String getOldPassword() {

@@ -15,6 +15,7 @@ export class PostComponent implements OnInit {
   id!: Number;
   post: Post = new Post();
   comment: Commentaire = new Commentaire();
+  liked!: boolean;
 
   constructor(private userService: UserService,
               private postService: PostService, 
@@ -40,20 +41,36 @@ export class PostComponent implements OnInit {
   onSubmit(){
     this.comment.id = this.id;
     this.postService.submitComment(this.comment).subscribe(
-      data => {
+      _data => {
         this.userService.reloadPage();
       },
-      error => {
+      _error => {
         return this.userService.showSnackbar("Unknown error occured", 'Dismiss', 7000);
       }
     );
   }
 
   likePost() {
-    this.postService.likePost(this.id);
-  }
-
-  onScroll(){
-    console.log('scrolled!!');
+    console.log("clicked");
+    if (this.post.liked){
+      console.log("disliked clicked");
+      this.post.liked = false;
+      this.postService.dislikePost(this.id).subscribe(data =>{
+        console.log(JSON.stringify(data));
+      },
+      error => {
+        console.log(JSON.stringify(error));
+      });
+    }
+    else {
+      console.log("like clicked");
+      this.post.liked=true;
+      this.postService.likePost(this.id).subscribe(data =>{
+        console.log(JSON.stringify(data));
+      },
+      error => {
+        console.log(JSON.stringify(error));
+      });
+    }  
   }
 }

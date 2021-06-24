@@ -1,25 +1,20 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable } from 'rxjs';
-import { Commentaire } from '../class/commentaire';
-import { TokenStorageService } from './token-storage.service';
+import { Observable, throwError } from 'rxjs';
+import { User } from '../class/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  baseUrl: String = 'http://localhost:8081/api/user';
-  isLoggedIn = false;
-  isLoginFailed = false;
-  errorMessage = '';
-  roles: string[] = [];
+  private API: String = 'http://localhost:8081/api/user';
 
-  constructor(private http: HttpClient, private tokenStorage: TokenStorageService, private matSnackBar: MatSnackBar) { }
+  constructor(private http: HttpClient, private matSnackBar: MatSnackBar) { }
 
-  public getUser(username: String): Observable<any>{
-    return this.http.get(`${this.baseUrl}/${username}`);
+  public getUser(username: String): Observable<User>{
+    return this.http.get<User>(`${this.API}/${username}`);
   }
 
   public reloadPage(){

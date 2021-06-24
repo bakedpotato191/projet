@@ -2,20 +2,12 @@ package com.example.demo.apierror;
 
 import java.io.Serializable;
 
-import javax.persistence.Transient;
-
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
-
-@JsonAutoDetect(fieldVisibility = Visibility.ANY)
 public class ApiValidationError extends ApiSubError implements Serializable {
 
 	private static final long serialVersionUID = 6061917971813859722L;
 
 	private String object;
 	private String field;
-
-	@Transient
 	private Object rejectedValue;
 	private String message;
 

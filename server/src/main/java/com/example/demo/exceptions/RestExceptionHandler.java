@@ -323,7 +323,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(SQLGrammarException.class)
     public ResponseEntity<Object> handleMalformedURLException(SQLGrammarException ex) {
         var apiError = new ApiError(INTERNAL_SERVER_ERROR);
-        apiError.setMessage("Unknown error occured.");
+        apiError.setMessage("Unknown error occured. Please try later.");
         return buildResponseEntity(apiError);
     }
      

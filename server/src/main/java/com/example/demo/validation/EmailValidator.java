@@ -12,11 +12,14 @@ public class EmailValidator implements ConstraintValidator<ValidEmail, String> {
 
     @Override
     public boolean isValid(final String email, final ConstraintValidatorContext context) {
+		System.out.println(email);
         return (validateEmail(email));
     }
 
     private boolean validateEmail(final String email) {
-        var matcher = PATTERN.matcher(email);
-        return matcher.matches();
+    	if (email == null) {
+    		return false;
+    	}
+        return PATTERN.matcher(email).matches();
     }
 }

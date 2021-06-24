@@ -2,10 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/class/user';
 import { UserService } from 'src/app/services/user.service';
-import { MatDialog } from '@angular/material/dialog';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Post } from 'src/app/class/post';
-import { UploadComponent } from '../upload/upload.component';
 import { UploadformService } from 'src/app/services/uploadform.service';
 
 @Component({
@@ -18,9 +16,9 @@ export class HomeComponent implements OnInit {
   cols!: number;
 
   gridByBreakpoint = {
-    xl: 3,
-    lg: 3,
-    md: 2,
+    xl: 4,
+    lg: 4,
+    md: 3,
     sm: 2,
     xs: 1
   }

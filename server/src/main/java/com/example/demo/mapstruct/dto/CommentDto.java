@@ -6,17 +6,17 @@ import javax.validation.constraints.Size;
 public class CommentDto {
 	
 	@NotNull
-	private String id;
+	private Long id;
 	
 	@NotNull
 	@Size(min=2, max=128)
 	private String text;
 	
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	

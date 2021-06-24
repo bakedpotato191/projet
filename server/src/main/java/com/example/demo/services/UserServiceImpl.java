@@ -7,8 +7,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,10 +23,8 @@ import com.example.demo.mapstruct.dto.SignupDto;
 import com.example.demo.mapstruct.mappers.MapStructMapper;
 import com.example.demo.payload.response.JwtResponse;
 import com.example.demo.persistence.models.PasswordResetToken;
-import com.example.demo.persistence.models.Post;
 import com.example.demo.persistence.models.User;
 import com.example.demo.persistence.models.VerificationToken;
-import com.example.demo.persistence.repository.CommentRepository;
 import com.example.demo.persistence.repository.PasswordResetTokenRepository;
 import com.example.demo.persistence.repository.PostRepository;
 import com.example.demo.persistence.repository.RoleRepository;
@@ -69,14 +65,11 @@ public class UserServiceImpl implements UserService {
     
     @Autowired
     private MapStructMapper mapstructMapper;
-    
-    @Autowired
-    private CommentRepository commentRepository;
 
     public static final String TOKEN_INVALID = "invalidToken";
     public static final String TOKEN_EXPIRED = "expired";
     public static final String TOKEN_VALID = "valid";
-	private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
+	
 	@Override
     public User registerNewUserAccount(final SignupDto signupDto) {
 		
@@ -261,21 +254,5 @@ public class UserServiceImpl implements UserService {
 		else {
 			throw new EntityNotFoundException(User.class, "username", username);
 		}
-	}
-	
-	@Override
-	public Post getPostByID(Long id){
-		
-		var found = postRepository.findById(id);
-		
-		if(found.isPresent())
-			
-		{	var post = found.get();
-			post.setComments(commentRepository.findAllByPostOrderByDateDesc(post));
-			return post;
-        }
-		else {
-			throw new EntityNotFoundException(Post.class, "id", id.toString());
-		}	
 	}
 }

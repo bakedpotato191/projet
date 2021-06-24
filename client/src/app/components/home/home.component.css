@@ -20,20 +20,22 @@
   padding: 10px;
 }
 
+.profile-flex{
+  margin-left: 20px;
+}
+
 #profile-picture {
-  height: 200px;
-  width: 200px;
+  height: 175px;
+  width: 175px;
 }
 
 #profile-picture img {
   display: block;
   height: 100%;
-  border: 1px solid #fff;
   border-radius: 10px;
 }
 
 #profile-name {
-  padding: 0 0 0 20px;
   color: #e1b649;
 }
 

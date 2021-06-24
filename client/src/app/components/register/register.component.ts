@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -8,25 +9,32 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class RegisterComponent implements OnInit {
  
-  form: any = {
-    nom: null,
-    prenom: null,
-    username: null,
-    email: null,
-    password: null
-  };
+  registrationForm!: FormGroup;
   
   isSuccessful = false;
   isSignUpFailed = false;
   errorMessage = '';
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, 
+              private fb: FormBuilder) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.initRegistrationForm();
+   }
+
+   initRegistrationForm() {
+    this.registrationForm = this.fb.group({
+      nom: ["", Validators.required],
+      prenom: ["", Validators.required],
+      username: ["", Validators.required],
+      email: ["", [Validators.required, Validators.email]],
+      password: ["", Validators.required]
+    });
+  }
 
   onSubmit(): void {
-    const { nom, prenom, username, email, password } = this.form;
-    this.authService.register(nom, prenom, username, email, password).subscribe(
+    console.log(JSON.stringify(this.registrationForm.value));
+    this.authService.register(this.registrationForm.value).subscribe(
       data => {
         console.log(data);
         this.isSuccessful = true;

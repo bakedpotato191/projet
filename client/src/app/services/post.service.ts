@@ -8,23 +8,28 @@ import { Commentaire } from '../class/commentaire';
 })
 export class PostService {
 
-  baseUrl: String = 'http://localhost:8081/api/post';
+  private API: String = 'http://localhost:8081/api/post';
 
   constructor(private http: HttpClient) { }
 
   public postPhoto(form: FormData): Observable<any>{
-    return this.http.post(this.baseUrl+ '/create', form);
+    return this.http.post(this.API+ '/create', form);
   }
 
   public getPostById(id: Number): Observable<any>{
-    return this.http.get(`${this.baseUrl}/${id}`);
+    return this.http.get(`${this.API}/${id}`);
   }
 
   public submitComment(comment: Commentaire): Observable<any>{
-    return this.http.post(this.baseUrl + '/addcomment', comment);
+    return this.http.post(this.API + '/addcomment', comment);
   }
 
-  public likePost(id: Number): Observable<any>{
-    return this.http.post(this.baseUrl + '/like', id);
+  public likePost(id: Number): Observable<any> {
+    return this.http.post(this.API + '/like', id);
+  }
+
+  public dislikePost(id: Number): Observable<any>{
+    return this.http.post(this.API + '/dislike', id);
   }
 }
+

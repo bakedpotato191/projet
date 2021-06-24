@@ -1,34 +1,49 @@
-<div class="wrapper image" layout="column" fxLayout="row" fxLayoutAlign="center center">
-<mat-card class="card box">
+<div class="wrapper image">
+<mat-card class="card">
     <mat-card-header class="card-header">
-        <mat-card-title class="card-title">Sign In</mat-card-title>
+        <mat-card-title class="card-title">Se connecter</mat-card-title>
     </mat-card-header>
     <mat-card-content class="card-content">
-        <form class="form" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm" novalidate>
-            <mat-form-field class="form-field">
-                <input matInput class="form-control input" placeholder="Email" type="email" name="email"
-                    [(ngModel)]="form.email" required email maxlength="50" #email="ngModel">
+        <form class="form" name="form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <mat-form-field class="form-field" color="accent" floatLabel="always">
+                <mat-label>Adresse courriel</mat-label>
+                <input 
+                matInput 
+                class="form-control input"
+                formControlName="email"
+                type="email"
+                name="email"
+                maxlength="128"
+                required>
                 <mat-error>
                     Saisir une adresse email valide
                 </mat-error>
             </mat-form-field>
 
-            <mat-form-field class="form-field">
-                <input matInput placeholder="Password" type="password" class="form-control" name="password"
-                    [(ngModel)]="form.password" required minlength="6" maxlength="40" #password="ngModel">
+            <mat-form-field class="form-field" color="accent" floatLabel="always">
+                <mat-label>Mot de passe</mat-label>
+                <input 
+                matInput
+                class="form-control"
+                formControlName="password"
+                type="password"
+                name="password"  
+                minlength="8"
+                maxlength="32"
+                required>
                 <mat-error>
                     Saisir un mot de passe
                 </mat-error>
             </mat-form-field>
-            <button mat-stroked-button class="btn-block">Sign In</button>
-            <mat-spinner *ngIf="isLoading"></mat-spinner>
+            <button *ngIf="!isLoading" mat-stroked-button color="accent" class="btn-block">Sign In</button>
+            <mat-spinner *ngIf="isLoading" color="accent" [diameter]="80" aria-label="login in progress"></mat-spinner>
         </form>
     </mat-card-content>
     <mat-card-footer class="card-footer">
-        <div class="card-footer-element">Dont have an account yet? <span><a routerLink="/signup">Sign Up</a></span>
+        <div class="card-footer-element">Première visite?<span><a routerLink="/signup"> Créer un compte</a></span>
         </div>
         <mat-divider></mat-divider>
-        <div class="restore"><span><a routerLink="/restore">Restore Password</a></span></div>
+        <div class="restore"><span><a routerLink="/restore">Reinitialiser le mot de passe</a></span></div>
     </mat-card-footer>
 </mat-card>
 </div>

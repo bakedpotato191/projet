@@ -22,23 +22,26 @@ public class Like implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional=false)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonIgnoreProperties("posts")
 	private User utilisateur;
 	
-	@ManyToOne(fetch = FetchType.EAGER, optional=false)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JsonIgnoreProperties({"utilisateur", "comments"})
 	private Post post;
+	
+	private boolean liked = true;
 
 	public Like() {
 		super();
 	}
 
-	public Like(Long id, User utilisateur, Post post) {
+	public Like(Long id, User utilisateur, Post post, boolean liked) {
 		super();
 		this.id = id;
 		this.utilisateur = utilisateur;
 		this.post = post;
+		this.liked = liked;
 	}
 
 	public Long getId() {
@@ -63,5 +66,13 @@ public class Like implements Serializable {
 
 	public void setPost(Post post) {
 		this.post = post;
+	}
+
+	public boolean isLiked() {
+		return liked;
+	}
+
+	public void setLiked(boolean liked) {
+		this.liked = liked;
 	}
 }

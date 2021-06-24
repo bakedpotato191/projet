@@ -4,12 +4,11 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.example.demo.validation.ValidEmail;
-import com.example.demo.validation.ValidPassword;
 
 public class SignupDto {
 	
-	@NotNull(message="nom est requis")
-	@Size(min = 2, message="le nom doit contenir au moins 2 lettres")
+	@NotNull
+	@Size(min = 2)
 	private String nom;
 	
 	@NotNull
@@ -23,9 +22,10 @@ public class SignupDto {
 	@ValidEmail
     private String email;
 
-    @ValidPassword
+    @NotNull
+    @Size(min=8, max=32)
     private String password;
-  
+
     private Integer role;
     
     public String getEmail() {

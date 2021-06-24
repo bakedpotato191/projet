@@ -38,8 +38,8 @@ public class AuthController {
     
 	@PostMapping("/signup")
 	public ResponseEntity<HttpStatus> registerUser(@RequestBody @Valid final SignupDto signUpRequest, final HttpServletRequest request) {
-		var registered = userService.registerNewUserAccount(signUpRequest);
 		
+		var registered = userService.registerNewUserAccount(signUpRequest);
 		if (registered != null) {
         eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, request.getLocale(), getAppUrl(request)));
 		}

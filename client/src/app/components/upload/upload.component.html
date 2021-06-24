@@ -1,5 +1,5 @@
 <div mat-dialog-content class="dialog-content">
-    <button class="close" mat-button (click)="onNoClick()">X</button>
+    <button class="close" mat-button (click)="closeDialog()">X</button>
     <mat-card class="box">
         <mat-card-header>
             <mat-card-title>Upload a photo</mat-card-title>
@@ -13,11 +13,20 @@
 
                     <input type="file" class="form-control file-input" (change)="onImageChange($event)" formControlName="file" accept="image/png, image/jpeg">
 
-                <mat-form-field color="accent">
-                    <textarea matInput class="form-control" type="text" formControlName="description" placeholder="Description" maxlength="2048"></textarea>
+                <mat-form-field color="accent" floatLabel="always">
+                    <mat-label>Description</mat-label>
+                    <textarea 
+                    matInput 
+                    class="form-control" 
+                    type="text" 
+                    formControlName="description" 
+                    maxlength="1024"
+                    >
+                </textarea>
                 </mat-form-field>
             </mat-card-content>
-            <button mat-raised-button class="btn-block upload" type="submit">Upload</button>
+            <button *ngIf="!isSending" mat-stroked-button color="accent" class="btn-block upload" type="submit">Upload</button>
+            <mat-spinner *ngIf="isSending" [diameter]="70" color="accent" aria-label="upload in progress"></mat-spinner>
         </form>
     </mat-card>
 </div>

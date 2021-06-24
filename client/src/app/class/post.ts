@@ -8,5 +8,5 @@ export class Post {
     date!: Date;
     utilisateur!: User;
     comments!: Commentaire[];
-    isLiked!: boolean;
+    liked!: boolean;
 }

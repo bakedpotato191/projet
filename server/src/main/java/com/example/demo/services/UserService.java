@@ -7,7 +7,6 @@ import com.example.demo.mapstruct.dto.LoginDto;
 import com.example.demo.mapstruct.dto.SignupDto;
 import com.example.demo.payload.response.JwtResponse;
 import com.example.demo.persistence.models.PasswordResetToken;
-import com.example.demo.persistence.models.Post;
 import com.example.demo.persistence.models.User;
 import com.example.demo.persistence.models.VerificationToken;
 
@@ -49,7 +48,5 @@ public interface UserService {
 
 	JwtResponse authenticateUser(LoginDto request);
 	
-	Post getPostByID(Long id);
-
 	User getUserFromSession();
 }

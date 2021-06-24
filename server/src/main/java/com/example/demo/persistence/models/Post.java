@@ -3,18 +3,19 @@ package com.example.demo.persistence.models;
 import java.io.Serializable;
 
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -29,21 +30,26 @@ public class Post implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 	
+	@Column(length=1024)
 	private String description;
 	
 	private String url;
 	
 	private Timestamp date;
 	
-	@ManyToOne(optional=false) //important
+	@ManyToOne(optional=false) //important @ManyToOne default fetch = EAGER	
 	@JsonIgnoreProperties("posts")
 	private User utilisateur;
 	
-	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL) // @OneToMany default fetch = LAZY
 	@JsonManagedReference
-	private Set<Comment> comments = new HashSet<>();
+	private List<Comment> comments = new ArrayList<>();
 	
+	@Transient
 	private boolean isLiked;
+	
+	@Transient
+	private Long countLike;
 
 	public Post() {
 		super();
@@ -97,14 +103,14 @@ public class Post implements Serializable {
 		this.date = date;
 	}
 
-	public Set<Comment> getComments() {
+	public List<Comment> getComments() {
 		return comments;
 	}
 
-	public void setComments(Set<Comment> comments) {
+	public void setComments(List<Comment> comments) {
 		this.comments = comments;
 	}
-
+	
 	public boolean isLiked() {
 		return isLiked;
 	}
@@ -112,16 +118,14 @@ public class Post implements Serializable {
 	public void setLiked(boolean isLiked) {
 		this.isLiked = isLiked;
 	}
-	
-	public void addComment(Comment comment) {
-		comments.add(comment);
-        comment.setPost(this);
+
+	public Long getCountLike() {
+		return countLike;
 	}
-	
-	public void removeComment(Comment comment) {
-        comments.remove(comment);
-        comment.setPost(null);
-    }
+
+	public void setCountLike(Long countLike) {
+		this.countLike = countLike;
+	}
 
 	@Override
 	public int hashCode() {

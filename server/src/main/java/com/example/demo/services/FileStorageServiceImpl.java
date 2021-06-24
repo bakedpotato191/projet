@@ -6,7 +6,6 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -21,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.exceptions.IncorrectFileExtensionException;
 import com.example.demo.persistence.models.Post;
-import com.example.demo.persistence.repository.PostRepository;
 
 @Service
 @Transactional
@@ -31,18 +29,13 @@ public class FileStorageServiceImpl implements FileStorageService {
 	private static final List<String> contentTypes = Arrays.asList("image/png", "image/jpeg");
 
 	@Autowired
-	private PostRepository postRepository;
+	private PostService postService;
 
-	@Autowired
-	private UserService userService;
+	@Override
+	public void init() throws IOException {
 
-	public void init() {
-		try {
-			if (!Files.isDirectory(root)) {
-				Files.createDirectory(root);
-			}
-		} catch (IOException e) {
-			throw new InternalError("Could not initialize folder for upload!");
+		if (!Files.isDirectory(root)) {
+			Files.createDirectory(root);
 		}
 	}
 
@@ -54,20 +47,13 @@ public class FileStorageServiceImpl implements FileStorageService {
 		if (contentTypes.contains(fileContentType)) {
 			String generatedName = UUID.randomUUID().toString() + '.'
 					+ FilenameUtils.getExtension(file.getOriginalFilename());
-			
+
 			Files.copy(file.getInputStream(), this.root.resolve(generatedName));
-			
-			var user = userService.getUserFromSession();
-			
-			var post = new Post();
-			post.setUrl("http://localhost:8081/api/post/view/" + generatedName);
-			post.setDate(new Timestamp(System.currentTimeMillis()));
-			post.setDescription(description);
-			post.setUtilisateur(user);
-			return postRepository.save(post);
+
+			return postService.createPost(generatedName, description);
+
 		} else {
-			throw new IncorrectFileExtensionException(
-					"Invalid file extension. Only PNG/JPEG files are allowed");
+			throw new IncorrectFileExtensionException("Invalid file extension. Only PNG/JPEG files are allowed");
 		}
 
 	}
@@ -75,14 +61,14 @@ public class FileStorageServiceImpl implements FileStorageService {
 	@Override
 	public Resource load(String filename) throws MalformedURLException, FileNotFoundException {
 
-			Path file = root.resolve(filename);
-			
-			Resource resource = new UrlResource(file.toUri());
+		Path file = root.resolve(filename);
 
-			if (resource.exists() || resource.isReadable()) {
-				return resource;
-			} else {
-				throw new FileNotFoundException("Optional file " + filename + " was not found.");
+		Resource resource = new UrlResource(file.toUri());
+
+		if (resource.exists() || resource.isReadable()) {
+			return resource;
+		} else {
+			throw new FileNotFoundException("Optional file " + filename + " was not found.");
 		}
 	}
 }

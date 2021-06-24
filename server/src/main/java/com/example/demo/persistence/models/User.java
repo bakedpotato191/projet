@@ -21,6 +21,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "utilisateur")
@@ -58,7 +59,7 @@ public class User implements Serializable {
 	private Long postCount;
 	
 	@JsonIgnore
-    @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER) // @ManyToMany default fetch = LAZY
     @JoinTable(name = "utilisateur_roles", 
     			joinColumns = @JoinColumn(
     					name = "role_id",
@@ -68,7 +69,8 @@ public class User implements Serializable {
     					referencedColumnName = "id"))
     private Collection<Role> roles;
     
-    @OneToMany(mappedBy="utilisateur", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy="utilisateur", cascade = CascadeType.ALL) // @OneToMany default fetch = LAZY
+	@JsonIgnoreProperties({"utilisateur", "comments"})
     private List<Post> posts = new ArrayList<>();
     
     @JsonIgnore
@@ -80,13 +82,13 @@ public class User implements Serializable {
     private List<Like> likes = new ArrayList<>();
     
     @Transient
-    @OneToOne(mappedBy="utilisateur", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy="utilisateur", cascade = CascadeType.ALL) // @OneToOne defualt fetch = EAGER	
     private VerificationToken token;
 
     //
     
 	public User() { 
-
+		super();
 	}
 	
 	public User(String email, String username, String password) {
@@ -222,13 +224,5 @@ public class User implements Serializable {
 		} else if (!username.equals(other.username))
 			return false;
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", email=" + email + ", username=" + username
-				+ "]";
-	}
-	
-	
+	}	
 }
