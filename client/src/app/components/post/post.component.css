@@ -59,12 +59,12 @@
 }
 
 .form > button {
-    width: 120px;
+    width: 180px;
 }
 
-textarea {
-    resize: none!important;
-    height: 100px!important;
+.form textarea {
+    resize: none;
+    height: 100px;
 }
 
 .form-field {
