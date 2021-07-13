@@ -250,7 +250,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
      * @return the ApiError object
      */
     @ExceptionHandler(MaxUploadSizeExceededException.class)
-    public ResponseEntity<Object> handleMaxSizeException(MaxUploadSizeExceededException ex) {
+    protected ResponseEntity<Object> handleMaxSizeException(MaxUploadSizeExceededException ex) {
     	var apiError = new ApiError(EXPECTATION_FAILED);
     	apiError.setMessage("Unabled to upload. File is too large");
     	apiError.setDebugMessage("Maximum upload size exceeded, the configured maximum is: " + env.getProperty("spring.servlet.multipart.max-file-size"));
@@ -264,7 +264,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
      * @return the ApiError object
      */
     @ExceptionHandler(IOException.class)
-    public ResponseEntity<Object> handleIoException(IOException ex) {
+    protected ResponseEntity<Object> handleIoException(IOException ex) {
     	var apiError = new ApiError(INTERNAL_SERVER_ERROR);
     	apiError.setMessage("Unknown Error occured.");
     	apiError.setDebugMessage(ex.getMessage());
@@ -272,7 +272,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(FileUploadException.class)
-    public ResponseEntity<Object> handleMaxSizeException(FileUploadException ex) {
+    protected ResponseEntity<Object> handleMaxSizeException(FileUploadException ex) {
         var apiError = new ApiError(INTERNAL_SERVER_ERROR);
         apiError.setMessage("Unknown error occured.");
         apiError.setDebugMessage(ex.getMessage());
@@ -286,7 +286,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
      * @return the ApiError object
      */
     @ExceptionHandler(IncorrectFileExtensionException.class)
-    public ResponseEntity<Object> handleIncorrectFileExtension(IncorrectFileExtensionException ex) {
+    protected ResponseEntity<Object> handleIncorrectFileExtension(IncorrectFileExtensionException ex) {
         var apiError = new ApiError(EXPECTATION_FAILED);
         apiError.setMessage("Server received the file but rejected it.");
         apiError.setDebugMessage(ex.getMessage());
@@ -300,28 +300,28 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
      * @return the ApiError object
      */
     @ExceptionHandler(FileNotFoundException.class)
-    public ResponseEntity<Object> handleFileNotFoundException(FileNotFoundException ex) {
+    protected ResponseEntity<Object> handleFileNotFoundException(FileNotFoundException ex) {
         var apiError = new ApiError(NOT_FOUND);
         apiError.setMessage(ex.getMessage());
         return buildResponseEntity(apiError);
     }
     
     @ExceptionHandler(MalformedURLException.class)
-    public ResponseEntity<Object> handleMalformedURLException(MalformedURLException ex) {
+    protected ResponseEntity<Object> handleMalformedURLException(MalformedURLException ex) {
         var apiError = new ApiError(NOT_FOUND);
         apiError.setMessage(ex.getMessage());
         return buildResponseEntity(apiError);
     }
     
     @ExceptionHandler(AuthenticationFailedException.class)
-    public ResponseEntity<Object> handleSMTPAuthenticationException(AuthenticationFailedException ex) {
+    protected ResponseEntity<Object> handleSMTPAuthenticationException(AuthenticationFailedException ex) {
         var apiError = new ApiError(INTERNAL_SERVER_ERROR);
         apiError.setMessage("Unknown error occured.");
         return buildResponseEntity(apiError);
     }
     
     @ExceptionHandler(SQLGrammarException.class)
-    public ResponseEntity<Object> handleMalformedURLException(SQLGrammarException ex) {
+    protected ResponseEntity<Object> handleMalformedURLException(SQLGrammarException ex) {
         var apiError = new ApiError(INTERNAL_SERVER_ERROR);
         apiError.setMessage("Unknown error occured. Please try later.");
         return buildResponseEntity(apiError);
