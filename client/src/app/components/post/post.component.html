@@ -17,7 +17,7 @@
         <mat-divider></mat-divider>
         <mat-card-actions class="card-actions">
 
-          <button *ngIf="post.liked" class="likeBtn" mat-button (click)="dislike()"><mat-icon aria-hidden="false" aria-label="like icon" color="warn">favorite</mat-icon></button>
+          <button mat-button *ngIf="post.liked"  (click)="dislike()"><mat-icon aria-hidden="false" aria-label="like icon" color="warn">favorite</mat-icon></button>
           <button mat-button *ngIf="!post.liked" (click)="like()"><mat-icon aria-hidden="false" aria-label="like icon">favorite</mat-icon></button>
 
           <button mat-button>SHARE</button>
