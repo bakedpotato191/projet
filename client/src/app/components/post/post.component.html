@@ -17,12 +17,12 @@
         <mat-divider></mat-divider>
         <mat-card-actions class="card-actions">
 
-          <button mat-button *ngIf="post.liked"  (click)="dislike()"><mat-icon aria-hidden="false" aria-label="like icon" color="warn">favorite</mat-icon></button>
-          <button mat-button *ngIf="!post.liked" (click)="like()"><mat-icon aria-hidden="false" aria-label="like icon">favorite</mat-icon></button>
-
-          <button mat-button>SHARE</button>
+          <button mat-button id="dislikeBtn" *ngIf="post.liked"  (click)="dislike()"><mat-icon aria-hidden="false" aria-label="like icon" color="warn">favorite</mat-icon></button>
+          <button mat-button id="likeBtn" *ngIf="!post.liked" (click)="like()"><mat-icon aria-hidden="false" aria-label="like icon">favorite</mat-icon></button>
+          <button mat-button id="shareBtn">SHARE</button>
+          <button mat-button id="deleteBtn"><mat-icon aria-hidden="false" aria-label="like icon">delete</mat-icon></button>
           <mat-divider></mat-divider>
-          <form class="form" name="form" (ngSubmit)="onSubmit()" novalidate >
+          <form class="form" name="form" (ngSubmit)="onSubmit()" novalidate>
             <input type="hidden" name="post_id" ng-value="post.id" [(ngModel)]="comment.id" required>
             <mat-form-field class="form-field" color="accent" floatLabel="always">
               <mat-label>Comment</mat-label>
@@ -32,7 +32,7 @@
                 class="form-control"  
                 type="text"
                 minlength="2" 
-                maxlength="128" 
+                maxlength="128"
                 required
                 [(ngModel)]="comment.text"
                 ></textarea>
