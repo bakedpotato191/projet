@@ -18,13 +18,13 @@ export class PostComponent implements OnInit {
   liked!: boolean;
 
   constructor(private userService: UserService,
-              private postService: PostService, 
-              private route: ActivatedRoute) { }
+    private postService: PostService,
+    private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(paramMap => {
       var a = paramMap.get('id');
-      if (a != null){
+      if (a != null) {
         this.id = parseInt(a);
       }
     });
@@ -38,7 +38,7 @@ export class PostComponent implements OnInit {
     );
   }
 
-  onSubmit(){
+  onSubmit() {
     this.comment.id = this.id;
     this.postService.submitComment(this.comment).subscribe(
       _data => {
@@ -51,20 +51,12 @@ export class PostComponent implements OnInit {
   }
 
   like() {
-      this.post.liked = true;
-      this.postService.likePost(this.id).subscribe(
-        _data=>{
-          console.log(_data);
-        }
-      );
-    }
+    this.post.liked = true;
+    this.postService.likePost(this.id).subscribe();
+  }
 
-    dislike() {
-      this.post.liked = false;
-      this.postService.dislikePost(this.id).subscribe(
-        _data => {
-          console.log(_data);
-        }
-      );
-    }
+  dislike() {
+    this.post.liked = false;
+    this.postService.dislikePost(this.id).subscribe();
+  }
 }
