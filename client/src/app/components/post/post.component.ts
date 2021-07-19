@@ -50,27 +50,21 @@ export class PostComponent implements OnInit {
     );
   }
 
-  likePost() {
-    console.log("clicked");
-    if (this.post.liked){
-      console.log("disliked clicked");
-      this.post.liked = false;
-      this.postService.dislikePost(this.id).subscribe(data =>{
-        console.log(JSON.stringify(data));
-      },
-      error => {
-        console.log(JSON.stringify(error));
-      });
+  like() {
+      this.post.liked = true;
+      this.postService.likePost(this.id).subscribe(
+        _data=>{
+          console.log(_data);
+        }
+      );
     }
-    else {
-      console.log("like clicked");
-      this.post.liked=true;
-      this.postService.likePost(this.id).subscribe(data =>{
-        console.log(JSON.stringify(data));
-      },
-      error => {
-        console.log(JSON.stringify(error));
-      });
-    }  
-  }
+
+    dislike() {
+      this.post.liked = false;
+      this.postService.dislikePost(this.id).subscribe(
+        _data => {
+          console.log(_data);
+        }
+      );
+    }
 }

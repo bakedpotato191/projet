@@ -16,7 +16,10 @@
         </mat-card-content>
         <mat-divider></mat-divider>
         <mat-card-actions class="card-actions">
-          <button mat-button (click)="likePost()"><mat-icon aria-hidden="false" aria-label="Example home icon" [style.color]="post.liked ? '#F44336' : '#FFF'">favorite</mat-icon></button>
+
+          <button *ngIf="post.liked" class="likeBtn" mat-button (click)="dislike()"><mat-icon aria-hidden="false" aria-label="like icon" color="warn">favorite</mat-icon></button>
+          <button mat-button *ngIf="!post.liked" (click)="like()"><mat-icon aria-hidden="false" aria-label="like icon">favorite</mat-icon></button>
+
           <button mat-button>SHARE</button>
           <mat-divider></mat-divider>
           <form class="form" name="form" (ngSubmit)="onSubmit()" novalidate >
@@ -39,7 +42,7 @@
             </mat-form-field>
             <button mat-stroked-button color="accent" class="btn-block">Ajouter un commentaire</button>
         </form>
-        </mat-card-actions>
+      </mat-card-actions>
         <mat-divider></mat-divider>
         <mat-card-footer>
           <mat-list *ngIf="post.comments.length > 0; else elseBlock">
@@ -52,7 +55,7 @@
               </div>
 
               <p matLine class="comment-text">
-                <span class=""> {{ comment.text }} </span>
+                <span class="">{{ comment.text }}</span>
               </p>
               <mat-divider></mat-divider>
             </mat-list-item>

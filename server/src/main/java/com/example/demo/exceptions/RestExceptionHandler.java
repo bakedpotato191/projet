@@ -326,6 +326,15 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         apiError.setMessage("Unknown error occured. Please try later.");
         return buildResponseEntity(apiError);
     }
+    
+    @ExceptionHandler(value 
+    	      = { IllegalArgumentException.class, IllegalStateException.class })
+    	    protected ResponseEntity<Object> handleConflict(
+    	      RuntimeException ex, WebRequest request) {
+    	        var bodyOfResponse = "This should be application specific";
+    	        return handleExceptionInternal(ex, bodyOfResponse, 
+    	          new HttpHeaders(), HttpStatus.CONFLICT, request);
+    	    }
      
     private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
         return new ResponseEntity<>(apiError, apiError.getStatus());

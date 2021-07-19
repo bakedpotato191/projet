@@ -8,7 +8,7 @@ public interface PostService {
 	
 	Post createPost(String name, String desc);
 	
-	boolean deletePost(Long id);
+	void deletePost(Long id);
 	
 	Post getPostByID(Long id);
 	
@@ -16,5 +16,7 @@ public interface PostService {
 	
 	Comment removeComment(Comment comment);
 	
-	void processLike(Long id);
+	void likeThePost(Long id);
+
+	void dislikeThePost(Long id);
 }

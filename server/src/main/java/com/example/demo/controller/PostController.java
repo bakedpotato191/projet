@@ -1,8 +1,6 @@
 package com.example.demo.controller;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.IllegalFormatException;
 
 import javax.validation.Valid;
@@ -47,10 +45,9 @@ public class PostController {
 	}
 	
 	@PostMapping("/delete")
-	public ResponseEntity<HttpStatus> deletePost(@PathVariable("postID") Long id) throws IllegalFormatException, IOException {
-
-		return new ResponseEntity<>(HttpStatus.CREATED);
-
+	public ResponseEntity<HttpStatus> deletePost(@PathVariable("postID") Long id) throws IllegalFormatException {
+		postService.deletePost(id);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 
@@ -63,8 +60,8 @@ public class PostController {
 				.body(file);
 	}
 	
-	@GetMapping("/{postID}")
-    public Post userPage(@PathVariable("postID") Long id) {
+	@GetMapping("/{id}")
+    public Post userPage(@PathVariable("id") Long id) {
 		return postService.getPostByID(id);
     }
 	
@@ -74,9 +71,15 @@ public class PostController {
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 	
-	@PostMapping(value = {"/like", "/dislike"})
+	@PostMapping("/like")
 	public ResponseEntity<HttpStatus> likePost(@RequestBody @Valid final Long id) {
-		postService.processLike(id);
+		postService.likeThePost(id);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@PostMapping("/dislike")
+	public ResponseEntity<HttpStatus> dislikePost(@RequestBody @Valid final Long id) {
+		postService.dislikeThePost(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
