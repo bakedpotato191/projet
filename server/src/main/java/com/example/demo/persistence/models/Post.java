@@ -37,11 +37,11 @@ public class Post implements Serializable {
 	
 	private Timestamp date;
 	
-	@ManyToOne(optional=false) //important @ManyToOne default fetch = EAGER	
+	@ManyToOne(optional=false) //important, @ManyToOne default fetch = EAGER	
 	@JsonIgnoreProperties("posts")
 	private User utilisateur;
 	
-	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL) // @OneToMany default fetch = LAZY
+	@OneToMany(targetEntity=Comment.class, mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true) // @OneToMany default fetch = LAZY
 	@JsonManagedReference
 	private List<Comment> comments = new ArrayList<>();
 	

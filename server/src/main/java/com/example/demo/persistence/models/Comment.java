@@ -28,7 +28,7 @@ public class Comment implements Serializable {
 	
 	private Timestamp date;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	@JsonIgnoreProperties("posts")
 	private User utilisateur;
 	

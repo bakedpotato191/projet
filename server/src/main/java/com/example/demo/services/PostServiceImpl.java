@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.exceptions.EntityNotFoundException;
+import com.example.demo.exceptions.HttpUnauthorizedException;
 import com.example.demo.mapstruct.dto.CommentDto;
 import com.example.demo.persistence.models.Comment;
 import com.example.demo.persistence.models.Like;
@@ -45,8 +46,14 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public void deletePost(Long id) {
-		postRepository.deleteById(id);
+	public int deletePost(Long id) {
+		var user = userService.getUserFromSession();
+		if (postRepository.deleteById(id, user) != 0) {
+			return 1;
+		}
+		else {
+			throw new HttpUnauthorizedException("Resource doesn't exist/You do not have the permission to modify it");
+		}
 	}
 
 	@Override

@@ -205,3 +205,8 @@
 #deleteBtn {
     margin: 8px;
 }
+
+::ng-deep .dialog-style {
+    border: 1px solid #e4486a;
+    border-radius: 2px;
+}

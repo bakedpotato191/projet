@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,13 +45,6 @@ public class PostController {
 
 	}
 	
-	@PostMapping("/delete")
-	public ResponseEntity<HttpStatus> deletePost(@PathVariable("postID") Long id) throws IllegalFormatException {
-		postService.deletePost(id);
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
-	
-
 	@GetMapping("/view/{filename:.+}")
 	public ResponseEntity<Resource> getFile(@PathVariable String filename) throws IOException {
 		Resource file = storageService.load(filename);
@@ -81,5 +75,11 @@ public class PostController {
 	public ResponseEntity<HttpStatus> dislikePost(@RequestBody @Valid final Long id) {
 		postService.dislikeThePost(id);
 		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<HttpStatus> deletePost(@PathVariable("id") Long id) throws IllegalFormatException {
+			postService.deletePost(id);
+			return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

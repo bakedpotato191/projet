@@ -31,5 +31,9 @@ export class PostService {
   public dislikePost(id: Number): Observable<any>{
     return this.http.post(this.API + '/dislike', id);
   }
+
+  public removePost(id: Number): Observable<any>{
+    return this.http.delete(`${this.API}/delete/${id}`);
+  }
 }
 

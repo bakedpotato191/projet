@@ -8,7 +8,7 @@ public interface PostService {
 	
 	Post createPost(String name, String desc);
 	
-	void deletePost(Long id);
+	int deletePost(Long id);
 	
 	Post getPostByID(Long id);
 	

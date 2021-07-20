@@ -1,58 +1,43 @@
-import { BrowserModule, Title } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
-
-/* Routing */
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-
-/* Material Modules */
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AngularMaterialModule } from './angular-material.module';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule, MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
-
-/* Forms */
+import { BrowserModule, Title } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-/* Angular Flex Layout */
 import { FlexLayoutModule } from "@angular/flex-layout";
+import { TimeSinceModule } from '@thisissoon/angular-timesince';
 
-/* Components */
+import { HttpClientModule } from '@angular/common/http';
+import { AppRoutingModule } from './app-routing.module';
+
+import { AngularMaterialModule } from './angular-material.module';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+
+import { authInterceptorProviders } from './helpers/auth.interceptor';
+import { LoggedInAuthGuard } from './guards/loggedinauthguard.guard';
+import { AuthGuard } from './guards/AuthGuard.guard';
+
+import { UploadformService } from './services/uploadform.service';
+
+import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { PostComponent } from './components/post/post.component';
 import { UploadComponent } from './components/upload/upload.component';
-
-/* Helpers */
-import { authInterceptorProviders } from './helpers/auth.interceptor';
-
-/* Guards */
-import { LoggedInAuthGuard } from './guards/loggedinauthguard.guard';
-import { AuthGuard } from './guards/AuthGuard.guard';
-
-import { UploadformService } from './services/uploadform.service';
-
-import { TimeSinceModule } from '@thisissoon/angular-timesince';
+import { ConfirmationDialogComponent } from './components/shared/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   imports: [
-    BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    BrowserModule,
     BrowserAnimationsModule,
-    AngularMaterialModule,
     FormsModule,
     FlexLayoutModule,
-    MatCardModule,
+    AngularMaterialModule,
     MatDialogModule,
-    MatFormFieldModule,
-    MatInputModule,
     TimeSinceModule
   ],
   declarations: [
@@ -62,12 +47,13 @@ import { TimeSinceModule } from '@thisissoon/angular-timesince';
     LoginComponent,
     HomeComponent,
     PostComponent,
-    UploadComponent
+    UploadComponent,
+    ConfirmationDialogComponent
   ],
   exports: [
     UploadComponent
   ],
-  entryComponents: [UploadComponent],
+  entryComponents: [UploadComponent, ConfirmationDialogComponent],
   providers: [
     authInterceptorProviders, 
     LoggedInAuthGuard, 
