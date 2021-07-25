@@ -14,12 +14,12 @@
                         <div id="profile-data">{{ user.postCount }} publications</div>
                 </div> 
                 <div class="sub-buttons">
-                    <button mat-raised-button *ngIf="!user.followed" color="accent" (click)="subscribe()">S'abonner</button>
-                    <button mat-raised-button *ngIf="user.followed" color="warn" (click)="unsubscribe()">Se désabonner</button>
+                    <button mat-raised-button *ngIf="!user.followed && !mypage" color="accent" (click)="subscribe()">S'abonner</button>
+                    <button mat-raised-button *ngIf="user.followed && !mypage" color="warn" (click)="unsubscribe()">Se désabonner</button>
                 </div> 
                 </div>
                     <div id="upload-button">
-                        <button mat-stroked-button color="accent" (click)="openDialog()">Publier une photo</button>
+                        <button mat-stroked-button *ngIf="mypage" color="accent" (click)="openDialog()">Publier une photo</button>
                     </div>
             </div>
         </div>

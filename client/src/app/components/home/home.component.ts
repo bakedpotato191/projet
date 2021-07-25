@@ -5,6 +5,7 @@ import { UserService } from 'src/app/services/user.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Post } from 'src/app/class/post';
 import { UploadformService } from 'src/app/services/uploadform.service';
+import { TokenStorageService } from 'src/app/services/token-storage.service';
 
 @Component({
   selector: 'app-home',
@@ -14,6 +15,7 @@ import { UploadformService } from 'src/app/services/uploadform.service';
 export class HomeComponent implements OnInit {
 
   cols!: number;
+  mypage!: boolean;
 
   gridByBreakpoint = {
     xl: 4,
@@ -30,7 +32,8 @@ export class HomeComponent implements OnInit {
               private uploadService: UploadformService, 
               private route: ActivatedRoute, 
               private router:Router,
-              private breakpointObserver: BreakpointObserver) {
+              private breakpointObserver: BreakpointObserver,
+              private tokenService: TokenStorageService) {
 
     this.breakpointObserver.observe([
       Breakpoints.XSmall,
@@ -63,6 +66,9 @@ export class HomeComponent implements OnInit {
     const username = this.route.snapshot.paramMap.get('username');
     if (username !== null) {
       this.getUserData(username);
+    }
+    if (username == this.tokenService.getUser().username){
+      this.mypage = true;
     }
   }
 

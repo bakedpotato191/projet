@@ -33,7 +33,6 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log(JSON.stringify(this.registrationForm.value));
     this.authService.register(this.registrationForm.value).subscribe(
       data => {
         console.log(data);

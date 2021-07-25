@@ -24,13 +24,12 @@ import com.example.demo.services.UserService;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-
     @Autowired
     private UserService userService;
-
+    
     @Autowired
     private ApplicationEventPublisher eventPublisher;
-    
+
     @PostMapping("/signin")
     public JwtResponse authenticateUser(@RequestBody final LoginDto request){
 		return userService.authenticateUser(request);
@@ -38,12 +37,8 @@ public class AuthController {
     
 	@PostMapping("/signup")
 	public ResponseEntity<HttpStatus> registerUser(@RequestBody @Valid final SignupDto signUpRequest, final HttpServletRequest request) {
-		
-		var registered = userService.registerNewUserAccount(signUpRequest);
-		if (registered != null) {
-        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, request.getLocale(), getAppUrl(request)));
-		}
-		
+		var registered = userService.registerUser(signUpRequest);
+		eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, request.getLocale(), getAppUrl(request)));
         return new ResponseEntity<>(HttpStatus.OK);
 	}
 	

@@ -12,7 +12,7 @@ import com.example.demo.persistence.models.VerificationToken;
 
 public interface UserService {
 
-    User registerNewUserAccount(SignupDto user);
+	User registerUser(SignupDto signupDto);
 
     User getUser(String verificationToken);
 
@@ -53,4 +53,5 @@ public interface UserService {
 	void follow(String username);
 
 	void unfollow(String username);
+
 }

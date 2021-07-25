@@ -16,8 +16,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.demo.exceptions.EmailAlreadyExistsException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.HttpUnauthorizedException;
+import com.example.demo.exceptions.UsernameAlreadyExistsException;
 import com.example.demo.mapstruct.dto.LoginDto;
 import com.example.demo.mapstruct.dto.SignupDto;
 import com.example.demo.payload.response.JwtResponse;
@@ -73,22 +75,23 @@ public class UserServiceImpl implements UserService {
     private static final String USERNAME = "username";
 	
 	@Override
-    public User registerNewUserAccount(final SignupDto signupDto) {
+    public User registerUser(final SignupDto signupDto) {
 		
-		var user = findUserByEmail(signupDto.getEmail());
-		
-        if (user.isPresent()) {
-        	return null;
+        if (userRepository.findByUsername(signupDto.getUsername()).isPresent()) {
+        	throw new UsernameAlreadyExistsException("Username is already in use.");
+        }
+        else if(userRepository.findByEmail(signupDto.getEmail()).isPresent()) {
+        	throw new EmailAlreadyExistsException("Email is already in use.");
         }
         
-		var newuser = new User();
-		newuser.setNom(signupDto.getNom());
-		newuser.setPrenom(signupDto.getPrenom());
-		newuser.setPassword(passwordEncoder.encode(signupDto.getPassword()));
-		newuser.setUsername(signupDto.getUsername());
-		newuser.setEmail(signupDto.getEmail());
-		newuser.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
-        return userRepository.save(newuser);
+		var user = new User();
+		user.setNom(signupDto.getNom());
+		user.setPrenom(signupDto.getPrenom());
+		user.setPassword(passwordEncoder.encode(signupDto.getPassword()));
+		user.setUsername(signupDto.getUsername());
+		user.setEmail(signupDto.getEmail());
+		user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
+        return userRepository.save(user);
     }
 	
 	@Override
