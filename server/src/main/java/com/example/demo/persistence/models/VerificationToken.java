@@ -26,14 +26,12 @@ public class VerificationToken implements Serializable {
     private String token;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false, name = "user_id")
+    @JoinColumn(nullable = false, name = "utilisateur")
     private User user;
 
     private Date expiryDate;
 
-    public VerificationToken() {
-        super();
-    }
+    public VerificationToken() {}
 
     public VerificationToken(final String token) {
         super();

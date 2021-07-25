@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -20,12 +21,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "utilisateur")
-public class User implements Serializable {
+public class User implements Serializable, UserDetails {
 
 	private static final long serialVersionUID = 5284328707299338410L;
 
@@ -58,6 +63,9 @@ public class User implements Serializable {
 	@Transient
 	private Long postCount;
 	
+	@Transient
+	private boolean followed;
+	
 	@JsonIgnore
     @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER) // @ManyToMany default fetch = LAZY
     @JoinTable(name = "utilisateur_roles", 
@@ -72,7 +80,7 @@ public class User implements Serializable {
     @OneToMany(mappedBy="utilisateur", cascade = CascadeType.ALL) // @OneToMany default fetch = LAZY
 	@JsonIgnoreProperties({"utilisateur", "comments"})
     private List<Post> posts = new ArrayList<>();
-    
+       
     @JsonIgnore
     @OneToMany(mappedBy="utilisateur", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
@@ -81,15 +89,19 @@ public class User implements Serializable {
     @OneToMany(mappedBy="utilisateur", cascade = CascadeType.ALL)
     private List<Like> likes = new ArrayList<>();
     
-    @Transient
-    @OneToOne(mappedBy="utilisateur", cascade = CascadeType.ALL) // @OneToOne defualt fetch = EAGER	
+    @JsonIgnore
+    @OneToOne(fetch=FetchType.LAZY, mappedBy="user", cascade = CascadeType.ALL)  // @OneToOne defualt fetch = EAGER	
     private VerificationToken token;
+    
+    @OneToMany(mappedBy="to")
+    private List<Follower> followers;
+
+    @OneToMany(mappedBy="from")
+    private List<Follower> following;
 
     //
     
-	public User() { 
-		super();
-	}
+	public User() {}
 	
 	public User(String email, String username, String password) {
 		this.email = email;
@@ -145,14 +157,6 @@ public class User implements Serializable {
 		this.password = password;
 	}
 	
-	public boolean isEnabled() {
-		return enabled;
-	}
-
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-	}
-	
 	public Collection<Role> getRoles() {
 		return roles;
 	}
@@ -200,7 +204,74 @@ public class User implements Serializable {
 	public void setLikes(List<Like> likes) {
 		this.likes = likes;
 	}
+	
+	public List<Follower> getFollowers() {
+		return followers;
+	}
 
+	public void setFollowers(List<Follower> followers) {
+		this.followers = followers;
+	}
+
+	public List<Follower> getFollowing() {
+		return following;
+	}
+
+	public void setFollowing(List<Follower> following) {
+		this.following = following;
+	}
+
+	public VerificationToken getToken() {
+		return token;
+	}
+
+	public void setToken(VerificationToken token) {
+		this.token = token;
+	}
+	
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+	
+	public boolean isFollowed() {
+		return followed;
+	}
+
+	public void setFollowed(boolean followed) {
+		this.followed = followed;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	@JsonIgnore
+	@Override
+	public Collection<GrantedAuthority> getAuthorities() {
+		return this.getRoles().stream()
+				.map(role -> new SimpleGrantedAuthority(role.getName()))
+				.collect(Collectors.toList());
+	}
+
+	@JsonIgnore
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@JsonIgnore
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@JsonIgnore
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+	
 	@Override
 	public int hashCode() {
 		var prime = 31;
@@ -224,5 +295,5 @@ public class User implements Serializable {
 		} else if (!username.equals(other.username))
 			return false;
 		return true;
-	}	
+	}
 }

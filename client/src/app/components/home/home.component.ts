@@ -79,4 +79,12 @@ export class HomeComponent implements OnInit {
   openPostPage(id: number){
     this.router.navigate(['p', id]);
   }
+
+  subscribe (){
+
+  }
+
+  unsubscribe(){
+    
+  }
 }

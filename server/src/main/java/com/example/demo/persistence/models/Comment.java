@@ -36,9 +36,7 @@ public class Comment implements Serializable {
 	@JsonBackReference
 	private Post post;
 	
-	public Comment() {
-		super();
-	}
+	public Comment() {}
 
 	public Long getId() {
 		return id;

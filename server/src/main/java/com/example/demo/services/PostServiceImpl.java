@@ -118,9 +118,9 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public void dislikeThePost(Long id) {
 		
-			var user = userService.getUserFromSession();
+			var currentUser = userService.getUserFromSession();
 			
-			if (likeRepository.dislike(user, id) == 0) {
+			if (likeRepository.dislike(currentUser, id) == 0) {
 				throw new EntityNotFoundException(Post.class, "id", id.toString());
 			}
 	} 

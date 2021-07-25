@@ -70,11 +70,6 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-		  <groupId>org.mapstruct</groupId>
-		  <artifactId>mapstruct</artifactId>
-		  <version>${org.mapstruct.version}</version> 
-		</dependency>
-		<dependency>
 	   		<groupId>com.fasterxml.jackson.datatype</groupId>
 	   		<artifactId>jackson-datatype-jsr310</artifactId>
 		</dependency>
@@ -98,13 +93,6 @@
 			    <configuration>
 			        <source>${java.version}</source>
 			        <target>${java.version}</target>
-			        <annotationProcessorPaths>
-                            <path>
-                                <groupId>org.mapstruct</groupId>
-                                <artifactId>mapstruct-processor</artifactId>
-                                <version>${org.mapstruct.version}</version>
-                            </path>
-                        </annotationProcessorPaths>
 			    </configuration>
 			</plugin>
 		</plugins>

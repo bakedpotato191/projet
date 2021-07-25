@@ -49,4 +49,8 @@ public interface UserService {
 	JwtResponse authenticateUser(LoginDto request);
 	
 	User getUserFromSession();
+
+	void follow(String username);
+
+	void unfollow(String username);
 }

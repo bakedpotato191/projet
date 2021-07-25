@@ -7,4 +7,5 @@ export class User {
     posts!: Post[];
     avatar!: String;
     postCount!: String;
+    followed!: boolean;
 }

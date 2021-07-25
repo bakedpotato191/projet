@@ -30,9 +30,7 @@ public class Like implements Serializable {
 	@JsonIgnoreProperties({"utilisateur", "comments"})
 	private Post post;
 	
-	public Like() {
-		super();
-	}
+	public Like() {}
 
 	public Like(Long id, User utilisateur, Post post) {
 		super();

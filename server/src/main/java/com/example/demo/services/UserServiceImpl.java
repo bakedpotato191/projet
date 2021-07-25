@@ -20,11 +20,12 @@ import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.HttpUnauthorizedException;
 import com.example.demo.mapstruct.dto.LoginDto;
 import com.example.demo.mapstruct.dto.SignupDto;
-import com.example.demo.mapstruct.mappers.MapStructMapper;
 import com.example.demo.payload.response.JwtResponse;
+import com.example.demo.persistence.models.Follower;
 import com.example.demo.persistence.models.PasswordResetToken;
 import com.example.demo.persistence.models.User;
 import com.example.demo.persistence.models.VerificationToken;
+import com.example.demo.persistence.repository.FollowerRepository;
 import com.example.demo.persistence.repository.PasswordResetTokenRepository;
 import com.example.demo.persistence.repository.PostRepository;
 import com.example.demo.persistence.repository.RoleRepository;
@@ -37,12 +38,6 @@ import com.example.demo.security.jwt.JwtUtils;
 public class UserServiceImpl implements UserService {
 
 	@Autowired
-	private AuthenticationManager authenticationManager;
-	
-    @Autowired
-	private JwtUtils jwtUtils;
-	
-	@Autowired
     private UserRepository userRepository;
 	
 	@Autowired
@@ -50,25 +45,32 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
     private RoleRepository roleRepository;
-
-    @Autowired
-    private SessionRegistry sessionRegistry;
 	
 	@Autowired
     private VerificationTokenRepository tokenRepository;
-
+	
     @Autowired
     private PasswordResetTokenRepository passwordTokenRepository;
     
     @Autowired
-    private PasswordEncoder passwordEncoder;
-    
-    @Autowired
-    private MapStructMapper mapstructMapper;
+    private FollowerRepository followerRepository;
 
-    public static final String TOKEN_INVALID = "invalidToken";
-    public static final String TOKEN_EXPIRED = "expired";
-    public static final String TOKEN_VALID = "valid";
+	@Autowired
+	private AuthenticationManager authenticationManager;
+	
+    @Autowired
+	private JwtUtils jwtUtils;
+	
+    @Autowired
+    private SessionRegistry sessionRegistry;
+	
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    private static final String TOKEN_INVALID = "invalidToken";
+    private static final String TOKEN_EXPIRED = "expired";
+    private static final String TOKEN_VALID = "valid";
+    private static final String USERNAME = "username";
 	
 	@Override
     public User registerNewUserAccount(final SignupDto signupDto) {
@@ -99,7 +101,7 @@ public class UserServiceImpl implements UserService {
 					new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 			String jwt = jwtUtils.generateJwtToken(authentication);
-			var userDetails = (UserDetailsImpl) authentication.getPrincipal();
+			var userDetails = (User) authentication.getPrincipal();
 			return new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getAuthorities());	
 		}
 		else {
@@ -235,8 +237,7 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public User getUserFromSession() {
-		var user = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return (mapstructMapper.userImplToUser(user));
+		return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	}
 	
 	@Override
@@ -246,13 +247,39 @@ public class UserServiceImpl implements UserService {
 		
 		if(user.isPresent())
 		{	
-			var my = user.get();
-			my.setPostCount(postRepository.countByUtilisateur(user.get()));
-			my.setPosts(user.get().getPosts());
-			return my;	
+			var result = user.get();
+			result.setPostCount(postRepository.countByUtilisateur(user.get()));
+			result.setPosts(result.getPosts());
+			result.setFollowed(followerRepository.isFollowed(getUserFromSession(), result));
+			return result;	
         }
 		else {
-			throw new EntityNotFoundException(User.class, "username", username);
+			throw new EntityNotFoundException(User.class, USERNAME, username);
+		}
+	}
+	
+	@Override
+	public void follow(String username) {
+		
+		var user = userRepository.findByUsername(username);
+		
+		if (user.isPresent()) {
+			var currentUser = getUserFromSession();
+			var following = user.get();
+			followerRepository.save(new Follower(currentUser, following));
+		}
+		else {
+			throw new EntityNotFoundException(User.class, USERNAME, username);
+		}
+	}
+	
+	@Override
+	public void unfollow(String username) {
+		
+		int row = followerRepository.unfollow(getUserFromSession(), username);
+		
+		if (row == 0) {
+			throw new EntityNotFoundException(User.class, USERNAME, username);
 		}
 	}
 }

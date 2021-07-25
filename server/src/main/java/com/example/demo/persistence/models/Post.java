@@ -51,9 +51,7 @@ public class Post implements Serializable {
 	@Transient
 	private Long countLike;
 
-	public Post() {
-		super();
-	}
+	public Post() {}
 
 	public Post(Long id, String description, String url, User utilisateur) {
 		super();

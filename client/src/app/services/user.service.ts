@@ -14,7 +14,7 @@ export class UserService {
   constructor(private http: HttpClient, private matSnackBar: MatSnackBar) { }
 
   public getUser(username: String): Observable<User>{
-    return this.http.get<User>(`${this.API}/${username}`);
+    return this.http.get<User>(`${this.API}/getuser/${username}`);
   }
 
   public reloadPage(){

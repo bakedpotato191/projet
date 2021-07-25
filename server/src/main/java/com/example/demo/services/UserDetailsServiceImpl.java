@@ -21,7 +21,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		var user = userRepository.findByEmail(email);
 	
 		if (user.isPresent()) {
-			return new UserDetailsImpl(user.get());
+			return user.get();
         }
 		else {
 			throw new UsernameNotFoundException("No user found with email: " + email);
