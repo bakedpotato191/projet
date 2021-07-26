@@ -254,7 +254,8 @@ public class UserServiceImpl implements UserService {
 			result.setPostCount(postRepository.countByUtilisateur(user.get()));
 			result.setPosts(result.getPosts());
 			result.setFollowed(followerRepository.isFollowed(getUserFromSession(), result));
-			return result;	
+			result.setFollowerCount(followerRepository.countFollowers(username));
+			return result;
         }
 		else {
 			throw new EntityNotFoundException(User.class, USERNAME, username);

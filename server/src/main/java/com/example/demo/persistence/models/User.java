@@ -66,6 +66,9 @@ public class User implements Serializable, UserDetails {
 	private Long postCount;
 	
 	@Transient
+	private Long followerCount;
+	
+	@Transient
 	private boolean followed;
 	
 	@JsonIgnore
@@ -84,7 +87,7 @@ public class User implements Serializable, UserDetails {
     private List<Post> posts = new ArrayList<>();
        
     @JsonIgnore
-    @OneToMany(mappedBy="utilisateur", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy="utilisateur", cascade = CascadeType.ALL, orphanRemoval=true)
     private List<Comment> comments = new ArrayList<>();
     
     @JsonIgnore
@@ -92,15 +95,15 @@ public class User implements Serializable, UserDetails {
     private Set<Like> likes = new HashSet<>();
     
     @JsonIgnore
-    @OneToOne(fetch=FetchType.LAZY, mappedBy="user", cascade = CascadeType.ALL)  // @OneToOne default fetch = EAGER	
+    @OneToOne(fetch=FetchType.LAZY, mappedBy="user", cascade = CascadeType.ALL, orphanRemoval=true)  // @OneToOne default fetch = EAGER	
     private VerificationToken token;
     
     @JsonIgnore
-    @OneToMany(mappedBy="utilisateur2", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy="utilisateur2", cascade = CascadeType.ALL, orphanRemoval=true)
     private List<Follower> followers;
 
     @JsonIgnore
-    @OneToMany(mappedBy="utilisateur1", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy="utilisateur1", cascade = CascadeType.ALL, orphanRemoval=true)
     private List<Follower> following;
 
     //
@@ -243,6 +246,14 @@ public class User implements Serializable, UserDetails {
 
 	public void setFollowed(boolean followed) {
 		this.followed = followed;
+	}
+	
+	public Long getFollowerCount() {
+		return followerCount;
+	}
+
+	public void setFollowerCount(Long followerCount) {
+		this.followerCount = followerCount;
 	}
 
 	@Override

@@ -40,8 +40,12 @@
 }
 
 #profile-data {
-    margin-top:auto;
+    margin: auto 8px 0 0;
     color: white;
+}
+
+.count{
+  color: green;
 }
 
 #upload-button {

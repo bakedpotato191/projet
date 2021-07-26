@@ -11,7 +11,8 @@
                         <h3>{{ user.nom }} {{ user.prenom }}</h3>
                     </div>
                     <div fxLayout="row">
-                        <div id="profile-data">{{ user.postCount }} publications</div>
+                        <div id="profile-data"><span class="count">{{ user.postCount }}</span> publications</div>
+                        <div id="profile-data"><span class="count">{{ user.followerCount }}</span> followers</div>
                 </div> 
                 <div class="sub-buttons">
                     <button mat-raised-button *ngIf="!user.followed && !mypage" color="accent" (click)="follow()">S'abonner</button>
