@@ -3,7 +3,9 @@ package com.example.demo.persistence.models;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
@@ -87,16 +89,18 @@ public class User implements Serializable, UserDetails {
     
     @JsonIgnore
     @OneToMany(mappedBy="utilisateur", cascade = CascadeType.ALL)
-    private List<Like> likes = new ArrayList<>();
+    private Set<Like> likes = new HashSet<>();
     
     @JsonIgnore
-    @OneToOne(fetch=FetchType.LAZY, mappedBy="user", cascade = CascadeType.ALL)  // @OneToOne defualt fetch = EAGER	
+    @OneToOne(fetch=FetchType.LAZY, mappedBy="user", cascade = CascadeType.ALL)  // @OneToOne default fetch = EAGER	
     private VerificationToken token;
     
-    @OneToMany(mappedBy="to")
+    @JsonIgnore
+    @OneToMany(mappedBy="utilisateur2", cascade = CascadeType.ALL)
     private List<Follower> followers;
 
-    @OneToMany(mappedBy="from")
+    @JsonIgnore
+    @OneToMany(mappedBy="utilisateur1", cascade = CascadeType.ALL)
     private List<Follower> following;
 
     //
@@ -197,11 +201,11 @@ public class User implements Serializable, UserDetails {
 		this.comments = comments;
 	}
 	
-	public List<Like> getLikes() {
+	public Set<Like> getLikes() {
 		return likes;
 	}
 
-	public void setLikes(List<Like> likes) {
+	public void setLikes(Set<Like> likes) {
 		this.likes = likes;
 	}
 	

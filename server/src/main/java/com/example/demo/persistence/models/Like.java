@@ -9,11 +9,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(name="postlikes")
+@Table(name="postlikes", uniqueConstraints= @UniqueConstraint(columnNames={"utilisateur_id", "post_id"}))
 public class Like implements Serializable {
 	
 	private static final long serialVersionUID = -4538179406393643986L;
@@ -62,4 +63,35 @@ public class Like implements Serializable {
 	public void setPost(Post post) {
 		this.post = post;
 	}
+
+	@Override
+	public int hashCode() {
+		var prime = 31;
+		var result = 1;
+		result = prime * result + ((post == null) ? 0 : post.hashCode());
+		result = prime * result + ((utilisateur == null) ? 0 : utilisateur.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Like other = (Like) obj;
+		if (post == null) {
+			if (other.post != null)
+				return false;
+		} else if (!post.equals(other.post))
+			return false;
+		if (utilisateur == null) {
+			if (other.utilisateur != null)
+				return false;
+		} else if (!utilisateur.equals(other.utilisateur))
+			return false;
+		return true;
+	}	
 }

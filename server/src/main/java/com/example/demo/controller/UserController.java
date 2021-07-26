@@ -30,14 +30,14 @@ public class UserController {
 		return userService.getUserData(username);	
     }
 	
-	@PostMapping(value= "/subscribe/{username}")
+	@PostMapping(value= "/follow")
     public ResponseEntity<HttpStatus> follow(@RequestBody @Valid final String username) {
 		userService.follow(username);
 		return new ResponseEntity<>(HttpStatus.OK);
 		
     }
 	
-	@PostMapping(value= "/unsubscribe/{username}")
+	@PostMapping(value= "/unfollow")
     public ResponseEntity<HttpStatus> unfollow(@RequestBody @Valid final String username) {
 		userService.unfollow(username);
 		return new ResponseEntity<>(HttpStatus.OK);

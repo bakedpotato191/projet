@@ -33,4 +33,12 @@ export class UserService {
       sb.dismiss();
     });
   }
+
+  public follow(username: String): Observable<any>{
+    return this.http.post(this.API + '/follow', username);
+  }
+
+  public unfollow(username: String): Observable<any>{
+    return this.http.post(this.API + '/unfollow', username);
+  }
 }

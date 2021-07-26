@@ -86,11 +86,13 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['p', id]);
   }
 
-  subscribe (){
-
+  follow(){
+    this.user.followed = true;
+    this.userService.follow(this.user.username).subscribe();
   }
 
-  unsubscribe(){
-    
+  unfollow(){
+    this.user.followed = false;
+    this.userService.unfollow(this.user.username).subscribe();
   }
 }

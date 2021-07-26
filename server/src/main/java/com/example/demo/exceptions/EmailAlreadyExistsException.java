@@ -7,8 +7,4 @@ public class EmailAlreadyExistsException extends RuntimeException {
 	public EmailAlreadyExistsException(String errorMessage) {
         super(errorMessage);
     }
-	
-	public EmailAlreadyExistsException(String errorMessage, Throwable cause) {
-        super(errorMessage, cause);
-    }
 }

@@ -13,9 +13,9 @@ import com.example.demo.persistence.models.User;
 public interface FollowerRepository extends JpaRepository<Follower, Long> {
 
 	@Modifying
-	@Query(value = "DELETE from Follower f WHERE f.from = :user AND f.to.username = :username")
+	@Query(value = "DELETE f.* FROM  follower AS f CROSS JOIN utilisateur AS u ON f.utilisateur2_id = u.id WHERE u.username=:username AND f.utilisateur1_id=:user", nativeQuery = true)
 	int unfollow(@Param("user") User user, @Param("username") String username);
 	
-	@Query("SELECT COUNT(f)>0 from Follower f WHERE f.from = :follower AND f.to = :following")
-	boolean isFollowed(@Param ("follower") User from, @Param("following") User to);
+	@Query("SELECT COUNT(f)>0 from Follower f WHERE f.utilisateur1 = :user1 AND f.utilisateur2 = :user2")
+	boolean isFollowed(@Param ("user1") User currentUser, @Param("user2") User browsedUser);
 }
