@@ -12,7 +12,7 @@ public interface PostService {
 	
 	Post createPost(String name, String desc);
 	
-	int deletePost(Long id);
+	boolean deletePost(Long id);
 	
 	Post getPostByID(Long id);
 	

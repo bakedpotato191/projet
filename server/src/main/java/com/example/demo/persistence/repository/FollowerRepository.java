@@ -5,14 +5,17 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.persistence.models.Follower;
 import com.example.demo.persistence.models.User;
 
 @Repository
+@Transactional(readOnly = true)
 public interface FollowerRepository extends JpaRepository<Follower, Long> {
 
 	@Modifying
+	@Transactional
 	@Query(value = "DELETE f.* FROM  follower AS f CROSS JOIN utilisateur AS u ON f.utilisateur2_id = u.id WHERE u.username=:username AND f.utilisateur1_id=:user", nativeQuery = true)
 	int unfollow(@Param("user") User user, @Param("username") String username);
 	

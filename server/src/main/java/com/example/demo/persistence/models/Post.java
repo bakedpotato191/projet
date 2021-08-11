@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -44,6 +45,10 @@ public class Post implements Serializable {
 	@OneToMany(targetEntity=Comment.class, mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true) // @OneToMany default fetch = LAZY
 	@JsonManagedReference
 	private List<Comment> comments = new ArrayList<>();
+	
+	@OneToMany(targetEntity=Like.class, mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonBackReference
+	private List<Like> likes = new ArrayList<>();
 	
 	@Transient
 	private boolean isLiked;

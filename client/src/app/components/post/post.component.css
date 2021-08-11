@@ -210,3 +210,12 @@
     border: 1px solid #e4486a;
     border-radius: 2px;
 }
+
+#notfound {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    color: #fff;
+}
+

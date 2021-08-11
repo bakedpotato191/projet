@@ -1,5 +1,5 @@
 <div class="wrapper">
-        <mat-card *ngIf="post.utilisateur" class="card">
+        <mat-card *ngIf="post.utilisateur; else elseBlock" class="card">
         <mat-card-header class="card-header">
           <div mat-card-avatar class="card-avatar">
               <a routerLink="/profile/{{post.utilisateur.username}}"><img class="avatar" src="{{ post.utilisateur.avatar }}"></a>
@@ -64,5 +64,8 @@
              <div class="nocomments">Pas de commentaires.</div>
             </ng-template>          
         </mat-card-footer>
-      </mat-card>  
+      </mat-card>
+      <ng-template #elseBlock>
+        <div id="notfound"><img src="https://static.thenounproject.com/png/1527904-200.png"><span>404 - Post n'a pas été trouvé ou a été supprimé par son auteur.</span></div>
+      </ng-template> 
 </div>

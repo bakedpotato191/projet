@@ -27,12 +27,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.net.MalformedURLException;
-
-import javax.mail.AuthenticationFailedException;
-
-import org.apache.tomcat.util.http.fileupload.FileUploadException;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice

@@ -27,7 +27,9 @@ public class Follower implements Serializable {
     @JoinColumn
     private User utilisateur2;
     
-    public Follower() {};
+    public Follower() {
+    	super();
+    }
 
 	public Follower(User utilisateur1, User utilisateur2) {
 		super();
