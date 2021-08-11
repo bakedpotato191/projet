@@ -72,6 +72,9 @@ public class User implements Serializable, UserDetails {
 	private Long followerCount;
 	
 	@Transient
+	private Long followingCount;
+	
+	@Transient
 	private boolean followed;
 	
 	@JsonIgnore
@@ -104,7 +107,7 @@ public class User implements Serializable, UserDetails {
     @JsonIgnore
     @OneToMany(mappedBy="utilisateur2", cascade = CascadeType.ALL, orphanRemoval=true)
     private List<Follower> followers;
-
+    
     @JsonIgnore
     @OneToMany(mappedBy="utilisateur1", cascade = CascadeType.ALL, orphanRemoval=true)
     private List<Follower> following;
@@ -257,6 +260,14 @@ public class User implements Serializable, UserDetails {
 
 	public void setFollowerCount(Long followerCount) {
 		this.followerCount = followerCount;
+	}
+	
+	public Long getFollowingCount() {
+		return followingCount;
+	}
+
+	public void setFollowingCount(Long followingCount) {
+		this.followingCount = followingCount;
 	}
 
 	@Override

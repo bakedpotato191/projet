@@ -6,7 +6,8 @@ export class User {
     username!: String;
     posts!: Post[];
     avatar!: String;
-    postCount!: String;
-    followerCount!: String;
+    postCount!: Number;
+    followerCount!: Number;
+    followingCount!:Number;
     followed!: boolean;
 }

@@ -16,7 +16,7 @@ export class FavoritesComponent implements OnInit {
 
   constructor(
     private readonly router: Router,
-    private userService: UserService) { }
+    private readonly userService: UserService) { }
 
   ngOnInit(): void {
     this.userService.getFavoritePosts().subscribe(

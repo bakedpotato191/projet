@@ -254,6 +254,7 @@ public class UserServiceImpl implements UserService {
 			result.setPostCount(postRepository.countByUtilisateur(user.get()));
 			result.setFollowed(followerRepository.isFollowed(getUserFromSession(), result));
 			result.setFollowerCount(followerRepository.countFollowers(username));
+			result.setFollowingCount(followerRepository.countFollowing(username));
 			return result;
         }
 		else {

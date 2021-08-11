@@ -21,4 +21,7 @@ public interface FollowerRepository extends JpaRepository<Follower, Long> {
 	
 	@Query(value = "SELECT COUNT(utilisateur2_id) FROM Follower f CROSS JOIN utilisateur u on f.utilisateur2_id = u.id WHERE u.username= :username", nativeQuery=true)
 	Long countFollowers(@Param ("username") String username);
+
+	@Query(value = "SELECT COUNT(utilisateur1_id) FROM Follower f CROSS JOIN utilisateur u on f.utilisateur1_id = u.id WHERE u.username= :username", nativeQuery=true)
+	Long countFollowing(@Param ("username") String username);
 }

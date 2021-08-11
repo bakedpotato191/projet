@@ -12,7 +12,8 @@
                     </div>
                     <div fxLayout="row">
                         <div id="profile-data"><span class="count">{{ user.postCount }}</span> publications</div>
-                        <div id="profile-data"><span class="count">{{ user.followerCount }}</span> followers</div>
+                        <div id="profile-data"><span class="count">{{ user.followerCount }}</span> abonnés</div>
+                        <div id="profile-data"><span class="count">{{ user.followingCount }}</span> abonnements</div>
                     </div>
                     <div class="sub-buttons">
                         <button mat-raised-button *ngIf="!user.followed && !mypage" color="accent"
@@ -29,7 +30,7 @@
         <mat-tab-group (selectedTabChange)="onTabChanged($event)" mat-stretched-tabs animationDuration="700ms" mat-align-tabs="center">
             <mat-tab id='first-tab' mat-tab-link>
                 <ng-template mat-tab-label>
-                    <mat-icon class="example-tab-icon">photo_library</mat-icon>
+                    <mat-icon class="example-tab-icon">photo_library</mat-icon> <span>Publications</span>
                   </ng-template>
                 <div class="content">
                         <mat-card-list *ngIf="user.posts.length > 0; else elseBlock" fxLayout="row wrap"fxLayoutAlign="center center" fxLayoutGap="grid">
@@ -48,7 +49,7 @@
                 <mat-tab *ngIf="mypage" mat-tab-link>
                     <ng-template mat-tab-label>
                         <mat-icon class="example-tab-icon">star</mat-icon>
-                      </ng-template>
+                      <span>Enregistrements</span></ng-template>
                     <router-outlet name="favorites"></router-outlet>
                 </mat-tab>
 
