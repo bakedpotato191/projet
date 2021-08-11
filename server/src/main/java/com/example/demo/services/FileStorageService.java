@@ -17,5 +17,4 @@ public interface FileStorageService {
 	Resource load(String filename) throws MalformedURLException, FileNotFoundException;
 
 	void init() throws IOException;
-
 }

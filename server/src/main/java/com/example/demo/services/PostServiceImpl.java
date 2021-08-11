@@ -48,14 +48,13 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public boolean deletePost(Long id) {
+	public void deletePost(Long id) {
+		
 		var user = userService.getUserFromSession();
-		if (postRepository.deleteByIdAndUtilisateur(id, user) != 0) {
-			return true;
-		}
-		else {
+		
+		if (postRepository.deleteByIdAndUtilisateur(id, user) == 0) {
 			throw new HttpUnauthorizedException("Resource doesn't exist/You do not have the permission to modify it");
-		}
+		}	
 	}
 
 	@Override

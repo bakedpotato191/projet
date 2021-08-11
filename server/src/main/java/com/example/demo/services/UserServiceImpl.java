@@ -123,7 +123,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void saveRegisteredUser(final User user) {
-		userRepository.save(user);	
+		userRepository.save(user);
 	}
 
 	@Override

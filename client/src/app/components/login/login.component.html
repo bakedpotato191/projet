@@ -5,7 +5,7 @@
     </mat-card-header>
     <mat-card-content class="card-content">
         <form class="form" name="form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-            <mat-form-field class="form-field" color="accent" floatLabel="always">
+            <mat-form-field class="form-field" color="accent" appearance="outline">
                 <mat-label>Adresse courriel</mat-label>
                 <input 
                 matInput 
@@ -20,7 +20,7 @@
                 </mat-error>
             </mat-form-field>
 
-            <mat-form-field class="form-field" color="accent" floatLabel="always">
+            <mat-form-field class="form-field" color="accent" appearance="outline">
                 <mat-label>Mot de passe</mat-label>
                 <input 
                 matInput
