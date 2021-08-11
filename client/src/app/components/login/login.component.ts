@@ -11,6 +11,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class LoginComponent implements OnInit {
 
+  hide = true;
   loginForm!: FormGroup;
 
   isLoggedIn = false;

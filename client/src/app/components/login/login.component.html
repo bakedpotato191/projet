@@ -30,7 +30,12 @@
                 name="password"  
                 minlength="8"
                 maxlength="32"
-                required>
+                [type]="hide ? 'password' : 'text'"
+                required
+                >
+                <button mat-icon-button type="button" matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  </button>
                 <mat-error>
                     Saisir un mot de passe
                 </mat-error>

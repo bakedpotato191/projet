@@ -22,6 +22,7 @@
                     name="nom"
                     minlength="2"
                     maxlength="16"
+                    placeholder="Doe"
                     required>
                     <mat-error>Le nom doit comporter au moins 2 caractères</mat-error>
                 </mat-form-field>
@@ -36,7 +37,9 @@
                     name="prenom"
                     required
                     minlength="2"
-                    maxlength="16">
+                    maxlength="16"
+                    placeholder="John"
+                    >
                     <mat-error>
                         Le prénom doit comporter au moins 2 caractères
                     </mat-error>
@@ -51,7 +54,9 @@
                     type="text"
                     name="username"
                     required
-                    maxlength="32">
+                    maxlength="32"
+                    placeholder="johndoe"
+                    >
                     <mat-error>
                         Le nom d'utilisateur doit comporter de 3 à 20 caractères au plus
                     </mat-error>
@@ -66,7 +71,9 @@
                     type="email"
                     name="email"
                     required
-                    maxlength="50">
+                    maxlength="50"
+                    placeholder="johndoe@example.org"
+                    >
                     <mat-error>
                         L'adresse email doit être valide
                     </mat-error>
@@ -78,11 +85,15 @@
                     matInput
                     class="form-control"
                     formControlName="password"
-                    type="password"
                     name="password"
                     required
                     minlength="8"
-                    maxlength="32">
+                    maxlength="32"
+                    [type]="hide ? 'password' : 'text'"
+                    >
+                    <button mat-icon-button type="button" matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                      </button>
                     <mat-error>
                         Le mot de passe doit comporter de 8 à 32 caractères
                     </mat-error>
