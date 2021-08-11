@@ -1,7 +1,8 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
+import { Favorite } from '../class/favorite';
 import { User } from '../class/user';
 
 @Injectable({
@@ -41,4 +42,9 @@ export class UserService {
   public unfollow(username: String): Observable<any>{
     return this.http.post(this.API + '/unfollow', username);
   }
+
+  public getFavoritePosts(): Observable<Favorite[]> {
+    return this.http.get<Favorite[]>(`${this.API}/getfavorites/`);
+  }
+  
 }

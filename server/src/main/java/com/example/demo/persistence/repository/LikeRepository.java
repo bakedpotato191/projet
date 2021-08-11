@@ -1,5 +1,7 @@
 package com.example.demo.persistence.repository;
 
+import java.util.Set;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -22,6 +24,8 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
 	@Modifying
 	@Query(value = "DELETE from Like l WHERE l.utilisateur=:user AND l.post.id=:id")
 	int dislike(@Param("user") User user, @Param("id") Long id);
+	
+	Set<Like> findAllByUtilisateurOrderByPostDateDesc(User user);
 	
 	Long countByPost(Post post);
 }

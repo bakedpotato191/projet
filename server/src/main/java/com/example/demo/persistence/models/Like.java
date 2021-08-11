@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -24,11 +25,11 @@ public class Like implements Serializable {
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JsonIgnoreProperties("posts")
+	@JsonIgnore
 	private User utilisateur;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JsonIgnoreProperties({"utilisateur", "comments"})
+	@JsonIgnoreProperties("comments")
 	private Post post;
 	
 	public Like() {}

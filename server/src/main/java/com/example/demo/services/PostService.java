@@ -1,7 +1,11 @@
 package com.example.demo.services;
 
+import java.util.List;
+import java.util.Set;
+
 import com.example.demo.mapstruct.dto.CommentDto;
 import com.example.demo.persistence.models.Comment;
+import com.example.demo.persistence.models.Like;
 import com.example.demo.persistence.models.Post;
 
 public interface PostService {
@@ -19,4 +23,8 @@ public interface PostService {
 	void likeThePost(Long id);
 
 	void dislikeThePost(Long id);
+
+	Set<Like> getFavorites();
+
+	List<Post> getUserPosts(String username);
 }

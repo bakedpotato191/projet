@@ -53,5 +53,4 @@ public interface UserService {
 	void follow(String username);
 
 	void unfollow(String username);
-
 }

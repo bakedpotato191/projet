@@ -1,6 +1,8 @@
 package com.example.demo.services;
 
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -102,17 +104,20 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public void likeThePost(Long id) {
 		
-		var post = postRepository.findById(id);
+		var post = new Post();
+		post.setId(id);		
 
-		if (post.isPresent()) {
-			var like = new Like();
-			like.setPost(post.get());
-			like.setUtilisateur(userService.getUserFromSession());
+		var like = new Like();
+		like.setPost(post);
+		like.setUtilisateur(userService.getUserFromSession());
+		
+		try {
 			likeRepository.save(like);
-		} 
-		else {
+		}
+		catch (IllegalArgumentException ex) {
 			throw new EntityNotFoundException(Post.class, "id", id.toString());
 		}
+
 	}
 
 	@Override
@@ -123,11 +128,20 @@ public class PostServiceImpl implements PostService {
 			if (likeRepository.dislike(currentUser, id) == 0) {
 				throw new EntityNotFoundException(Post.class, "id", id.toString());
 			}
-	} 
-
+	}
+	
 	@Override
 	public Comment removeComment(Comment comment) {
-		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public List<Post> getUserPosts(String username) {
+		return postRepository.findAllByUtilisateurUsernameOrderByDateDesc(username);
+	}
+	
+	@Override
+	public Set<Like> getFavorites() {
+		return likeRepository.findAllByUtilisateurOrderByPostDateDesc(userService.getUserFromSession());
 	}
 }

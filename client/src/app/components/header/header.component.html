@@ -8,7 +8,7 @@
         <nav class="flex">
             <div>
                 <ul *ngIf="isLoggedIn" class="flex flex-row">
-                    <li class="flex"><a class="flex" href="#" routerLink="" href="#"><mat-icon aria-hidden="false" aria-label="home icon">home</mat-icon></a></li>
+                    <li class="flex"><a class="flex" routerLink="" href="#"><mat-icon aria-hidden="false" aria-label="home icon">home</mat-icon></a></li>
                     <li class="flex"><a class="flex" (click)="logout()" href="#"><mat-icon aria-hidden="false" aria-label="Example home icon">logout</mat-icon></a></li>
                 </ul>
                 <ul *ngIf="!isLoggedIn" class="flex flex-row">

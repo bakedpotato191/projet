@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.util.Set;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,17 +15,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.persistence.models.Like;
 import com.example.demo.persistence.models.User;
+import com.example.demo.services.PostService;
 import com.example.demo.services.UserService;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
 
-	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private PostService postService;
 
 	@GetMapping(value= "/getuser/{username}")
     public User getUser(@PathVariable("username") String username) {
@@ -42,4 +48,9 @@ public class UserController {
 		userService.unfollow(username);
 		return new ResponseEntity<>(HttpStatus.OK);
     }
+	
+	@GetMapping(value = "/getfavorites")
+	public Set<Like> favorites() {
+		return postService.getFavorites();
+	}
 }

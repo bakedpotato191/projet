@@ -26,6 +26,8 @@ import { HomeComponent } from './components/home/home.component';
 import { PostComponent } from './components/post/post.component';
 import { UploadComponent } from './components/upload/upload.component';
 import { ConfirmationDialogComponent } from './components/shared/confirmation-dialog/confirmation-dialog.component';
+import { FavoritesComponent } from './components/favorites/favorites.component';
+import { MatTabNav } from '@angular/material/tabs';
 
 @NgModule({
   imports: [
@@ -48,7 +50,8 @@ import { ConfirmationDialogComponent } from './components/shared/confirmation-di
     HomeComponent,
     PostComponent,
     UploadComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    FavoritesComponent
   ],
   exports: [
     UploadComponent
@@ -60,6 +63,7 @@ import { ConfirmationDialogComponent } from './components/shared/confirmation-di
     AuthGuard,
     Title,
     UploadformService,
+    MatTabNav,
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' }}
   ],
   bootstrap: [AppComponent],

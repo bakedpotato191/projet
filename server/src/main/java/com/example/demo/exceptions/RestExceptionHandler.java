@@ -288,14 +288,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		return buildResponseEntity(apiError);
 	}
 
-	@ExceptionHandler(value = { SQLGrammarException.class, AuthenticationFailedException.class, IOException.class,
-			FileUploadException.class })
-	protected ResponseEntity<Object> handleMalformedURLException(SQLGrammarException ex) {
+	@ExceptionHandler(value = SQLGrammarException.class)
+	protected ResponseEntity<Object> handleSQLGrammarException(SQLGrammarException ex) {
 		var apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR);
 		apiError.setMessage("Unknown error occured. Please try later.");
 		return buildResponseEntity(apiError);
 	}
-
+	
 	@ExceptionHandler(value = { IllegalArgumentException.class, IllegalStateException.class })
 	protected ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request) {
 		var bodyOfResponse = "This should be application specific";

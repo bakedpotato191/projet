@@ -42,8 +42,10 @@ public class User implements Serializable, UserDetails {
 	@JsonIgnore
     private Long id;
 
+	@Column
 	private String nom;
 
+	@Column
     private String prenom;
     
     @JsonIgnore
@@ -57,6 +59,7 @@ public class User implements Serializable, UserDetails {
 	@Column(length = 60)
 	private String password;
     
+    @Column
     private String avatar = "https://t4.ftcdn.net/jpg/02/15/84/43/360_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg";
 	
 	@JsonIgnore
@@ -84,7 +87,7 @@ public class User implements Serializable, UserDetails {
     
     @OneToMany(mappedBy="utilisateur", cascade = CascadeType.ALL) // @OneToMany default fetch = LAZY
 	@JsonIgnoreProperties({"utilisateur", "comments"})
-    private List<Post> posts = new ArrayList<>();
+    private Set<Post> posts = new HashSet<>();
        
     @JsonIgnore
     @OneToMany(mappedBy="utilisateur", cascade = CascadeType.ALL, orphanRemoval=true)
@@ -172,11 +175,11 @@ public class User implements Serializable, UserDetails {
 		this.roles = roles;
 	}
 	
-	public List<Post> getPosts() {
+	public Set<Post> getPosts() {
 		return posts;
 	}
 
-	public void setPosts(List<Post> posts) {
+	public void setPosts(Set<Post> posts) {
 		this.posts = posts;
 	}
 
