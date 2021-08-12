@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { Favorite } from '../class/favorite';
+import { Post } from '../class/post';
 import { User } from '../class/user';
 
 @Injectable({
@@ -44,7 +45,11 @@ export class UserService {
   }
 
   public getFavoritePosts(): Observable<Favorite[]> {
-    return this.http.get<Favorite[]>(`${this.API}/getfavorites/`);
+    return this.http.get<Favorite[]>(`${this.API}/favorites/`);
+  }
+
+  public getUserPosts(username: String): Observable<Post[]>{
+    return this.http.get<Post[]>(`${this.API}/posts/${username}`);
   }
   
 }

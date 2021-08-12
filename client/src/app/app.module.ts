@@ -28,6 +28,7 @@ import { UploadComponent } from './components/upload/upload.component';
 import { ConfirmationDialogComponent } from './components/shared/confirmation-dialog/confirmation-dialog.component';
 import { FavoritesComponent } from './components/favorites/favorites.component';
 import { MatTabNav } from '@angular/material/tabs';
+import { UserpostsComponent } from './components/userposts/userposts.component';
 
 @NgModule({
   imports: [
@@ -51,7 +52,8 @@ import { MatTabNav } from '@angular/material/tabs';
     PostComponent,
     UploadComponent,
     ConfirmationDialogComponent,
-    FavoritesComponent
+    FavoritesComponent,
+    UserpostsComponent
   ],
   exports: [
     UploadComponent

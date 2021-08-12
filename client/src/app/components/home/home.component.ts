@@ -69,8 +69,4 @@ export class HomeComponent implements OnInit {
         break;
     }
   }
-
-  openPostPage(id: number) {
-    this.router.navigate(['p', id]);
-  }
 }

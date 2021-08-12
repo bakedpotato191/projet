@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import java.io.IOException;
 import java.util.IllegalFormatException;
 import java.util.List;
-import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -25,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.mapstruct.dto.CommentDto;
-import com.example.demo.persistence.models.Like;
 import com.example.demo.persistence.models.Post;
 import com.example.demo.services.FileStorageService;
 import com.example.demo.services.PostService;
@@ -85,11 +83,6 @@ public class PostController {
 			postService.deletePost(id);
 			return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
-	@GetMapping(value="/favorites")
-    public Set<Like> getFavorites() {
-		return postService.getFavorites();
-    }
 	
 	@GetMapping(value="/all/{username}")
     public List<Post> getFavorites(@PathVariable("username") String username) {

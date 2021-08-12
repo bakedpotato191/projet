@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.persistence.models.Like;
+import com.example.demo.persistence.models.Post;
 import com.example.demo.persistence.models.User;
 import com.example.demo.services.PostService;
 import com.example.demo.services.UserService;
@@ -49,8 +51,13 @@ public class UserController {
 		return new ResponseEntity<>(HttpStatus.OK);
     }
 	
-	@GetMapping(value = "/getfavorites")
-	public Set<Like> favorites() {
+	@GetMapping(value = "/favorites")
+	public Set<Like> getFavorites() {
 		return postService.getFavorites();
+	}
+	
+	@GetMapping(value = "/posts/{username}")
+	public List<Post> getPosts(@PathVariable("username") String username) {
+		return postService.getUserPosts(username);
 	}
 }

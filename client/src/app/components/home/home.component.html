@@ -32,18 +32,7 @@
                 <ng-template mat-tab-label>
                     <mat-icon class="example-tab-icon">photo_library</mat-icon> <span>Publications</span>
                   </ng-template>
-                <div class="content">
-                        <mat-card-list *ngIf="user.posts.length > 0; else elseBlock" fxLayout="row wrap"fxLayoutAlign="center center" fxLayoutGap="grid">
-                            <mat-card fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%" class="grid-card mat-elevation-z4" *ngFor="let post of user.posts"
-                                (click)="openPostPage(post.id)"><img src="{{ post.url }}"></mat-card>
-                        </mat-card-list>
-                        <ng-template #elseBlock>
-                            <div class="noposts">
-                                <mat-icon class="icon" aria-hidden="false">sentiment_neutral</mat-icon>
-                                <span>No posts found.</span>
-                            </div>
-                        </ng-template>
-                </div>
+                  <app-userposts></app-userposts>
             </mat-tab>
 
                 <mat-tab *ngIf="mypage" mat-tab-link>

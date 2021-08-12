@@ -28,7 +28,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "utilisateur")
@@ -88,9 +87,9 @@ public class User implements Serializable, UserDetails {
     					referencedColumnName = "id"))
     private Collection<Role> roles;
     
-    @OneToMany(mappedBy="utilisateur", cascade = CascadeType.ALL) // @OneToMany default fetch = LAZY
-	@JsonIgnoreProperties({"utilisateur", "comments"})
-    private Set<Post> posts = new HashSet<>();
+    @OneToMany(mappedBy="utilisateur", cascade = CascadeType.ALL, orphanRemoval=true, fetch = FetchType.LAZY) // @OneToMany default fetch = LAZY
+	@JsonIgnore
+    private List<Post> posts = new ArrayList<>();
        
     @JsonIgnore
     @OneToMany(mappedBy="utilisateur", cascade = CascadeType.ALL, orphanRemoval=true)
@@ -178,11 +177,11 @@ public class User implements Serializable, UserDetails {
 		this.roles = roles;
 	}
 	
-	public Set<Post> getPosts() {
+	public List<Post> getPosts() {
 		return posts;
 	}
 
-	public void setPosts(Set<Post> posts) {
+	public void setPosts(List<Post> posts) {
 		this.posts = posts;
 	}
 

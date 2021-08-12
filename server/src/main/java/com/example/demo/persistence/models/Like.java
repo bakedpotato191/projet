@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@Table(name="postlikes", uniqueConstraints= @UniqueConstraint(columnNames={"utilisateur_id", "post_id"}))
+@Table(name="postlikes", uniqueConstraints= @UniqueConstraint(columnNames={"user_id", "post_id"}))
 public class Like implements Serializable {
 	
 	private static final long serialVersionUID = -4538179406393643986L;
@@ -27,6 +27,7 @@ public class Like implements Serializable {
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.LAZY) // default = EAGER
+	@JoinColumn(name = "user_id")
 	@JsonIgnore
 	private User utilisateur;
 	

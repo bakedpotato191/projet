@@ -1,0 +1,37 @@
+.grid-card {
+    max-width: unset!important;
+    margin: 8px 24px 8px 0;
+    cursor: pointer;
+    background-color: rgba(36,36,36,255);
+    padding: 0;
+  }
+  
+  .grid-card:hover{
+    -webkit-filter: brightness(70%);
+     filter: brightness(70%);
+  }
+  
+  .grid-card img {
+    display: block;
+    max-width:100%;
+    height: 293px;
+    object-fit: fill;
+    margin: 0 auto;
+    border-radius: 4px;
+  }
+
+  .noposts {
+    display: flex;
+    flex-direction: column;
+    margin-top: 120px;
+    align-items: center;
+    color: #d9d9d9;
+    text-align: center;
+    font-weight: 500;
+  }
+  
+  ::ng-deep.noposts mat-icon {
+    height: 60px;
+    width: 60px;
+    font-size: 60px;
+  }

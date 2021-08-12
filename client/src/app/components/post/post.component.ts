@@ -6,7 +6,6 @@ import { UserService } from 'src/app/services/user.service';
 import { PostService } from 'src/app/services/post.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../shared/confirmation-dialog/confirmation-dialog.component';
-import { AuthService } from 'src/app/services/auth.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 
 @Component({
@@ -84,7 +83,7 @@ export class PostComponent implements OnInit {
           _data => {
             this.router.navigate([`/profile/${this.tokenService.getUser().username}`]);
           },
-          error => {
+          _error => {
             return this.userService.showSnackbar("Error occured", 'Dismiss', 7000);
           }
         )
