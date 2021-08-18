@@ -39,3 +39,7 @@
   .content {
     margin-bottom: 200px;
   }
+
+  ::ng-deep #spinner {
+    margin: 10px auto;
+  }

@@ -15,6 +15,7 @@ export class UserpostsComponent implements OnInit {
   private page: number = 0;
   private readonly size: number = 10;
   private readonly sort: string = "date";
+  isLoading: boolean = false;
 
   constructor(private readonly router: Router,
               private readonly userService: UserService,
@@ -32,11 +33,13 @@ export class UserpostsComponent implements OnInit {
     this.userService.getUserPosts(this.parent.username, this.page, this.size, this.sort).subscribe(data => {
       this.posts = this.posts.concat(data);
       this.page++;
+      this.isLoading = false;
     });
   }
 
   onScrollDown(ev: any) {
     console.log("scrolled down!!", ev);
+    this.isLoading = true;
     this.getUserPosts();
   }
 }
