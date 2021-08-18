@@ -48,8 +48,8 @@ export class UserService {
     return this.http.get<Favorite[]>(`${this.API}/favorites/`);
   }
 
-  public getUserPosts(username: String): Observable<Post[]>{
-    return this.http.get<Post[]>(`${this.API}/posts/${username}`);
+  public getUserPosts(username: String, page: Number, size: Number, sort: String): Observable<Post[]>{
+    return this.http.get<Post[]>(`${this.API}/posts/${username}?page=${page}&size=${size}&sort=${sort}`);
   }
   
 }

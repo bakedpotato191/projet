@@ -20,6 +20,7 @@ import com.example.demo.exceptions.EmailAlreadyExistsException;
 import com.example.demo.exceptions.EntityNotFoundException;
 import com.example.demo.exceptions.HttpUnauthorizedException;
 import com.example.demo.exceptions.UsernameAlreadyExistsException;
+import com.example.demo.jwt.JwtUtils;
 import com.example.demo.mapstruct.dto.LoginDto;
 import com.example.demo.mapstruct.dto.SignupDto;
 import com.example.demo.payload.response.JwtResponse;
@@ -33,7 +34,6 @@ import com.example.demo.persistence.repository.PostRepository;
 import com.example.demo.persistence.repository.RoleRepository;
 import com.example.demo.persistence.repository.UserRepository;
 import com.example.demo.persistence.repository.VerificationTokenRepository;
-import com.example.demo.security.jwt.JwtUtils;
 
 @Service
 @Transactional

@@ -18,12 +18,13 @@ export class HomeComponent implements OnInit {
   mypage!: boolean;
   user!: User;
   posts!: Post[];
+  public username!: any;
 
   ngOnInit(): void {
-    const username = this.activatedRoute.snapshot.paramMap.get('username');
-    if (username !== null) {
-      this.getUserData(username);
-      if (username == this.tokenService.getUser().username) {
+    this.username = this.activatedRoute.snapshot.paramMap.get('username');
+    if (this.username !== null) {
+      this.getUserData(this.username);
+      if (this.username == this.tokenService.getUser().username) {
         this.mypage = true;
       }
     }

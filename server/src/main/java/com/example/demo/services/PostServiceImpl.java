@@ -1,10 +1,15 @@
 package com.example.demo.services;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -135,8 +140,18 @@ public class PostServiceImpl implements PostService {
 	}
 	
 	@Override
-	public List<Post> getUserPosts(String username) {
-		return postRepository.findAllByUtilisateurUsernameOrderByDateDesc(username);
+	public List<Post> getUserPosts(String username, Integer pageNo, Integer pageSize, String sortBy) {
+		
+		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
+		Slice<Post> slicedResult = postRepository.findAllByUtilisateurUsername(username, paging);
+		
+		if (slicedResult.hasContent()) {
+			return slicedResult.getContent();
+		}
+		else {
+			return new ArrayList<>();
+		}
+
 	}
 	
 	@Override

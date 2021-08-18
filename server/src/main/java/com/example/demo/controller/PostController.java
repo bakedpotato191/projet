@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import java.io.IOException;
 import java.util.IllegalFormatException;
-import java.util.List;
 
 import javax.validation.Valid;
 
@@ -83,9 +82,4 @@ public class PostController {
 			postService.deletePost(id);
 			return new ResponseEntity<>(HttpStatus.OK);
 	}
-	
-	@GetMapping(value="/all/{username}")
-    public List<Post> getFavorites(@PathVariable("username") String username) {
-		return postService.getUserPosts(username);
-    }
 }

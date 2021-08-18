@@ -29,6 +29,7 @@ import { ConfirmationDialogComponent } from './components/shared/confirmation-di
 import { FavoritesComponent } from './components/favorites/favorites.component';
 import { MatTabNav } from '@angular/material/tabs';
 import { UserpostsComponent } from './components/userposts/userposts.component';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
   imports: [
@@ -41,7 +42,8 @@ import { UserpostsComponent } from './components/userposts/userposts.component';
     FlexLayoutModule,
     AngularMaterialModule,
     MatDialogModule,
-    TimeSinceModule
+    TimeSinceModule,
+    InfiniteScrollModule
   ],
   declarations: [
     AppComponent,

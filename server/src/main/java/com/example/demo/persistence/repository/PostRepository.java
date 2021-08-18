@@ -1,7 +1,7 @@
 package com.example.demo.persistence.repository;
 
-import java.util.List;
-
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.repository.query.Param;
@@ -15,7 +15,7 @@ import com.example.demo.persistence.models.User;
 @Transactional(readOnly = true)
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-	List<Post> findAllByUtilisateurUsernameOrderByDateDesc(String username);
+	Slice<Post> findAllByUtilisateurUsername(String username, Pageable paging);
 	
 	Long countByUtilisateur(User user);
 	

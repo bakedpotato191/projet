@@ -26,5 +26,5 @@ public interface PostService {
 
 	Set<Like> getFavorites();
 
-	List<Post> getUserPosts(String username);
+	List<Post> getUserPosts(String username, Integer pageNo, Integer pageSize, String sortBy);
 }
