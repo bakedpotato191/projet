@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-import com.example.demo.persistence.models.User;
+import com.example.demo.rest.models.User;
 
 import io.jsonwebtoken.*;
 

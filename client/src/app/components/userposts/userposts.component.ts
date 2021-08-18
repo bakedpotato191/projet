@@ -16,6 +16,7 @@ export class UserpostsComponent implements OnInit {
   private readonly size: number = 10;
   private readonly sort: string = "date";
   isLoading: boolean = false;
+  isLastPage: boolean = false;
 
   constructor(private readonly router: Router,
               private readonly userService: UserService,
@@ -31,15 +32,24 @@ export class UserpostsComponent implements OnInit {
 
   getUserPosts() {
     this.userService.getUserPosts(this.parent.username, this.page, this.size, this.sort).subscribe(data => {
-      this.posts = this.posts.concat(data);
-      this.page++;
+      
+      if (data.length !== 0){
+        this.posts = this.posts.concat(data);
+        this.page++;
+      }
+      else {
+        this.isLastPage = true;
+      }
       this.isLoading = false;
     });
   }
 
   onScrollDown(ev: any) {
-    console.log("scrolled down!!", ev);
-    this.isLoading = true;
-    this.getUserPosts();
+    if (!this.isLastPage){
+      this.isLoading = true;
+      setTimeout(() => {
+        this.getUserPosts();
+      }, 1000);
+    } 
   }
 }
