@@ -63,3 +63,8 @@
 .comment-text{
     margin: 20px 0 0 60px!important;
 }
+
+#paginator {
+    background: rgba(36,36,36,255);
+    border-bottom: 1px solid #353535;
+}

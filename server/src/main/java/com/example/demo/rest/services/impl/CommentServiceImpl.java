@@ -1,13 +1,12 @@
 package com.example.demo.rest.services.impl;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -36,16 +35,20 @@ public class CommentServiceImpl implements CommentService {
 	
 	
 	@Override
-	public List<Comment> listComments (Long id, int pageNo, int pageSize, String sortBy) {
+	public Map<String, Object> listComments (Long id, int pageNo, int pageSize, String sortBy) {
 		
 		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
-		Slice<Comment> slicedResult = commentRepository.findAllByPostId(id, paging);
+		var slicedResult = commentRepository.findAllByPostId(id, paging);
 		
 		if (slicedResult.hasContent()) {
-			return slicedResult.getContent();
+			Map<String, Object> ret = new HashMap<>();
+			ret.put("total_pages", slicedResult.getTotalPages());
+			ret.put("total_elements", slicedResult.getTotalElements());
+			ret.put("comments", slicedResult.getContent());
+			return ret;
 		}
 		else {
-			return new ArrayList<>();
+			return new HashMap<>();
 		}
 		
 	}

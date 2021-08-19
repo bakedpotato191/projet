@@ -31,7 +31,7 @@ import { MatTabNav } from '@angular/material/tabs';
 import { UserpostsComponent } from './components/userposts/userposts.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { CommentsComponent } from './components/comments/comments.component';
-
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 @NgModule({
   imports: [
     AppRoutingModule,
@@ -44,7 +44,8 @@ import { CommentsComponent } from './components/comments/comments.component';
     AngularMaterialModule,
     MatDialogModule,
     TimeSinceModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    MatProgressBarModule
   ],
   declarations: [
     AppComponent,

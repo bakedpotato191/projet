@@ -1,6 +1,6 @@
 package com.example.demo.rest.controller;
 
-import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.rest.dto.CommentDto;
-import com.example.demo.rest.models.Comment;
 import com.example.demo.rest.services.CommentService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -42,7 +41,7 @@ public class CommentController {
 	}
 	
 	@GetMapping(value = "/all/{postID}")
-	public List<Comment> getPosts( @PathVariable("postID") Long id,
+	public Map<String, Object> getPosts( @PathVariable("postID") Long id,
 												@RequestParam Integer page, 
 									            @RequestParam Integer size,
 									            @RequestParam String sort) {

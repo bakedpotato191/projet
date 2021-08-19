@@ -1,6 +1,6 @@
 package com.example.demo.rest.services;
 
-import java.util.List;
+import java.util.Map;
 
 import com.example.demo.rest.dto.CommentDto;
 import com.example.demo.rest.models.Comment;
@@ -11,5 +11,5 @@ public interface CommentService {
 	
 	void deleteComment(Long id);
 
-	List<Comment> listComments(Long id, int pageNo, int pageSize, String sortBy);
+	Map<String, Object> listComments(Long id, int pageNo, int pageSize, String sortBy);
 }

@@ -12,8 +12,8 @@ export class CommentService {
 
   constructor(private http: HttpClient) { }
 
-  public getPostComments(id:Number, page: Number, size: Number, sort: String): Observable<Commentaire[]>{
-    return this.http.get<Commentaire[]>(`${this.API}/all/${id}?page=${page}&size=${size}&sort=${sort}`);
+  public getPostComments(id:Number, page: Number, size: Number, sort: String): Observable<any>{
+    return this.http.get<any>(`${this.API}/all/${id}?page=${page}&size=${size}&sort=${sort}`);
   }
 
   public submitComment(comment: Commentaire): Observable<any>{

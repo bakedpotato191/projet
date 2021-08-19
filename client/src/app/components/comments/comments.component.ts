@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { PageEvent } from '@angular/material/paginator';
 import { Commentaire } from 'src/app/class/commentaire';
 import { CommentService } from 'src/app/services/comment.service';
 import { SharedService } from 'src/app/services/shared.service';
@@ -14,11 +15,20 @@ import { ConfirmationDialogComponent } from '../shared/confirmation-dialog/confi
 export class CommentsComponent implements OnInit {
 
   comments!: Commentaire[];
-  private page: number = 0;
-  private readonly size: number = 10;
+
+  // MatPaginator page variables
+  private pageNumber: number = 0;
   private readonly sort: string = "date";
+  length = 100;
+  pageSize = 10;
+  pageSizeOptions: number[] = [5, 10, 25];
+
+  // MatPaginator get request
   isLoading = false;
   canLoad = false;
+
+  // MatPaginator Output
+  pageEvent!: PageEvent;
 
   constructor(private readonly commentService: CommentService,
               private sharedService: SharedService,
@@ -26,19 +36,19 @@ export class CommentsComponent implements OnInit {
               private readonly parent: PostComponent) { }
 
   ngOnInit(): void {
-    this.page = 0;
+    this.pageNumber = 0;
     this.comments = [];
     this.getAllComments();
   }
 
   getAllComments() {
-    this.commentService.getPostComments(this.parent.id, this.page, this.size, this.sort).subscribe(data => {
+    this.commentService.getPostComments(this.parent.id, this.pageNumber, this.pageSize, this.sort).subscribe(data => {
       if (data.length !== 0) {
-        this.comments = this.comments.concat(data);
-        this.page++;
+        this.comments = data.comments;
+        this.length = data.total_elements;
         this.canLoad = true;
 
-        if (data.length < this.size) {
+        if (data.length < this.pageSize) {
           this.canLoad = false;
         }
       }
@@ -49,7 +59,16 @@ export class CommentsComponent implements OnInit {
     });
   }
 
-  
+  handlePageEvent(ev: PageEvent) {
+    this.pageNumber = ev.pageIndex;
+    this.pageSize = ev.pageSize;
+    this.canLoad = false;
+    this.isLoading = true;
+      setTimeout(() => {
+        this.getAllComments();
+      }, 1000);
+  }
+
   openDeleteCommentDialog(id: Number): void {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '350px',
