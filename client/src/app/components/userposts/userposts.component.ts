@@ -13,7 +13,7 @@ export class UserpostsComponent implements OnInit {
 
   posts: Post[] = [];
   private page: number = 0;
-  private readonly size: number = 10;
+  private readonly size: number = 9;
   private readonly sort: string = "date";
   isLoading = false;
   canLoad = false;

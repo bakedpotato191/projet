@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,11 +43,11 @@ public class Post implements Serializable {
 	@JsonIgnoreProperties("posts")
 	private User utilisateur;
 	
-	@OneToMany(targetEntity=Comment.class, mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true) // @OneToMany default fetch = LAZY
-	@JsonManagedReference
+	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	@JsonBackReference
 	private List<Comment> comments = new ArrayList<>();
 	
-	@OneToMany(targetEntity=Like.class, mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonBackReference
 	private List<Like> likes = new ArrayList<>();
 	

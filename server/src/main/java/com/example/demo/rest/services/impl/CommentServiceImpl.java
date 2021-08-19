@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.rest.dto.CommentDto;
 import com.example.demo.rest.exceptions.EntityNotFoundException;
@@ -21,6 +22,7 @@ import com.example.demo.rest.services.CommentService;
 import com.example.demo.rest.services.UserService;
 
 @Service
+@Transactional
 public class CommentServiceImpl implements CommentService {
 
 

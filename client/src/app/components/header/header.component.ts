@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { TooltipPosition } from '@angular/material/tooltip';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 
 @Component({
@@ -11,6 +13,9 @@ export class HeaderComponent implements OnInit {
   private roles: string[] = [];
   isLoggedIn = false;
   username?: string;
+
+  positionOptions: TooltipPosition[] = ['below', 'above', 'left', 'right'];
+  position = new FormControl(this.positionOptions[0]);
 
   constructor(private tokenStorageService: TokenStorageService) { }
 

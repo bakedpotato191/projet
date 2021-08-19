@@ -32,6 +32,7 @@ import { UserpostsComponent } from './components/userposts/userposts.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { CommentsComponent } from './components/comments/comments.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { RestoreComponent } from './components/restore/restore.component';
 @NgModule({
   imports: [
     AppRoutingModule,
@@ -58,7 +59,8 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     ConfirmationDialogComponent,
     FavoritesComponent,
     UserpostsComponent,
-    CommentsComponent
+    CommentsComponent,
+    RestoreComponent
   ],
   exports: [
     UploadComponent

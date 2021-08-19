@@ -10,7 +10,7 @@ export class SharedService {
   constructor(private matSnackBar: MatSnackBar,
               private titleService: Title) { }
 
-  public reloadPage(){
+  public reloadPage() {
     window.location.reload();
   }
 

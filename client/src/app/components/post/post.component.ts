@@ -21,7 +21,7 @@ export class PostComponent implements OnInit {
   @ViewChild('textarea') inputName: any;
 
   id!: Number;
-  post!: Post;
+  post: Post = new Post();
   comment: Commentaire = new Commentaire();
   liked!: boolean;
   isLoading = false;
