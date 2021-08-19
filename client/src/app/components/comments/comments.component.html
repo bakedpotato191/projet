@@ -3,6 +3,7 @@
     
 <mat-paginator 
                id="paginator"
+               *ngIf="comments"
                [length]="length"
                [pageSize]="pageSize"
                [pageSizeOptions]="pageSizeOptions"
