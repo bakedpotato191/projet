@@ -24,6 +24,7 @@ export class PostComponent implements OnInit {
   post!: Post;
   comment: Commentaire = new Commentaire();
   liked!: boolean;
+  isLoading = false;
 
   constructor ( private readonly postService: PostService,
                 private commentService: CommentService,
@@ -49,16 +50,19 @@ export class PostComponent implements OnInit {
 
   onSubmit() {
     this.comment.id = this.id;
-    this.commentService.submitComment(this.comment).subscribe(
-      _data => {
-        this.child.comments = [];
-        this.child.ngOnInit();
-        this.inputName.nativeElement.value='';
-      },
-      _error => {
-        return this.sharedService.showSnackbar("Unknown error occured", 'Dismiss', 7000);
-      }
-    );
+    this.isLoading = true;
+      this.commentService.submitComment(this.comment).subscribe(
+        _data => {
+          this.child.comments = [];
+          this.child.ngOnInit();
+          this.isLoading = false;
+          this.inputName.nativeElement.value='';
+        },
+        _error => {
+          this.isLoading = false;
+          return this.sharedService.showSnackbar("Unknown error occured", 'Dismiss', 7000);
+        }
+      );
   }
 
   like() {

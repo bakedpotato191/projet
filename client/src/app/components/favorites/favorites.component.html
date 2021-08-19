@@ -13,7 +13,7 @@
               </mat-card-header>
             <img src="{{ favorite.post.url }}"></mat-card>
     </mat-card-list>
-    <mat-spinner id="spinner" *ngIf="isLoading" color="accent" [diameter]="100" aria-label="post loading in progress"></mat-spinner>
+    <mat-progress-bar id="progress" mode="query" *ngIf="isLoading" color="accent"></mat-progress-bar>
     <ng-template #elseBlock>
         <div class="noposts">
             <mat-icon class="icon" aria-hidden="false">sentiment_neutral</mat-icon>

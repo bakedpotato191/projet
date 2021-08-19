@@ -41,6 +41,7 @@
     font-size: 60px;
   }
 
-  ::ng-deep #spinner {
-    margin: 10px auto;
+  #progress {
+    margin: 20px auto;
+    width: 60%;
   }

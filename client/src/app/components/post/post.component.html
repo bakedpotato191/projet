@@ -41,7 +41,8 @@
                   Le commentaire doit comporter de 2 à 128 caractères au plus
                 </mat-error>
             </mat-form-field>
-            <button mat-stroked-button color="accent" class="btn-block">Ajouter un commentaire</button>
+            <button mat-stroked-button *ngIf="!isLoading" color="accent" class="btn-block">Ajouter un commentaire</button>
+            <mat-spinner *ngIf="isLoading" color="accent" [diameter]="25" aria-label="submitting the comment"></mat-spinner>
         </form>
       </mat-card-actions>
         <mat-divider></mat-divider>

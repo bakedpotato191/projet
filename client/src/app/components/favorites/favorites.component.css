@@ -46,3 +46,8 @@
 .content {
   margin-top: 20px;
 }
+
+#progress {
+  margin: 20px auto;
+  width: 60%;
+}
