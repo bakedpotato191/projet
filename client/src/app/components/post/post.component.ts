@@ -17,9 +17,8 @@ import { CommentsComponent } from '../comments/comments.component';
   styleUrls: ['./post.component.css']
 })
 export class PostComponent implements OnInit {
-  @ViewChild(CommentsComponent)
-  child!: CommentsComponent;
-
+  @ViewChild(CommentsComponent) child!: CommentsComponent;
+  @ViewChild('textarea') inputName: any;
 
   id!: Number;
   post!: Post;
@@ -54,6 +53,7 @@ export class PostComponent implements OnInit {
       _data => {
         this.child.comments = [];
         this.child.ngOnInit();
+        this.inputName.nativeElement.value='';
       },
       _error => {
         return this.sharedService.showSnackbar("Unknown error occured", 'Dismiss', 7000);

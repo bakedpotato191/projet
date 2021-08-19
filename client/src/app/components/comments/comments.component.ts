@@ -60,7 +60,7 @@ export class CommentsComponent implements OnInit {
       if(result) {
         this.commentService.deleteComment(id).subscribe(
           _data => {
-            window.location.reload();
+            this.ngOnInit();
           },
           _error => {
             return this.sharedService.showSnackbar("Error occured", 'Dismiss', 5000);
