@@ -6,6 +6,8 @@ import { Post } from 'src/app/class/post';
 import { UploadformService } from 'src/app/services/uploadform.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { Title } from '@angular/platform-browser';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-home',
@@ -24,6 +26,7 @@ export class HomeComponent implements OnInit {
     this.username = this.activatedRoute.snapshot.paramMap.get('username');
     if (this.username !== null) {
       this.getUserData(this.username);
+      this.sharedService.setTitle("@" + this.username);
       if (this.username == this.tokenService.getUser().username) {
         this.mypage = true;
       }
@@ -34,7 +37,8 @@ export class HomeComponent implements OnInit {
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
     private readonly tokenService: TokenStorageService,
-    private uploadService: UploadformService
+    private uploadService: UploadformService,
+    private sharedService: SharedService
   ) { }
 
     getUserData(username: String) {

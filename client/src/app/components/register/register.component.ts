@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-register',
@@ -16,10 +17,12 @@ export class RegisterComponent implements OnInit {
   isSignUpFailed = false;
   errorMessage = '';
 
-  constructor(private authService: AuthService, 
+  constructor(private authService: AuthService,
+              private sharedService: SharedService, 
               private fb: FormBuilder) { }
 
   ngOnInit(): void {
+    this.sharedService.setTitle("Inscription");
     this.initRegistrationForm();
    }
 
