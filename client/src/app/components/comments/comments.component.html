@@ -1,0 +1,35 @@
+
+<mat-card-footer>
+    <mat-list *ngIf="comments.length > 0; else elseBlock">
+      <mat-list-item class="comment" *ngFor="let comment of comments">
+        <div matLine fxLayout="row">
+          <img matListAvatar src="{{ comment.utilisateur.avatar }}">
+          <div class="namedate"><span matLine class="comment-username demo-2"><a>{{comment.utilisateur.nom }} {{comment.utilisateur.prenom }}</a></span>
+            <span matLine class="comment-date demo-2"> il y a {{ comment.date | timeSince }}</span>
+          </div>
+        </div>
+        <div><button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item>
+            <mat-icon>edit</mat-icon>
+            <span>Edit</span>
+          </button>
+          <button mat-menu-item (click)="openDeleteCommentDialog(comment.id)">
+            <mat-icon>delete</mat-icon>
+            <span>Delete</span>
+          </button>
+        </mat-menu>
+        </div>
+
+        <p matLine class="comment-text">
+          <span class="">{{ comment.text }}</span>
+        </p>
+        <mat-divider></mat-divider>
+      </mat-list-item>
+     </mat-list>
+     <ng-template #elseBlock>
+       <div class="nocomments">Pas de commentaires.</div>
+      </ng-template>          
+  </mat-card-footer>

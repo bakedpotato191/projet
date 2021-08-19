@@ -15,15 +15,16 @@ export class UserpostsComponent implements OnInit {
   private page: number = 0;
   private readonly size: number = 10;
   private readonly sort: string = "date";
-  isLoading: boolean = false;
-  isLastPage: boolean = false;
+  isLoading = false;
+  canLoad = false;
 
   constructor(private readonly router: Router,
               private readonly userService: UserService,
               private readonly parent: HomeComponent) { }
 
   ngOnInit(): void {
-        this.getUserPosts();
+      this.canLoad = true;
+      this.getUserPosts();
   }
 
   openPostPage(id: number) {
@@ -33,23 +34,29 @@ export class UserpostsComponent implements OnInit {
   getUserPosts() {
     this.userService.getUserPosts(this.parent.username, this.page, this.size, this.sort).subscribe(data => {
       
-      if (data.length !== 0){
+      if (data.length !== 0) {
         this.posts = this.posts.concat(data);
         this.page++;
+        this.canLoad = true;
+        
+        if (data.length < this.size) {
+          this.canLoad = false;
+        }
       }
       else {
-        this.isLastPage = true;
+        this.canLoad = false;
       }
       this.isLoading = false;
     });
   }
 
-  onScrollDown(ev: any) {
-    if (!this.isLastPage){
+  onScrollDown() {
+    if (this.canLoad) {
+      this.canLoad = false;
       this.isLoading = true;
       setTimeout(() => {
         this.getUserPosts();
       }, 1000);
-    } 
+    }
   }
 }

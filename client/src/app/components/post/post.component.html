@@ -1,5 +1,5 @@
 <div class="wrapper">
-        <mat-card *ngIf="post.utilisateur; else elseBlock" class="card">
+        <mat-card *ngIf="post; else elseBlock" class="card">
         <mat-card-header class="card-header">
           <div mat-card-avatar class="card-avatar">
               <a routerLink="/profile/{{post.utilisateur.username}}"><img class="avatar" src="{{ post.utilisateur.avatar }}"></a>
@@ -20,7 +20,7 @@
           <button mat-button id="dislikeBtn" *ngIf="post.liked"  (click)="dislike()"><mat-icon aria-hidden="false" aria-label="like icon" color="warn">favorite</mat-icon></button>
           <button mat-button id="likeBtn" *ngIf="!post.liked" (click)="like()"><mat-icon aria-hidden="false" aria-label="like icon">favorite</mat-icon></button>
           <button mat-button id="shareBtn">SHARE</button>
-          <button mat-button id="deleteBtn" (click)="openDialog()"><mat-icon aria-hidden="false" aria-label="like icon">delete</mat-icon></button>
+          <button mat-button id="deleteBtn" (click)="openDeletePostDialog(post.id)"><mat-icon aria-hidden="false" aria-label="like icon">delete</mat-icon></button>
           <mat-divider></mat-divider>
           <form class="form" name="form" (ngSubmit)="onSubmit()" novalidate>
             <input type="hidden" name="post_id" ng-value="post.id" [(ngModel)]="comment.id" required>
@@ -44,40 +44,7 @@
         </form>
       </mat-card-actions>
         <mat-divider></mat-divider>
-        <mat-card-footer>
-          <mat-list *ngIf="post.comments.length > 0; else elseBlock">
-            <mat-list-item class="comment" *ngFor="let comment of post.comments">
-              <div matLine fxLayout="row">
-                <img matListAvatar src="{{ comment.utilisateur.avatar }}">
-                <div class="namedate"><span matLine class="comment-username demo-2"><a>{{comment.utilisateur.nom }} {{comment.utilisateur.prenom }}</a></span>
-                  <span matLine class="comment-date demo-2"> il y a {{ comment.date | timeSince }}</span>
-                </div>
-                <div><button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-                  <mat-icon>more_vert</mat-icon>
-                </button>
-                <mat-menu #menu="matMenu">
-                  <button mat-menu-item>
-                    <mat-icon>edit</mat-icon>
-                    <span>Edit</span>
-                  </button>
-                  <button mat-menu-item>
-                    <mat-icon>delete</mat-icon>
-                    <span>Delete</span>
-                  </button>
-                </mat-menu>
-                </div>
-              </div>
-
-              <p matLine class="comment-text">
-                <span class="">{{ comment.text }}</span>
-              </p>
-              <mat-divider></mat-divider>
-            </mat-list-item>
-           </mat-list>
-           <ng-template #elseBlock>
-             <div class="nocomments">Pas de commentaires.</div>
-            </ng-template>          
-        </mat-card-footer>
+      <app-comments></app-comments>
       </mat-card>
       <ng-template #elseBlock>
         <div id="notfound"><img src="https://static.thenounproject.com/png/1527904-200.png"><span>404 - Post n'a pas été trouvé ou a été supprimé par son auteur.</span></div>

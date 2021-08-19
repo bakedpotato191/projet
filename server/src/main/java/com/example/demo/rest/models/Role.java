@@ -14,8 +14,6 @@ import javax.persistence.Table;
 @Table( name = "role" )
 public class Role implements Serializable {
 
-	private static final long serialVersionUID = 5322531604561968946L;
-
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -82,4 +80,6 @@ public class Role implements Serializable {
         var role = (Role) obj;
         return getName().equals(role.getName());
     }
+    
+	private static final long serialVersionUID = 1L;
 }

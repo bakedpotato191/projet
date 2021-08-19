@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.demo.rest.dto.CommentDto;
 import com.example.demo.rest.models.Post;
 import com.example.demo.rest.services.FileStorageService;
 import com.example.demo.rest.services.PostService;
@@ -59,21 +58,15 @@ public class PostController {
 		return postService.getPostByID(id);
     }
 	
-	@PostMapping("/addcomment")
-	public ResponseEntity<HttpStatus> addComment(@RequestBody @Valid final CommentDto comment) {
-		postService.addComment(comment);
-		return new ResponseEntity<>(HttpStatus.CREATED);
-	}
-	
 	@PostMapping("/like")
 	public ResponseEntity<HttpStatus> likePost(@RequestBody @Valid final Long id) {
-		postService.likeThePost(id);
+		postService.like(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@PostMapping("/dislike")
 	public ResponseEntity<HttpStatus> dislikePost(@RequestBody @Valid final Long id) {
-		postService.dislikeThePost(id);
+		postService.dislike(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	

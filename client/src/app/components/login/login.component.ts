@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
+import { SharedService } from 'src/app/services/shared.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -22,7 +23,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private authService: AuthService, 
               private tokenStorage: TokenStorageService, 
-              private userService: UserService,
+              private sharedService: SharedService,
               private fb: FormBuilder) { }
 
   ngOnInit(): void {
@@ -51,22 +52,17 @@ export class LoginComponent implements OnInit {
         this.isLoginFailed = false;
         this.isLoggedIn = true;
         this.roles = this.tokenStorage.getUser().roles;
-        this.reloadPage();
+        this.sharedService.reloadPage();
       },
       error => {
         this.isLoginFailed = true;
         this.isLoading = false;
         if (error.status === 401) {
-          return this.userService.showSnackbar("Invalid email or password", 'Dismiss', 7000);
+          return this.sharedService.showSnackbar("Invalid email or password", 'Dismiss', 7000);
         }
       }
     );
   }
-
-  reloadPage(): void {
-    window.location.reload();
-  }
-
 }
 
 

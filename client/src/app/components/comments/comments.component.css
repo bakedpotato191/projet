@@ -1,0 +1,65 @@
+.card .comment-avatar {
+    padding: 0;
+}
+
+.card .comment-text {
+    font-size:  16px;
+    margin: 20px 0 20px 60px;
+}
+
+.card .comment-username {
+    color:rgb(158, 158, 158);
+}
+
+.comment-avatar {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    font-size: 40px;
+    border-radius: 15%;
+    background-repeat: no-repeat;
+    display: inline-block;
+    fill: currentColor;
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+}
+
+.comment-date{
+    color:rgb(158, 158, 158);
+    font-size: 6px;
+}
+
+.namedate{
+    flex: 1;
+    margin-left: 20px;
+}
+
+#notfound {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    color: #fff;
+}
+
+::ng-deep .dialog-style {
+    border: 1px solid #e4486a;
+    border-radius: 2px;
+}
+
+.nocomments {
+    color:rgb(153, 145, 102);
+    padding: 15px;
+    text-align: center;
+}
+
+.comment-text{
+    margin: 20px 0 0 60px!important;
+}

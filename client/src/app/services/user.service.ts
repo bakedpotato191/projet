@@ -13,27 +13,10 @@ export class UserService {
 
   private API: String = 'http://localhost:8081/api/user';
 
-  constructor(private http: HttpClient, private matSnackBar: MatSnackBar) { }
+  constructor(private http: HttpClient) { }
 
   public getUser(username: String): Observable<User>{
     return this.http.get<User>(`${this.API}/getuser/${username}`);
-  }
-
-  public reloadPage(){
-    window.location.reload();
-  }
-
-  public showSnackbar(content: any, action: any, duration: number) {
-    let sb = this.matSnackBar.open(content, action, {
-      duration,
-      panelClass: ["custom-style"],
-      verticalPosition: 'top', // Allowed values are  'top' | 'bottom'
-      horizontalPosition: 'center', // Allowed values are 'start' | 'center' | 'end' | 'left' | 'right');
-    });
-
-    sb.onAction().subscribe(() => {
-      sb.dismiss();
-    });
   }
 
   public follow(username: String): Observable<any>{
@@ -44,8 +27,8 @@ export class UserService {
     return this.http.post(this.API + '/unfollow', username);
   }
 
-  public getFavoritePosts(): Observable<Favorite[]> {
-    return this.http.get<Favorite[]>(`${this.API}/favorites/`);
+  public getFavoritePosts(page: Number, size:Number, sort: String): Observable<Favorite[]> {
+    return this.http.get<Favorite[]>(`${this.API}/favorites?page=${page}&size=${size}&sort=${sort}`);
   }
 
   public getUserPosts(username: String, page: Number, size: Number, sort: String): Observable<Post[]>{

@@ -1,6 +1,7 @@
 package com.example.demo.rest.models;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -35,7 +36,9 @@ public class Like implements Serializable {
 	@JoinColumn(name = "post_id")
 	@JsonManagedReference
 	@JsonIgnoreProperties("comments")
-	private Post post;	
+	private Post post;
+	
+	private Timestamp date;
 	
 	public Like() {}
 
@@ -68,6 +71,14 @@ public class Like implements Serializable {
 
 	public void setPost(Post post) {
 		this.post = post;
+	}
+	
+	public Timestamp getDate() {
+		return date;
+	}
+
+	public void setDate(Timestamp date) {
+		this.date = date;
 	}
 
 	@Override

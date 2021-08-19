@@ -25,7 +25,7 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
 	
 	@Modifying
 	@Transactional
-	@Query(value = "DELETE from Like l WHERE l.utilisateur=:user AND l.post.id=:id")
+	@Query("DELETE from Like l WHERE l.utilisateur=:user AND l.post.id=:id")
 	int dislike(@Param("user") User user, @Param("id") Long id);
 	
 	Slice<Like> findAllByUtilisateur(User user, Pageable paging);

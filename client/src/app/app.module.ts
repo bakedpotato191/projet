@@ -30,6 +30,7 @@ import { FavoritesComponent } from './components/favorites/favorites.component';
 import { MatTabNav } from '@angular/material/tabs';
 import { UserpostsComponent } from './components/userposts/userposts.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { CommentsComponent } from './components/comments/comments.component';
 
 @NgModule({
   imports: [
@@ -55,7 +56,8 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     UploadComponent,
     ConfirmationDialogComponent,
     FavoritesComponent,
-    UserpostsComponent
+    UserpostsComponent,
+    CommentsComponent
   ],
   exports: [
     UploadComponent

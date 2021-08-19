@@ -15,7 +15,7 @@ import javax.persistence.OneToOne;
 @Entity
 public class VerificationToken implements Serializable {
 
-	private static final long serialVersionUID = -6173670752723289498L;
+	private static final long serialVersionUID = 1L;
 
 	private static final int EXPIRATION = 60 * 24;
 

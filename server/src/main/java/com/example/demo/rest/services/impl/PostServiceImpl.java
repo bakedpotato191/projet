@@ -12,13 +12,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.rest.dto.CommentDto;
 import com.example.demo.rest.exceptions.EntityNotFoundException;
 import com.example.demo.rest.exceptions.HttpUnauthorizedException;
-import com.example.demo.rest.models.Comment;
 import com.example.demo.rest.models.Like;
 import com.example.demo.rest.models.Post;
-import com.example.demo.rest.repository.CommentRepository;
 import com.example.demo.rest.repository.LikeRepository;
 import com.example.demo.rest.repository.PostRepository;
 import com.example.demo.rest.services.PostService;
@@ -30,9 +27,6 @@ public class PostServiceImpl implements PostService {
 
 	@Autowired
 	private PostRepository postRepository;
-
-	@Autowired
-	private CommentRepository commentRepository;
 
 	@Autowired
 	private LikeRepository likeRepository;
@@ -72,7 +66,6 @@ public class PostServiceImpl implements PostService {
 			post.setId(found.get().getId());
 			post.setDescription(found.get().getDescription());
 			post.setCountLike(likeRepository.countByPost(found.get()));
-			post.setComments(commentRepository.findAllByPostOrderByDateDesc(post));
 			post.setDate(found.get().getDate());
 			post.setUrl(found.get().getUrl());
 			post.setUtilisateur(found.get().getUtilisateur());
@@ -87,27 +80,7 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public Comment addComment(final CommentDto comment) {
-
-		var post = postRepository.findById(comment.getId());
-
-		if (post.isPresent()) {
-			
-			var comm = new Comment();
-			comm.setUtilisateur(userService.getUserFromSession());
-			comm.setText(comment.getText());
-			comm.setDate(new Timestamp(System.currentTimeMillis()));
-			comm.setPost(post.get());
-			
-			return commentRepository.save(comm);
-		} 
-		else {
-			throw new EntityNotFoundException(Post.class, "id", comment.getId().toString());
-		}
-	}
-
-	@Override
-	public void likeThePost(Long id) {
+	public void like(Long id) {
 		
 		var post = new Post();
 		post.setId(id);		
@@ -126,18 +99,13 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public void dislikeThePost(Long id) {
+	public void dislike(Long id) {
 		
 			var currentUser = userService.getUserFromSession();
 			
 			if (likeRepository.dislike(currentUser, id) == 0) {
 				throw new EntityNotFoundException(Post.class, "id", id.toString());
 			}
-	}
-	
-	@Override
-	public Comment removeComment(Comment comment) {
-		return null;
 	}
 	
 	@Override

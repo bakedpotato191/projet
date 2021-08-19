@@ -13,26 +13,56 @@ export class FavoritesComponent implements OnInit {
 
   favorites: Favorite[] = [];
   post!: Post;
+  canLoad: boolean = false;
+  isLoading: boolean = false;
+
+  //paging
+  private page: number = 0;
+  private readonly size: number = 10;
+  private readonly sort: string = "date";
+  //
 
   constructor(
     private readonly router: Router,
     private readonly userService: UserService) { }
 
   ngOnInit(): void {
-    this.userService.getFavoritePosts().subscribe(
-      data => {
-        console.log(data);
-        this.favorites = data;
-      },
-      _error => {
-        console.log(_error);
-
-      }
-    )
+    this.canLoad = true;
+    this.getUserFavorites();
   }
 
   openPostPage(id: number) {
     this.router.navigate(['p', id]);
+  }
+
+  getUserFavorites() {
+      this.userService.getFavoritePosts(this.page, this.size, this.sort).subscribe(data => {
+      
+        if (data.length !== 0) {
+          this.favorites = this.favorites.concat(data);
+          this.page++;
+          this.canLoad = true;
+          
+          if (data.length < this.size) {
+            this.canLoad = false;
+          }
+        }
+        else {
+          this.canLoad = false;
+        }
+        this.isLoading = false;
+      });
+  }
+
+  
+  onScrollDown(ev: any) {
+    if (this.canLoad){
+      this.canLoad = false;
+      this.isLoading = true;
+      setTimeout(() => {
+        this.getUserFavorites();
+      }, 1500);
+    } 
   }
 
 }

@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -29,10 +30,12 @@ public class Comment implements Serializable {
 	private Timestamp date;
 	
 	@ManyToOne
+	@JoinColumn(name = "user_id")
 	@JsonIgnoreProperties("posts")
 	private User utilisateur;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "post_id")
 	@JsonBackReference
 	private Post post;
 	

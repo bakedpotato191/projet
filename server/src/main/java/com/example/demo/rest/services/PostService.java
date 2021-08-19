@@ -2,8 +2,6 @@ package com.example.demo.rest.services;
 
 import java.util.List;
 
-import com.example.demo.rest.dto.CommentDto;
-import com.example.demo.rest.models.Comment;
 import com.example.demo.rest.models.Like;
 import com.example.demo.rest.models.Post;
 
@@ -14,14 +12,10 @@ public interface PostService {
 	void deletePost(Long id);
 	
 	Post getPostByID(Long id);
-	
-	Comment addComment(CommentDto comment);
-	
-	Comment removeComment(Comment comment);
-	
-	void likeThePost(Long id);
 
-	void dislikeThePost(Long id);
+	void like(Long id);
+
+	void dislike(Long id);
 
 	List<Like> getFavorites(Integer pageNo, Integer pageSize, String sortBy);
 

@@ -63,8 +63,7 @@ export class HomeComponent implements OnInit {
           this.router.navigate([''], {relativeTo: this.activatedRoute, skipLocationChange: true});
           break;
         case 1: 
-          this.router.navigate([{ outlets: { favorites: ['favorites'] } }],
-          { relativeTo: this.activatedRoute });
+          this.router.navigate([{ outlets: { favorites: ['favorites'] } }], { relativeTo: this.activatedRoute });
           break;
         default:
         break;

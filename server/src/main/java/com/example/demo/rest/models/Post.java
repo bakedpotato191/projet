@@ -26,8 +26,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Table(name= "post")
 public class Post implements Serializable {
 
-	private static final long serialVersionUID = -8369347335051158514L;
-
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -156,4 +154,6 @@ public class Post implements Serializable {
 			return false;
 		return true;
 	}
+	
+	private static final long serialVersionUID = 1L;
 }
