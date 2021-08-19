@@ -1,1 +1,27 @@
-<p>restore works!</p>
+<div class="wrapper image">
+    <mat-card class="card">
+        <mat-card-header class="card-header">
+            <mat-card-title class="card-title">Reinitialiser le mot de passe</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="card-content">
+            <form class="form" name="form" [formGroup]="restoreForm" (ngSubmit)="onSubmit()">
+                <mat-form-field class="form-field" color="accent" appearance="outline">
+                    <mat-label>Adresse courriel</mat-label>
+                    <input 
+                    matInput 
+                    class="form-control input"
+                    formControlName="email"
+                    type="email"
+                    name="email"
+                    maxlength="128"
+                    required>
+                    <mat-error>
+                        Saisir une adresse email valide
+                    </mat-error>
+                </mat-form-field>
+                <button *ngIf="!isLoading" mat-stroked-button color="accent" class="btn-block">Reinitialiser</button>
+                <mat-spinner *ngIf="isLoading" color="accent" [diameter]="80" aria-label="login in progress"></mat-spinner>
+            </form>
+        </mat-card-content>
+    </mat-card>
+    </div>

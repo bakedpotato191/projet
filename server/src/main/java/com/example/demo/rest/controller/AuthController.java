@@ -42,6 +42,12 @@ public class AuthController {
         return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
+	@PostMapping("/restore")
+	public ResponseEntity<HttpStatus> restorePassword(@RequestBody @Valid String email) {
+		return null;
+		
+	}
+	
 	private String getAppUrl(HttpServletRequest request) {
         return "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
     }

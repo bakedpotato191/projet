@@ -1,9 +1,8 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
-import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-login',
