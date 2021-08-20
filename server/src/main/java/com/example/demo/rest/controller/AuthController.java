@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.events.OnRegistrationCompleteEvent;
 import com.example.demo.jwt.response.JwtResponse;
 import com.example.demo.rest.dto.LoginDto;
+import com.example.demo.rest.dto.PasswordRecoveryDto;
 import com.example.demo.rest.dto.SignupDto;
 import com.example.demo.rest.services.UserService;
 
@@ -43,9 +44,10 @@ public class AuthController {
 	}
 	
 	@PostMapping("/restore")
-	public ResponseEntity<HttpStatus> restorePassword(@RequestBody @Valid String email) {
-		return null;
-		
+	public ResponseEntity<HttpStatus> restorePassword(@RequestBody final PasswordRecoveryDto dto) {
+		System.out.println(dto.getEmail());
+		userService.restorePassword(dto.getEmail());
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	private String getAppUrl(HttpServletRequest request) {

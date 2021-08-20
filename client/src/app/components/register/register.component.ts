@@ -9,24 +9,24 @@ import { SharedService } from 'src/app/services/shared.service';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
- 
+
   registrationForm!: FormGroup;
-  
+
   hide = true;
   isSuccessful = false;
   isSignUpFailed = false;
   errorMessage = '';
 
   constructor(private authService: AuthService,
-              private sharedService: SharedService, 
-              private fb: FormBuilder) { }
+    private sharedService: SharedService,
+    private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.sharedService.setTitle("Inscription");
     this.initRegistrationForm();
-   }
+  }
 
-   initRegistrationForm() {
+  initRegistrationForm() {
     this.registrationForm = this.fb.group({
       nom: ["", Validators.required],
       prenom: ["", Validators.required],
@@ -37,6 +37,10 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit(): void {
+    if (this.registrationForm.invalid) {
+      return;
+    }
+
     this.authService.register(this.registrationForm.value).subscribe(
       data => {
         console.log(data);

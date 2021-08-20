@@ -20,10 +20,10 @@ export class LoginComponent implements OnInit {
   errorMessage = '';
   roles: string[] = [];
 
-  constructor(private authService: AuthService, 
-              private tokenStorage: TokenStorageService, 
-              private sharedService: SharedService,
-              private fb: FormBuilder) { }
+  constructor(private authService: AuthService,
+    private tokenStorage: TokenStorageService,
+    private sharedService: SharedService,
+    private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.sharedService.setTitle("Connexion");
@@ -42,6 +42,9 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
+    if (this.loginForm.invalid) {
+      return;
+    }
     this.isLoading = true;
     this.authService.login(this.loginForm.value).subscribe(
       data => {

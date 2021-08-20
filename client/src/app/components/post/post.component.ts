@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Post } from 'src/app/class/post';
 import { Commentaire } from 'src/app/class/commentaire';
-import { UserService } from 'src/app/services/user.service';
 import { PostService } from 'src/app/services/post.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../shared/confirmation-dialog/confirmation-dialog.component';
@@ -48,8 +47,8 @@ export class PostComponent implements OnInit {
     );
   }
 
-  onSubmit() {
-    this.comment.id = this.id;
+  onSubmit(id: number) {
+    this.comment.id = id;
     this.isLoading = true;
       this.commentService.submitComment(this.comment).subscribe(
         _data => {
@@ -76,11 +75,7 @@ export class PostComponent implements OnInit {
   }
 
   remove() {
-    this.postService.removePost(this.id).subscribe(
-      _data => {
-        console.log(_data);
-      }
-    )
+    this.postService.removePost(this.id).subscribe();
   }
 
   openDeletePostDialog(id: Number): void {

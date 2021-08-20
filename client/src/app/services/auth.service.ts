@@ -17,4 +17,8 @@ export class AuthService {
   register(formData: FormData): Observable<any> {
     return this.http.post(AUTH_API + 'signup', formData);
   }
+
+  restore(formData: FormData): Observable<any> {
+    return this.http.post(AUTH_API + 'restore', formData);
+  }
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-restore',
@@ -11,14 +12,23 @@ export class RestoreComponent implements OnInit {
   hide = true;
   isLoading = false;
   restoreForm!: FormGroup;
+  sent = false;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+              private authService: AuthService,
+              private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.initLoginForm();
   }
 
-  onSubmit() {};
+  onSubmit(): void {
+    this.authService.restore(this.restoreForm.value).subscribe(
+      data => {
+        this.sent = true;
+      }
+    );
+  };
 
   initLoginForm() {
     this.restoreForm = this.fb.group({

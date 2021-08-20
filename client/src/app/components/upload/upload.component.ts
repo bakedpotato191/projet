@@ -24,7 +24,7 @@ export class UploadComponent {
     public dialogRef: MatDialogRef<UploadComponent>,
     private postService: PostService,
     private matSnackBar: MatSnackBar) { }
-    
+
   get uf() {
     return this.uploadForm.controls;
   }
@@ -51,6 +51,9 @@ export class UploadComponent {
   }
 
   submit() {
+    if (this.uploadForm.invalid) {
+      return;
+    }
     var formData: any = new FormData();
     formData.append("photo", this.fileData);
     formData.append("description", this.uploadForm.get('description')?.value);

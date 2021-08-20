@@ -22,11 +22,7 @@ public interface UserService {
 
     void createVerificationTokenForUser(User user, String token);
 
-    VerificationToken getVerificationToken(String verificationToken);
-
     VerificationToken generateNewVerificationToken(String token);
-
-    void createPasswordResetTokenForUser(User user, String token);
 
     Optional<User> findUserByEmail(String email);
 
@@ -51,4 +47,12 @@ public interface UserService {
 	void follow(String username);
 
 	void unfollow(String username);
+
+	void restorePassword(String email);
+
+	VerificationToken findByVerificationToken(String verificationToken);
+
+	void invalidatePasswordResetTokensForUser(User user);
+
+	void createPasswordResetTokenForUser(User user);
 }

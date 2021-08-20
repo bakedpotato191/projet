@@ -112,7 +112,16 @@ public class UserServiceImpl implements UserService {
 			throw new HttpUnauthorizedException("Invalid email or password");
 		}	
 	}
-
+	
+	@Override
+    public void restorePassword(String email) {
+		
+		var user = findUserByEmail(email);
+		if (user.isPresent()) {
+			createPasswordResetTokenForUser(user.get());
+		}	
+    }
+	
 	@Override
 	public User getUser(final String verificationToken) {
 		final VerificationToken token = tokenRepository.findByToken(verificationToken);
@@ -152,7 +161,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public VerificationToken getVerificationToken(final String verificationToken) {
+	public VerificationToken findByVerificationToken(final String verificationToken) {
 		return tokenRepository.findByToken(verificationToken);
 	}
 
@@ -166,9 +175,19 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void createPasswordResetTokenForUser(final User user, final String token) {
-		var myToken = new PasswordResetToken(token, user);
-        passwordTokenRepository.save(myToken);	
+	public void createPasswordResetTokenForUser(final User user) {
+		
+		invalidatePasswordResetTokensForUser(user);
+		
+		var uuid = UUID.randomUUID().toString();
+		var myToken = new PasswordResetToken(uuid, user);
+        var token = passwordTokenRepository.save(myToken);
+        System.out.println(token);
+	}
+	
+	@Override
+	public void invalidatePasswordResetTokensForUser(final User user) {
+		passwordTokenRepository.deleteAllByUser(user);
 	}
 
 	@Override

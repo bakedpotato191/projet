@@ -22,7 +22,7 @@
           <button mat-button id="shareBtn">SHARE</button>
           <button mat-button id="deleteBtn" (click)="openDeletePostDialog(post.id)"><mat-icon aria-hidden="false" aria-label="like icon">delete</mat-icon></button>
           <mat-divider></mat-divider>
-          <form class="form" name="form" (ngSubmit)="onSubmit()" novalidate>
+          <form class="form" name="form" (ngSubmit)="onSubmit(post.id)" novalidate>
             <input type="hidden" name="post_id" ng-value="post.id" [(ngModel)]="comment.id" required>
             <mat-form-field class="form-field" color="accent" floatLabel="always">
               <mat-label>Comment</mat-label>

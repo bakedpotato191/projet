@@ -3,11 +3,11 @@ package com.example.demo.rest.dto;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class PasswordResetDto {
+public class NewPasswordDto {
 	
 	private String oldPassword;
 
-    private  String token;
+    private String token;
 
     @NotNull
     @Size(min=8, max=32)
