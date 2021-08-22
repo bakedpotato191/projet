@@ -1,39 +1,39 @@
 .wrapper {
-    height: 100%;
-    max-width: 975px;
-    width: 100%;
-    margin: 50px auto 0 auto;
-  }
+  height: 100%;
+  max-width: 975px;
+  width: 100%;
+  margin: 50px auto 0 auto;
+}
 
 .card {
-    background: rgba(36,36,36,255);
-    border: 1px solid #7c7156;
-    border-radius: 10px;
-    margin: 0 auto;
-    box-shadow: 0px 0px 10px 0px#1f1f1f;
+  background: rgba(36, 36, 36, 255);
+  border: 1px solid #7c7156;
+  border-radius: 10px;
+  margin: 0 auto;
+  box-shadow: 0px 0px 10px 0px#1f1f1f;
 }
 
-.card a{
-    color: white;
+.card a {
+  color: white;
 }
 
-.card a:hover{
-    text-decoration: underline;
+.card a:hover {
+  text-decoration: underline;
 }
 
 .card-avatar {
-    height: 50px;
-    width: 50px;
-    margin-right: 10px;
+  height: 50px;
+  width: 50px;
+  margin-right: 10px;
 }
 
-.card-header{
-    border-bottom: 1px solid #353535;
+.card-header {
+  border-bottom: 1px solid #353535;
 }
 
-.card-content{
-    margin:10px 0 10px 0!important;
-    padding: 10px;
+.card-content {
+  margin: 10px 0 10px 0 !important;
+  padding: 10px;
 }
 
 .card-actions {
@@ -42,119 +42,103 @@
 }
 
 .card-footer {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .card-header .mat-card-header-text {
-    margin: 0;
+  margin: 0;
 }
 
 .form {
-    display: flex;
-    flex-direction: column;
-    margin-top: 20px;
-    padding: 8px;
-    width: 100%;
-    margin: 8px auto;
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  padding: 8px;
+  width: 100%;
+  margin: 8px auto;
 }
 
 .form > button {
-    width: 180px;
+  width: 180px;
 }
 
 .form textarea {
-    resize: none;
-    height: 100px;
+  resize: none;
+  height: 100px;
 }
 
 .form-field {
-    padding: 10px;
+  padding: 10px;
 }
 
 .card .card-image {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    max-height: 500px;
-    margin: 15px 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  max-height: 500px;
+  margin: 15px 0;
 }
-  
-.card .image {
-    display: block;
-    max-width: 100%;
-    width: 100%;
-    object-fit: scale-down;
-    margin: 0 0 0 0;
 
+.card .image {
+  display: block;
+  max-width: 100%;
+  width: 100%;
+  object-fit: scale-down;
+  margin: 0 0 0 0;
 }
 
 .card .avatar {
-    display: block;
-    height: 100%;
-    max-width: 100%;
-    width: 100%;
-    object-fit: cover;
-    margin: 0 0 0 0;
+  display: block;
+  height: 100%;
+  max-width: 100%;
+  width: 100%;
+  object-fit: cover;
+  margin: 0 0 0 0;
 }
 
-.card h4, h5 {
-    margin: 0;
+.card h4,
+h5 {
+  margin: 0;
 }
 
-.image:first-child{
-    margin-top: 0;
+.image:first-child {
+  margin-top: 0;
 }
-
 
 .avatar-container {
-    height: inherit;
+  height: inherit;
+}
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-infix {
+  padding: 0.8375em 0 !important;
 }
 
-  /* snackbar on login fail */
-  ::ng-deep .custom-style{
-    background-color:#424242;
-    color:#fff;
-    font-weight: 500;
-    border: 1px solid #e4b948;
-    border-radius: 10px;
-  }
-  
-  ::ng-deep .custom-style .mat-simple-snackbar-action  {
-    color: #e4b948;
-  }
-
-  ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-infix {
-    padding: 0.8375em 0 !important;
-  }
-  
-  ::ng-deep .mat-focused .mat-form-field-label {
+::ng-deep .mat-focused .mat-form-field-label {
   /*change color of label*/
-    color: #e4b948!important;
-  }
-    
-  ::ng-deep .mat-form-field-ripple {
-    /*change color of underline when focused*/
-    background-color: #69f0ae !important;
-  }
+  color: #e4b948 !important;
+}
+
+::ng-deep .mat-form-field-ripple {
+  /*change color of underline when focused*/
+  background-color: #69f0ae !important;
+}
 
 .form-control {
-    caret-color: white;
+  caret-color: white;
 }
 
-#deleteBtn{
-    float: right;
+#deleteBtn {
+  float: right;
 }
 
 #likeBtn,
 #dislikeBtn,
 #shareBtn,
 #deleteBtn {
-    margin: 8px;
+  margin: 8px;
 }
 
 ::ng-deep .dialog-style {
-    border: 1px solid #e4486a;
-    border-radius: 2px;
+  border: 1px solid #e4486a;
+  border-radius: 2px;
 }
-

@@ -24,13 +24,12 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.username = this.activatedRoute.snapshot.paramMap.get('username');
-    if (this.username !== null) {
-      this.getUserData(this.username);
-      this.sharedService.setTitle("@" + this.username);
-      if (this.username == this.tokenService.getUser().username) {
-        this.mypage = true;
-      }
+    this.getUserData(this.username);
+    this.sharedService.setTitle("@" + this.username);
+    if (this.username == this.tokenService.getUser().username) {
+      this.mypage = true;
     }
+
   }
 
   constructor(private userService: UserService,
@@ -41,35 +40,35 @@ export class HomeComponent implements OnInit {
     private sharedService: SharedService
   ) { }
 
-    getUserData(username: String) {
-      this.userService.getUser(username).subscribe(data => {
-        this.user = data;
-      });
-    }
+  getUserData(username: String) {
+    this.userService.getUser(username).subscribe(data => {
+      this.user = data;
+    });
+  }
 
-    openDialog(): void {
-      this.uploadService.open();
-    }
+  openDialog(): void {
+    this.uploadService.open();
+  }
 
-    follow() {
-      this.user.followed = true;
-      this.userService.follow(this.user.username).subscribe();
-    }
+  follow() {
+    this.user.followed = true;
+    this.userService.follow(this.user.username).subscribe();
+  }
 
-    unfollow() {
-      this.user.followed = false;
-      this.userService.unfollow(this.user.username).subscribe();
-    }
+  unfollow() {
+    this.user.followed = false;
+    this.userService.unfollow(this.user.username).subscribe();
+  }
 
-    onTabChanged(event: MatTabChangeEvent): void {
-      switch(event.index) {
-        case 0:
-          this.router.navigate([''], {relativeTo: this.activatedRoute, skipLocationChange: true});
-          break;
-        case 1: 
-          this.router.navigate([{ outlets: { favorites: ['favorites'] } }], { relativeTo: this.activatedRoute });
-          break;
-        default:
+  onTabChanged(event: MatTabChangeEvent): void {
+    switch (event.index) {
+      case 0:
+        this.router.navigate([''], { relativeTo: this.activatedRoute, skipLocationChange: true });
+        break;
+      case 1:
+        this.router.navigate([{ outlets: { favorites: ['favorites'] } }], { relativeTo: this.activatedRoute });
+        break;
+      default:
         break;
     }
   }

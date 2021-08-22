@@ -79,19 +79,6 @@
   font-size: 60px;
 }
 
-/* snackbar  */
-::ng-deep .custom-style{
-  background-color:#424242;
-  color:#fff;
-  font-weight: 500;
-  border: 1px solid #e4b948;
-  border-radius: 10px;
-}
-
-::ng-deep .custom-style .mat-simple-snackbar-action  {
-  color: #e4b948;
-}
-
 .sub-buttons {
   margin-top: 10px;
 }

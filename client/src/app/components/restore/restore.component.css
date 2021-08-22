@@ -124,19 +124,6 @@ label {
   margin-top: 10px;
 }
 
-/* snackbar on login fail */
-.custom-style{
-  background-color:#424242;
-  color:#fff;
-  font-weight: 500;
-  border: 1px solid #e4b948;
-  border-radius: 10px;
-}
-  
-.custom-style .mat-simple-snackbar-action  {
-  color: #e4b948;
-}
-
 .card .restore {
   padding-top: 20px;
 }
@@ -145,5 +132,9 @@ label {
   margin: 0 auto;
 }
 
-  
+#else {
+  text-align: center;
+  color: rgb(102, 196, 141);
+}
+
   

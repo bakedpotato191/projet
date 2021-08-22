@@ -3,33 +3,38 @@ package com.example.demo.rest.dto;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.example.demo.validators.PasswordMatches;
+import com.example.demo.validators.ValidUUID;
+
+@PasswordMatches
 public class NewPasswordDto {
 	
-	private String oldPassword;
+	private String password;
 
+	@ValidUUID
     private String token;
 
     @NotNull
     @Size(min=8, max=32)
-    private String newPassword;
+    private String passwordRepeat;
 
-    public String getOldPassword() {
-        return oldPassword;
-    }
+    public String getPassword() {
+		return password;
+	}
 
-    public void setOldPassword(String oldPassword) {
-        this.oldPassword = oldPassword;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public String getNewPassword() {
-        return newPassword;
-    }
+	public String getPasswordRepeat() {
+		return passwordRepeat;
+	}
 
-    public void setNewPassword(String newPassword) {
-        this.newPassword = newPassword;
-    }
+	public void setPasswordRepeat(String passwordRepeat) {
+		this.passwordRepeat = passwordRepeat;
+	}
 
-    public String getToken() {
+	public String getToken() {
         return token;
     }
 

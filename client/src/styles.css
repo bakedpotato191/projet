@@ -39,3 +39,16 @@ ul {
 .flex-center{
   align-items: center;
 }
+
+/* snackbar shared css */
+.custom-style{
+  background-color:#424242;
+  color:#fff;
+  font-weight: 500;
+  border: 1px solid #cf7f79;
+  border-radius: 10px;
+}
+  
+.custom-style .mat-simple-snackbar-action  {
+  color: #cf7f79;
+}

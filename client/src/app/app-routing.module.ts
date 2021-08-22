@@ -1,4 +1,3 @@
-import { FullscreenOverlayContainer } from '@angular/cdk/overlay';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { FavoritesComponent } from './components/favorites/favorites.component';
@@ -14,7 +13,8 @@ const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
   { path: 'signup', component: RegisterComponent, canActivate:[LoggedInAuthGuard] },
   { path: 'login', component: LoginComponent, canActivate:[LoggedInAuthGuard] },
-  { path: 'restore', component: RestoreComponent, canActivate: [LoggedInAuthGuard] },
+  { path: 'password_reset', redirectTo: 'password_reset/', pathMatch: 'full'},
+  { path: 'password_reset/:token', component: RestoreComponent },
   { path: 'profile/:username', component:HomeComponent, canActivate: [AuthGuard],
   children: [
       { path:'favorites', component: FavoritesComponent, outlet: 'favorites' }

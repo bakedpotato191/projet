@@ -1,27 +1,72 @@
 <div class="wrapper image">
     <mat-card class="card">
         <mat-card-header class="card-header">
-            <mat-card-title class="card-title">Reinitialiser le mot de passe</mat-card-title>
+            <mat-card-title *ngIf="!isRequest" class="card-title">Reinitialiser le mot de passe</mat-card-title>
+            <mat-card-title *ngIf="isRequest" class="card-title">Modifier votre mot de passe</mat-card-title>
         </mat-card-header>
         <mat-card-content class="card-content">
-            <form class="form" name="form" [formGroup]="restoreForm" (ngSubmit)="onSubmit()">
+            <form class="form" name="restoreForm" *ngIf="!sent && !isRequest && restoreForm" [formGroup]="restoreForm"
+                (ngSubmit)="submitEmail()">
                 <mat-form-field class="form-field" color="accent" appearance="outline">
                     <mat-label>Adresse courriel</mat-label>
-                    <input 
-                    matInput 
-                    class="form-control input"
-                    formControlName="email"
-                    type="email"
-                    name="email"
-                    maxlength="128"
-                    required>
+                    <input matInput class="form-control input" formControlName="email" type="email" name="email">
                     <mat-error>
                         Saisir une adresse email valide
                     </mat-error>
                 </mat-form-field>
-                <button *ngIf="!isLoading" mat-stroked-button color="accent" class="btn-block">Reinitialiser</button>
-                <mat-spinner *ngIf="isLoading" color="accent" [diameter]="80" aria-label="login in progress"></mat-spinner>
+                <button *ngIf="!isLoading" mat-stroked-button color="accent" class="btn-block">Envoyer l'email de réinitialisation</button>
+                <mat-spinner *ngIf="isLoading" color="accent" [diameter]="30" aria-label="login in progress">
+                </mat-spinner>
             </form>
+
+            <form class="form" name="passwordForm" *ngIf="isRequest && passwordForm && !updated" [formGroup]="passwordForm"
+            (ngSubmit)="submitPasswords()">
+            <mat-form-field class="form-field" color="accent" appearance="outline">
+                <mat-label>Nouveau mot de passe</mat-label>
+                    <input
+                    matInput
+                    class="form-control"
+                    formControlName="password"
+                    name="password"
+                    [type]="hide ? 'password' : 'text'"
+                    >
+                    <button mat-icon-button type="button" matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                      </button>
+                    <mat-error>
+                        Le mot de passe doit comporter de 8 à 32 caractères
+                    </mat-error>
+            </mat-form-field>
+            <mat-form-field class="form-field" color="accent" appearance="outline">
+                <mat-label>Répéter le nouveau mot de passe</mat-label>
+                    <input
+                    matInput
+                    class="form-control"
+                    name="passwordRepeat"
+                    formControlName="passwordRepeat"
+                    [type]="hide ? 'password' : 'text'"
+                    >
+                    <button mat-icon-button type="button" matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                      </button>
+                    <mat-error>
+                        Le mot de passe doit comporter de 8 à 32 caractères
+                    </mat-error>
+            </mat-form-field>
+            <button *ngIf="!isLoading" mat-stroked-button color="accent" class="btn-block">Reinitialiser</button>
+            <mat-spinner *ngIf="isLoading" color="accent" [diameter]="30" aria-label="login in progress">
+            </mat-spinner>
+        </form>
+
+            <ng-container *ngIf="sent">
+                <div id="else">Consultez votre boite de réception pour trouver un lien permettant de réinitialiser
+                    votre mot de passe. S'il n'apparaît pas dans les minutes qui suivent, vérifiez votre dossier spam.
+                </div>
+            </ng-container>
+            <ng-container *ngIf="updated">
+                <div id="else">Votre mot de passe a été mis à jour avec succès. Vous pouvez maintenant vous connecter avec vos nouvelles informations d'identification.
+                </div>
+            </ng-container>
         </mat-card-content>
     </mat-card>
-    </div>
+</div>

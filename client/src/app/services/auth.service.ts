@@ -21,4 +21,13 @@ export class AuthService {
   restore(formData: FormData): Observable<any> {
     return this.http.post(AUTH_API + 'restore', formData);
   }
+
+  verifyToken(json: any): Observable<any> {
+    return this.http.post(AUTH_API + 'verify_token', json);
+  }
+
+  reset(formData: FormData): Observable<any> {
+    return this.http.post(AUTH_API + 'reset_password', formData);
+  }
+
 }

@@ -1,6 +1,7 @@
 package com.example.demo.rest.repository;
 
 import java.util.Date;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,7 +18,7 @@ import com.example.demo.rest.models.User;
 public interface PasswordResetTokenRepository extends JpaRepository<PasswordResetToken, Long> {
 
 
-    PasswordResetToken findByToken(String token);
+    Optional<PasswordResetToken> findByToken(String token);
 
     PasswordResetToken findByUser(User user);
 

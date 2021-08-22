@@ -33,6 +33,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { CommentsComponent } from './components/comments/comments.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { RestoreComponent } from './components/restore/restore.component';
+
 @NgModule({
   imports: [
     AppRoutingModule,
