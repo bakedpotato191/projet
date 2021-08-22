@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.events.Event;
+import com.example.demo.events.OnPasswordResetRequestedEvent;
 import com.example.demo.events.OnRegistrationCompleteEvent;
 import com.example.demo.jwt.response.JwtResponse;
 import com.example.demo.rest.dto.LoginDto;
@@ -50,7 +50,7 @@ public class AuthController {
 	public ResponseEntity<HttpStatus> restorePassword(@RequestBody @Valid final PasswordResetDto dto, final HttpServletRequest request) {
 		var user = authService.findUserByEmail(dto.getEmail());
 		if (user.isPresent()) {
-			eventPublisher.publishEvent(new Event(user.get(), request.getLocale()));
+			eventPublisher.publishEvent(new OnPasswordResetRequestedEvent(user.get(), request.getLocale()));
 		}
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

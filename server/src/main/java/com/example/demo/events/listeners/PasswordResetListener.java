@@ -10,12 +10,12 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
-import com.example.demo.events.Event;
+import com.example.demo.events.OnPasswordResetRequestedEvent;
 import com.example.demo.rest.models.User;
 import com.example.demo.rest.services.AuthService;
 
 @Component
-public class PasswordResetListener implements ApplicationListener<Event> {
+public class PasswordResetListener implements ApplicationListener<OnPasswordResetRequestedEvent> {
 
 	@Autowired
     private AuthService authService;
@@ -30,11 +30,11 @@ public class PasswordResetListener implements ApplicationListener<Event> {
     private Environment env;
 	
 	@Override
-	public void onApplicationEvent(Event event) {
+	public void onApplicationEvent(final OnPasswordResetRequestedEvent event) {
 		this.confirmReset(event);
 	}
 	
-	private void confirmReset(Event event) {
+	private void confirmReset(final OnPasswordResetRequestedEvent event) {
         var user = event.getUser();
         var token = UUID.randomUUID().toString();
         authService.createPasswordResetTokenForUser(user, token);
@@ -44,7 +44,7 @@ public class PasswordResetListener implements ApplicationListener<Event> {
 
     //
 
-    private SimpleMailMessage constructEmailMessage(Event event, final User user, final String token) {
+    private SimpleMailMessage constructEmailMessage(final OnPasswordResetRequestedEvent event, final User user, final String token) {
         var recipientAddress = user.getEmail();
         var subject = "Password Reset";
         var confirmationUrl = "http://localhost:4200" + "/password_reset/" + token;
