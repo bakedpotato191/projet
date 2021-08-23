@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { PostService } from 'src/app/services/post.service';
+import { SharedService } from 'src/app/services/shared.service';
 
 @Component({
   selector: 'app-upload',
@@ -23,7 +24,7 @@ export class UploadComponent {
   constructor(
     public dialogRef: MatDialogRef<UploadComponent>,
     private postService: PostService,
-    private matSnackBar: MatSnackBar) { }
+    private sharedService: SharedService) { }
 
   get uf() {
     return this.uploadForm.controls;
@@ -64,7 +65,7 @@ export class UploadComponent {
       },
       error => {
         this.isSending = false;
-        this.showSnackbar(JSON.stringify(error.error.apierror.message), 'Dismiss', 7000);
+        this.sharedService.showSnackbar(JSON.stringify(error.error.apierror.message), 'Dismiss', 7000);
       }
     );
   }
@@ -72,14 +73,4 @@ export class UploadComponent {
   reloadPage(): void {
     window.location.reload();
   }
-
-  showSnackbar(content: any, action: any, duration: number) {
-    this.matSnackBar.open(content, action, {
-      duration,
-      panelClass: ["custom-style"],
-      verticalPosition: 'top', // Allowed values are  'top' | 'bottom'
-      horizontalPosition: 'center', // Allowed values are 'start' | 'center' | 'end' | 'left' | 'right');
-    });
-  }
-
 }
