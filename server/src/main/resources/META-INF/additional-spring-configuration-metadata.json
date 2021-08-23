@@ -1,0 +1,27 @@
+{"properties": [
+  {
+    "name": "error.path",
+    "type": "java.lang.String",
+    "description": "Sets server wide error path"
+  },
+  {
+    "name": "purge.cron.expression",
+    "type": "java.lang.String",
+    "description": "Cron expression based on which are purged tokens from the db"
+  },
+  {
+    "name": "support.email",
+    "type": "java.lang.String",
+    "description": "A description for 'support.email'"
+  },
+  {
+    "name": "jwt.Secret",
+    "type": "java.lang.String",
+    "description": "Secret passphrase used to sign jwt tokens"
+  },
+  {
+    "name": "jwt.ExpirationMs",
+    "type": "java.lang.String",
+    "description": "Expiration time for jwt tokens"
+  }
+]}
