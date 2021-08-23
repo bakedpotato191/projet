@@ -43,12 +43,14 @@ export class RegisterComponent implements OnInit {
 
     this.authService.register(this.registrationForm.value).subscribe(
       data => {
-        console.log(data);
         this.isSuccessful = true;
         this.isSignUpFailed = false;
       },
-      err => {
-        this.errorMessage = err.error.message;
+      error => {
+        if (error.status === 409) {
+          this.sharedService.showSnackbar(JSON.stringify("Username is already in use"), 'Dismiss', 7000);
+          this.registrationForm.controls['username'].setErrors({ 'incorrect': true });
+        }
         this.isSignUpFailed = true;
       }
     );
