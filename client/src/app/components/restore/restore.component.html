@@ -54,8 +54,7 @@
                     </mat-error>
             </mat-form-field>
             <button *ngIf="!isLoading" mat-stroked-button color="accent" class="btn-block">Reinitialiser</button>
-            <mat-spinner *ngIf="isLoading" color="accent" [diameter]="30" aria-label="login in progress">
-            </mat-spinner>
+            <mat-spinner *ngIf="isLoading" color="accent" [diameter]="30" aria-label="login in progress"></mat-spinner>
         </form>
 
             <ng-container *ngIf="sent">
