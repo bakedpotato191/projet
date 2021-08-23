@@ -3,9 +3,9 @@ package com.example.demo.events.listeners;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
-import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
@@ -26,8 +26,8 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
 	@Autowired
     private JavaMailSender mailSender;
 
-    @Autowired
-    private Environment env;
+	@Value("${support.email}")
+	private String supportEmail;
 	
 	@Override
 	public void onApplicationEvent(final OnRegistrationCompleteEvent event) {
@@ -54,7 +54,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
         email.setTo(recipientAddress);
         email.setSubject(subject);
         email.setText(message + " \r\n" + confirmationUrl);
-        email.setFrom(env.getProperty("support.email"));
+        email.setFrom(supportEmail);
         return email;
     }
 
