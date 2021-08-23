@@ -65,7 +65,7 @@ export class UploadComponent {
       },
       error => {
         this.isSending = false;
-        this.sharedService.showSnackbar(JSON.stringify(error.error.apierror.message), 'Dismiss', 7000);
+        this.sharedService.showSnackbar(JSON.stringify("POST request failed with status code " + error.status), 'Dismiss', 7000);
       }
     );
   }
