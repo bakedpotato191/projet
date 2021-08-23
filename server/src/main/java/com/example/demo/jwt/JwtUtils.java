@@ -17,10 +17,10 @@ public class JwtUtils {
 	private static final Logger log = LoggerFactory.getLogger(JwtUtils.class);
 
 	@Value("${jwt.Secret}")
-	private String jwtSecret;
+	private String secret;
 
 	@Value("${jwt.ExpirationMs}")
-	private int jwtExpirationMs;
+	private int expireMS;
 
 	public String generateJwtToken(Authentication authentication) {
 
@@ -28,18 +28,18 @@ public class JwtUtils {
 		return Jwts.builder()
 				.setSubject((userPrincipal.getEmail()))
 				.setIssuedAt(new Date())
-				.setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-				.signWith(SignatureAlgorithm.HS512, jwtSecret)
+				.setExpiration(new Date((new Date()).getTime() + expireMS))
+				.signWith(SignatureAlgorithm.HS512, secret)
 				.compact();
 	}
 
 	public String getUserNameFromJwtToken(String token) {
-		return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
+		return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
 	}
 
 	public boolean validateJwtToken(String authToken) {
 		try {
-			Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+			Jwts.parser().setSigningKey(secret).parseClaimsJws(authToken);
 			return true;
 		} catch (SignatureException e) {
 			log.error("Invalid JWT signature: {}", e.getMessage());
