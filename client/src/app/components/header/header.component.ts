@@ -14,8 +14,7 @@ export class HeaderComponent implements OnInit {
   isLoggedIn = false;
   username?: string;
 
-  positionOptions: TooltipPosition[] = ['below', 'above', 'left', 'right'];
-  position = new FormControl(this.positionOptions[0]);
+  position = new FormControl('below');
 
   constructor(private tokenStorageService: TokenStorageService) { }
 
