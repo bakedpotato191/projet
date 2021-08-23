@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { TooltipPosition } from '@angular/material/tooltip';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 
 @Component({
@@ -10,7 +9,6 @@ import { TokenStorageService } from 'src/app/services/token-storage.service';
 })
 export class HeaderComponent implements OnInit {
 
-  private roles: string[] = [];
   isLoggedIn = false;
   username?: string;
 
@@ -23,7 +21,6 @@ export class HeaderComponent implements OnInit {
 
     if (this.isLoggedIn) {
       const user = this.tokenStorageService.getUser();
-      this.roles = user.roles;
       this.username = user.username;
     }
   }

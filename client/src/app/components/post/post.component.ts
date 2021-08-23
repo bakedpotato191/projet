@@ -91,7 +91,7 @@ export class PostComponent implements OnInit {
             this.router.navigate([`/profile/${this.tokenService.getUser().username}`]);
           },
           _error => {
-            return this.sharedService.showSnackbar("Error occured", 'Dismiss', 5000);
+            return this.sharedService.showSnackbar("Request failed with status code " + _error.status, 'Dismiss', 5000);
           }
         )
       }
