@@ -43,8 +43,10 @@ export class RestoreComponent implements OnInit {
           return this.sharedService.showSnackbar("It looks like you clicked on an invalid password reset link. Please try again.", 'Dismiss', 0);
         }
       )
+      this.sharedService.setTitle("Mis a jour de mot de passe");
     }
     else {
+      this.sharedService.setTitle("Reinitialisation");
       this.initLoginForm();
     }
 
