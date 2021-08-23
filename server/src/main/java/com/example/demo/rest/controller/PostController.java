@@ -41,7 +41,6 @@ public class PostController {
 	public ResponseEntity<HttpStatus> createPost(@RequestPart("photo") MultipartFile file, @RequestPart(name="description", required=false) String description) throws IllegalFormatException, IOException {
 		storageService.save(file, description);
 		return new ResponseEntity<>(HttpStatus.CREATED);
-
 	}
 	
 	@GetMapping("/view/{filename:.+}")
