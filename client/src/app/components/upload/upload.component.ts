@@ -76,7 +76,7 @@ export class UploadComponent {
   showSnackbar(content: any, action: any, duration: number) {
     this.matSnackBar.open(content, action, {
       duration,
-      panelClass: "custom-modalbox",
+      panelClass: ["custom-style"],
       verticalPosition: 'top', // Allowed values are  'top' | 'bottom'
       horizontalPosition: 'center', // Allowed values are 'start' | 'center' | 'end' | 'left' | 'right');
     });
