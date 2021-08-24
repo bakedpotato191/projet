@@ -3,10 +3,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/class/user';
 import { UserService } from 'src/app/services/user.service';
 import { Post } from 'src/app/class/post';
-import { UploadformService } from 'src/app/services/uploadform.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { SharedService } from 'src/app/services/shared.service';
+import { UploadComponent } from '../upload/upload.component';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { LoginComponent } from '../login/login.component';
 
 @Component({
   selector: 'app-home',
@@ -15,11 +17,13 @@ import { SharedService } from 'src/app/services/shared.service';
 })
 export class HomeComponent implements OnInit {
 
-
   mypage!: boolean;
   user!: User;
   posts!: Post[];
   public username!: any;
+
+  uploadRef!: MatDialogRef<UploadComponent>;
+  loginRef!: MatDialogRef<LoginComponent>;
 
   ngOnInit(): void {
     this.username = this.activatedRoute.snapshot.paramMap.get('username');
@@ -28,16 +32,14 @@ export class HomeComponent implements OnInit {
     if (this.username == this.tokenService.getUser().username) {
       this.mypage = true;
     }
-
   }
 
   constructor(private userService: UserService,
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
     private readonly tokenService: TokenStorageService,
-    private uploadService: UploadformService,
-    private sharedService: SharedService
-  ) { }
+    private sharedService: SharedService,
+    public dialog: MatDialog) { }
 
   getUserData(username: String) {
     this.userService.getUser(username).subscribe(data => {
@@ -45,18 +47,24 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  openDialog(): void {
-    this.uploadService.open();
+  openUploadDialog() {
+    this.uploadRef = this.dialog.open(UploadComponent);
   }
 
   follow() {
+    if (this.tokenService.getToken() == null) {
+      return this.dialog.open(LoginComponent);
+    }
     this.user.followed = true;
-    this.userService.follow(this.user.username).subscribe();
+    return this.userService.follow(this.user.username).subscribe();
   }
 
   unfollow() {
+    if (this.tokenService.getToken() == null) {
+      return this.dialog.open(LoginComponent);
+    }
     this.user.followed = false;
-    this.userService.unfollow(this.user.username).subscribe();
+    return this.userService.unfollow(this.user.username).subscribe();
   }
 
   onTabChanged(event: MatTabChangeEvent): void {

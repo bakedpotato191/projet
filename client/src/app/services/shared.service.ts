@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Title } from '@angular/platform-browser';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,10 +10,6 @@ export class SharedService {
 
   constructor(private matSnackBar: MatSnackBar,
               private titleService: Title) { }
-
-  public reloadPage() {
-    window.location.reload();
-  }
 
   public showSnackbar(content: any, action: any, duration: number) {
     let sb = this.matSnackBar.open(content, action, {
