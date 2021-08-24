@@ -3,12 +3,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Post } from 'src/app/class/post';
 import { Commentaire } from 'src/app/class/commentaire';
 import { PostService } from 'src/app/services/post.service';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmationDialogComponent } from '../shared/confirmation-dialog/confirmation-dialog.component';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { CommentService } from 'src/app/services/comment.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { CommentsComponent } from '../comments/comments.component';
+import { LoginComponent } from '../login/login.component';
 
 @Component({
   selector: 'app-post',
@@ -25,13 +26,15 @@ export class PostComponent implements OnInit {
   liked!: boolean;
   isLoading = false;
 
+  loginRef!: MatDialogRef<LoginComponent>;
+
   constructor ( private readonly postService: PostService,
-                private commentService: CommentService,
-                private sharedService: SharedService,
+                private readonly commentService: CommentService,
+                private readonly sharedService: SharedService,
                 private readonly tokenService: TokenStorageService,
                 private readonly route: ActivatedRoute,
                 private readonly router: Router,
-                public dialog: MatDialog) { }
+                private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(paramMap => {
@@ -65,8 +68,11 @@ export class PostComponent implements OnInit {
   }
 
   like() {
+    if (this.tokenService.getToken() == null) {
+      return this.dialog.open(LoginComponent);
+    }
     this.post.liked = true;
-    this.postService.likePost(this.id).subscribe();
+    return this.postService.likePost(this.id).subscribe();
   }
 
   dislike() {
