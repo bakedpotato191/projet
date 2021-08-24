@@ -33,9 +33,9 @@ public class UserController {
 	@Autowired
 	private PostService postService;
 
-	@GetMapping(value= "/getuser/{username}")
+	@GetMapping(value= "/info/{username}")
     public User getUser(@PathVariable("username") String username) {
-		return userService.getUserData(username);	
+		return userService.getUserData(username);
     }
 	
 	@PostMapping(value= "/follow")
