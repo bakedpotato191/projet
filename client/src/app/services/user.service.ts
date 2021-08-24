@@ -15,7 +15,7 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   public getUser(username: String): Observable<User>{
-    return this.http.get<User>(`${this.API}/getuser/${username}`);
+    return this.http.get<User>(`${this.API}/info/${username}`);
   }
 
   public follow(username: String): Observable<any>{
