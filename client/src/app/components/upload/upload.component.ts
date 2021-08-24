@@ -4,6 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { PostService } from 'src/app/services/post.service';
 import { SharedService } from 'src/app/services/shared.service';
 
+
 @Component({
   selector: 'app-upload',
   templateUrl: './upload.component.html',
@@ -60,16 +61,12 @@ export class UploadComponent {
     this.isSending = true;
     this.postService.postPhoto(formData).subscribe(
       _data => {
-        this.reloadPage()
+          window.location.reload();
       },
       error => {
         this.isSending = false;
         this.sharedService.showSnackbar(JSON.stringify("POST request failed with status code " + error.status), 'Dismiss', 7000);
       }
     );
-  }
-
-  reloadPage(): void {
-    window.location.reload();
   }
 }
