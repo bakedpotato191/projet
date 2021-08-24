@@ -12,6 +12,7 @@
     padding: 0;
     background: rgba(36,36,36,255);
     border-radius: 5px;
+    border: 1px solid rgb(58, 58, 58);
 }
 
 #profile {
@@ -21,35 +22,46 @@
 }
 
 .profile-flex{
+  flex:1;
   margin-left: 20px;
 }
 
 #profile-picture {
   height: 175px;
   width: 175px;
+  cursor: pointer;
 }
 
 #profile-picture img {
   display: block;
   height: 100%;
-  border-radius: 10px;
+  border-radius: 50%;
 }
 
 #profile-name {
   color: #e1b649;
+  font-size: 20px;
+  margin-bottom: 10px;
 }
 
-#profile-data {
-    margin: auto 8px 0 0;
+#data {
+    display: flex;
+    flex-direction: row;
     color: white;
+    padding: 12px 0;
+    margin: 0;
+    border-top: 1px solid rgb(58, 58, 58);
+}
+
+#numberPub,
+#numberSubs,
+#numberSubbed {
+  width: 33%;
+  align-items: center;
 }
 
 .count{
   color: green;
-}
-
-#upload-button {
-  margin-left: auto;
 }
 
 /* user posts */
@@ -61,6 +73,11 @@
 
 #posts {
   margin-top:20px;
+}
+
+#settings {
+  color: white;
+  width: 200px;
 }
 
 .noposts {
@@ -85,6 +102,10 @@
 
 ::ng-deep .mat-tab-body-content {
   overflow: hidden!important;
+}
+
+::ng-deep .example-tab-icon {
+  margin-right: 5px!important;
 }
 
 

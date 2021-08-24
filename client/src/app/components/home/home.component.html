@@ -7,25 +7,28 @@
                         alt="profile_picture">
                 </div>
                 <div class="profile-flex" fxLayout="column">
-                    <div id="profile-name">
-                        <h3>{{ user.nom }} {{ user.prenom }}</h3>
-                    </div>
-                    <div fxLayout="row">
-                        <div id="profile-data"><span class="count">{{ user.postCount }}</span> publications</div>
-                        <div id="profile-data"><span class="count">{{ user.followerCount }}</span> abonnés</div>
-                        <div id="profile-data"><span class="count">{{ user.followingCount }}</span> abonnements</div>
-                    </div>
-                    <div class="sub-buttons">
-                        <button mat-raised-button *ngIf="!user.followed && !mypage" color="accent"
+                        <div id="profile-name">
+                            {{ user.nom }} {{ user.prenom }}
+                        </div>    
+                        <div id="settings-button">
+                            <a id="settings" mat-stroked-button *ngIf="mypage" routerLink="/accounts/edit">Modifier profil</a>
+                        </div>
+                    <div *ngIf="!mypage" class="sub-buttons">
+                        <button mat-raised-button *ngIf="!user.followed" color="accent"
                             (click)="follow()">S'abonner</button>
-                        <button mat-raised-button *ngIf="user.followed && !mypage" color="warn" (click)="unfollow()">Se
+                        <button mat-raised-button *ngIf="user.followed" color="warn" (click)="unfollow()">Se
                             désabonner</button>
                     </div>
                 </div>
                 <div id="upload-button">
-                    <button mat-stroked-button *ngIf="mypage" color="accent" (click)="openDialog()">Publier une photo</button>
+                    <button mat-stroked-button *ngIf="mypage" color="accent" (click)="openDialog()"><mat-icon aria-hidden="false" aria-label="Upload icon">add_a_photo</mat-icon></button>
                 </div>
             </div>
+            <ul fxLayout="row" id="data">
+                <li id="numberPub" fxLayout="column"><span class="count">{{ user.postCount }}</span> publications</li>
+                <li id="numberSubs" fxLayout="column"><span class="count">{{ user.followerCount }}</span> abonnés</li>
+                <li id="numberSubbed" fxLayout="column"><span class="count">{{ user.followingCount }}</span> abonnements</li>
+            </ul>
         </div>
         <mat-tab-group (selectedTabChange)="onTabChanged($event)" mat-stretched-tabs animationDuration="700ms" mat-align-tabs="center" color="accent">
             <mat-tab id='first-tab' mat-tab-link>
