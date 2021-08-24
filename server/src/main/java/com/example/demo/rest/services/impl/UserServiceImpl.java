@@ -1,6 +1,7 @@
 package com.example.demo.rest.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +38,15 @@ public class UserServiceImpl implements UserService {
 		{	
 			var result = user.get();
 			result.setPostCount(postRepository.countByUtilisateur(user.get()));
-			result.setFollowed(followerRepository.isFollowed(getUserFromSession(), result));
+			
+			if (SecurityContextHolder.getContext().getAuthentication() 
+			          instanceof AnonymousAuthenticationToken) {
+				result.setFollowed(false);
+			}
+			else {
+				result.setFollowed(followerRepository.isFollowed(getUserFromSession(), result));
+			}
+			
 			result.setFollowerCount(followerRepository.countFollowers(username));
 			result.setFollowingCount(followerRepository.countFollowing(username));
 			return result;
