@@ -9,6 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -69,8 +71,14 @@ public class PostServiceImpl implements PostService {
 			post.setDate(found.get().getDate());
 			post.setUrl(found.get().getUrl());
 			post.setUtilisateur(found.get().getUtilisateur());
-			boolean liked = likeRepository.isLiked(userService.getUserFromSession(), found.get());
-			post.setLiked(liked);
+			
+			if (SecurityContextHolder.getContext().getAuthentication() 
+			          instanceof AnonymousAuthenticationToken) {
+				post.setLiked(false);
+			}
+			else {
+				post.setLiked(likeRepository.isLiked(userService.getUserFromSession(), found.get()));
+			}
 			
 			return post;
 		} 
