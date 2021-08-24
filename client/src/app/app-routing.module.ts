@@ -15,12 +15,12 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate:[LoggedInAuthGuard] },
   { path: 'password_reset', redirectTo: 'password_reset/', pathMatch: 'full'},
   { path: 'password_reset/:token', component: RestoreComponent },
-  { path: 'profile/:username', component:HomeComponent, canActivate: [AuthGuard],
+  { path: 'profile/:username', component:HomeComponent,
   children: [
       { path:'favorites', component: FavoritesComponent, outlet: 'favorites' }
     ] 
   },
-  { path: 'p/:id', component: PostComponent, canActivate: [AuthGuard] }
+  { path: 'p/:id', component: PostComponent }
 ];
 
 @NgModule({
