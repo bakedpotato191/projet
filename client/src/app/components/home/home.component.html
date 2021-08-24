@@ -6,13 +6,8 @@
                     <img src="https://t4.ftcdn.net/jpg/02/15/84/43/360_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg"
                         alt="profile_picture">
                 </div>
-                <div class="profile-flex" fxLayout="column">
-                        <div id="profile-name">
-                            {{ user.nom }} {{ user.prenom }}
-                        </div>    
-                        <div id="settings-button">
-                            <a id="settings" mat-stroked-button *ngIf="mypage" routerLink="/accounts/edit">Modifier profil</a>
-                        </div>
+                <div class="profile-flex" fxLayout="row">
+                        <div id="profile-name">{{ user.nom }} {{ user.prenom }}</div>    
                     <div *ngIf="!mypage" class="sub-buttons">
                         <button mat-raised-button *ngIf="!user.followed" color="accent"
                             (click)="follow()">S'abonner</button>
@@ -20,9 +15,14 @@
                             désabonner</button>
                     </div>
                 </div>
-                <div id="upload-button">
-                    <button mat-stroked-button *ngIf="mypage" color="accent" (click)="openDialog()"><mat-icon aria-hidden="false" aria-label="Upload icon">add_a_photo</mat-icon></button>
-                </div>
+                <ul id="buttons">
+                    <li id="upload-button">
+                        <button mat-stroked-button *ngIf="mypage" color="accent" (click)="openDialog()"><mat-icon aria-hidden="false" aria-label="Upload icon">add_a_photo</mat-icon></button>
+                    </li>
+                    <li id="settings-button">
+                        <a id="settings" mat-stroked-button *ngIf="mypage" routerLink="/accounts/edit"><mat-icon aria-hidden="false" aria-label="Settigns icon">settings</mat-icon></a>
+                    </li>
+                </ul>
             </div>
             <ul fxLayout="row" id="data">
                 <li id="numberPub" fxLayout="column"><span class="count">{{ user.postCount }}</span> publications</li>

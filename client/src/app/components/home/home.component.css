@@ -41,7 +41,6 @@
 #profile-name {
   color: #e1b649;
   font-size: 20px;
-  margin-bottom: 10px;
 }
 
 #data {
@@ -77,7 +76,6 @@
 
 #settings {
   color: white;
-  width: 200px;
 }
 
 .noposts {
@@ -98,6 +96,10 @@
 
 .sub-buttons {
   margin-top: 10px;
+}
+
+#buttons li {
+  margin-bottom: 1em;
 }
 
 ::ng-deep .mat-tab-body-content {
