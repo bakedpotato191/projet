@@ -26,31 +26,22 @@ ul {
   display: flex;
 }
 
-.flex-row{
-  flex-direction: row;
-}
-
-.flex-column {
-  flex-direction: column;
-}
-
-.h-100{
-  height: 100%;
-}
-
-.flex-center{
-  align-items: center;
-}
-
 /* snackbar shared css */
-.custom-style{
+.custom-style, 
+.dialog-style {
   background-color:#424242;
   color:#fff;
   font-weight: 500;
   border: 1px solid #cf7f79;
-  border-radius: 10px;
+
 }
   
 .custom-style .mat-simple-snackbar-action  {
   color: #cf7f79;
+}
+
+/* dialogs */
+.mat-dialog-container {
+  box-shadow: none;
+  background: none;
 }
