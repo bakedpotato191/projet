@@ -14,48 +14,42 @@
                         Saisir une adresse email valide
                     </mat-error>
                 </mat-form-field>
-                <button *ngIf="!isLoading" mat-stroked-button color="accent" class="btn-block">Envoyer l'email de réinitialisation</button>
+                <button *ngIf="!isLoading" mat-stroked-button color="accent" class="btn-block">Envoyer l'email de
+                    réinitialisation</button>
                 <mat-spinner *ngIf="isLoading" color="accent" [diameter]="30" aria-label="login in progress">
                 </mat-spinner>
             </form>
 
-            <form class="form" name="passwordForm" *ngIf="isRequest && passwordForm && !updated" [formGroup]="passwordForm"
-            (ngSubmit)="submitPasswords()">
-            <mat-form-field class="form-field" color="accent" appearance="outline">
-                <mat-label>Nouveau mot de passe</mat-label>
-                    <input
-                    matInput
-                    class="form-control"
-                    formControlName="password"
-                    name="password"
-                    [type]="hide ? 'password' : 'text'"
-                    >
-                    <button mat-icon-button type="button" matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <form class="form" name="passwordForm" *ngIf="isRequest && passwordForm && !updated"
+                [formGroup]="passwordForm" (ngSubmit)="submitPasswords()">
+                <mat-form-field class="form-field" color="accent" appearance="outline">
+                    <mat-label>Nouveau mot de passe</mat-label>
+                    <input matInput class="form-control" formControlName="password" name="password"
+                        [type]="hide ? 'password' : 'text'">
+                    <button mat-icon-button type="button" matSuffix (click)="hide = !hide"
+                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                         <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                      </button>
+                    </button>
                     <mat-error>
                         Le mot de passe doit comporter de 8 à 32 caractères
                     </mat-error>
-            </mat-form-field>
-            <mat-form-field class="form-field" color="accent" appearance="outline">
-                <mat-label>Répéter le nouveau mot de passe</mat-label>
-                    <input
-                    matInput
-                    class="form-control"
-                    name="passwordRepeat"
-                    formControlName="passwordRepeat"
-                    [type]="hide ? 'password' : 'text'"
-                    >
-                    <button mat-icon-button type="button" matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                </mat-form-field>
+                <mat-form-field class="form-field" color="accent" appearance="outline">
+                    <mat-label>Répéter le nouveau mot de passe</mat-label>
+                    <input matInput class="form-control" name="passwordRepeat" formControlName="passwordRepeat"
+                        [type]="hide ? 'password' : 'text'">
+                    <button mat-icon-button type="button" matSuffix (click)="hide = !hide"
+                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                         <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                      </button>
+                    </button>
                     <mat-error>
                         Le mot de passe doit comporter de 8 à 32 caractères
                     </mat-error>
-            </mat-form-field>
-            <button *ngIf="!isLoading" mat-stroked-button color="accent" class="btn-block">Reinitialiser</button>
-            <mat-spinner *ngIf="isLoading" color="accent" [diameter]="30" aria-label="login in progress"></mat-spinner>
-        </form>
+                </mat-form-field>
+                <button *ngIf="!isLoading" mat-stroked-button color="accent" class="btn-block">Reinitialiser</button>
+                <mat-spinner *ngIf="isLoading" color="accent" [diameter]="30" aria-label="login in progress">
+                </mat-spinner>
+            </form>
 
             <ng-container *ngIf="sent">
                 <div id="else">Consultez votre boite de réception pour trouver un lien permettant de réinitialiser
@@ -63,7 +57,8 @@
                 </div>
             </ng-container>
             <ng-container *ngIf="updated">
-                <div id="else">Votre mot de passe a été mis à jour avec succès. Vous pouvez maintenant vous connecter avec vos nouvelles informations d'identification.
+                <div id="else">Votre mot de passe a été mis à jour avec succès. Vous pouvez maintenant vous connecter
+                    avec vos nouvelles informations d'identification.
                 </div>
             </ng-container>
         </mat-card-content>

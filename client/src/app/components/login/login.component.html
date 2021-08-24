@@ -1,49 +1,40 @@
 <div class="wrapper image">
-<mat-card class="card">
-    <mat-card-header class="card-header">
-        <mat-card-title class="card-title">Se connecter</mat-card-title>
-    </mat-card-header>
-    <mat-card-content class="card-content">
-        <form class="form" name="form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-            <mat-form-field class="form-field" color="accent" appearance="outline">
-                <mat-label>Adresse courriel</mat-label>
-                <input 
-                matInput 
-                class="form-control input"
-                formControlName="email"
-                type="email"
-                name="email">
-                <mat-error>
-                    Saisir une adresse email valide
-                </mat-error>
-            </mat-form-field>
+    <mat-card class="card">
+        <mat-card-header class="card-header">
+            <mat-card-title class="card-title">Se connecter</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="card-content">
+            <form class="form" name="form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                <mat-form-field class="form-field" color="accent" appearance="outline">
+                    <mat-label>Adresse courriel</mat-label>
+                    <input matInput class="form-control input" formControlName="email" type="email" name="email">
+                    <mat-error>
+                        Saisir une adresse email valide
+                    </mat-error>
+                </mat-form-field>
 
-            <mat-form-field class="form-field" color="accent" appearance="outline">
-                <mat-label>Mot de passe</mat-label>
-                <input 
-                matInput
-                class="form-control"
-                formControlName="password"
-                type="password"
-                name="password"  
-                [type]="hide ? 'password' : 'text'"
-                >
-                <button mat-icon-button type="button" matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                  </button>
-                <mat-error>
-                    Mot de passe doit contenir de 8 au 32 caracteres
-                </mat-error>
-            </mat-form-field>
-            <button *ngIf="!isLoading" mat-stroked-button color="accent" class="btn-block">Sign In</button>
-            <mat-spinner *ngIf="isLoading" color="accent" [diameter]="45" aria-label="login in progress"></mat-spinner>
-        </form>
-    </mat-card-content>
-    <mat-card-footer class="card-footer">
-        <div class="card-footer-element">Première visite?<span><a routerLink="/signup"> Créer un compte</a></span>
-        </div>
-        <mat-divider></mat-divider>
-        <div class="restore"><span><a routerLink="/password_reset/">Reinitialiser le mot de passe</a></span></div>
-    </mat-card-footer>
-</mat-card>
+                <mat-form-field class="form-field" color="accent" appearance="outline">
+                    <mat-label>Mot de passe</mat-label>
+                    <input matInput class="form-control" formControlName="password" type="password" name="password"
+                        [type]="hide ? 'password' : 'text'">
+                    <button mat-icon-button type="button" matSuffix (click)="hide = !hide"
+                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                    </button>
+                    <mat-error>
+                        Mot de passe doit contenir de 8 au 32 caracteres
+                    </mat-error>
+                </mat-form-field>
+                <button *ngIf="!isLoading" mat-stroked-button color="accent" class="btn-block">Sign In</button>
+                <mat-spinner *ngIf="isLoading" color="accent" [diameter]="45" aria-label="login in progress">
+                </mat-spinner>
+            </form>
+        </mat-card-content>
+        <mat-card-footer class="card-footer">
+            <div class="card-footer-element">Première visite?<span><a routerLink="/signup"> Créer un compte</a></span>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="restore"><span><a routerLink="/password_reset/">Reinitialiser le mot de passe</a></span></div>
+        </mat-card-footer>
+    </mat-card>
 </div>
