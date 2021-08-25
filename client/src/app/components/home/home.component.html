@@ -1,12 +1,20 @@
 <div *ngIf="isContent">
+    <form [formGroup]="avatarForm">
+        <input #input type="file" accept="image/*" (change)="onFileChange($event)">
+    </form>
     <div *ngIf="user; then container else error"></div>
     <ng-template #container>
         <div class="container">
             <div id="profile-container">
                 <div id="profile">
-                    <div id="profile-picture">
-                        <img src="https://t4.ftcdn.net/jpg/02/15/84/43/360_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg"
-                            alt="profile_picture" />
+                    <div id="profile-picture" (click)="input.click()">
+                        <div *ngIf="user.avatar; then avatar else default"></div>
+                        <ng-template #avatar>
+                            <img src="{{ user.avatar }}" alt="avatar" />
+                        </ng-template>
+                        <ng-template #default>
+                            <img src="https://t4.ftcdn.net/jpg/02/15/84/43/360_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg" alt="avatar">
+                        </ng-template> 
                     </div>
                     <div class="profile-flex" fxLayout="column">
                         <div id="profile-name">{{ user.nom }} {{ user.prenom }}</div>
@@ -62,7 +70,8 @@
                     <router-outlet name="favorites"></router-outlet>
                 </mat-tab>
             </mat-tab-group>
-        </div>        
+        </div>
+  
     </ng-template>
     <ng-template #error>
         <div id="notfound">

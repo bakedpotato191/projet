@@ -82,6 +82,13 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
+	public String setPicture(String path) {
+		path = "http://localhost:8081/api/user/profile_picture/" + path;
+		userRepository.setProfilePicture(getUserFromSession(), path);
+		return path;
+	}
+	
+	@Override
 	public User getUserFromSession() {
 		return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	}

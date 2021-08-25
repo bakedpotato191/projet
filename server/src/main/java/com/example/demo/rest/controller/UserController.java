@@ -1,11 +1,15 @@
 package com.example.demo.rest.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,11 +18,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.example.demo.rest.exceptions.IncorrectFileExtensionException;
 import com.example.demo.rest.models.Like;
 import com.example.demo.rest.models.Post;
 import com.example.demo.rest.models.User;
+import com.example.demo.rest.services.FileStorageService;
 import com.example.demo.rest.services.PostService;
 import com.example.demo.rest.services.UserService;
 
@@ -32,6 +40,9 @@ public class UserController {
 	
 	@Autowired
 	private PostService postService;
+	
+	@Autowired
+	private FileStorageService storageService;
 
 	@GetMapping(value= "/info/{username}")
     public User getUser(@PathVariable("username") String username) {
@@ -65,4 +76,21 @@ public class UserController {
 									            @RequestParam String sort) {
 		return postService.getUserPosts(username, page, size, sort);
 	}
+	
+	@PostMapping(value= "/profile_picture")
+    public ResponseEntity<HttpStatus> setProfilePicture(@RequestPart("avatar") MultipartFile file) throws IncorrectFileExtensionException, IOException {
+		storageService.saveAvatar(file);
+		return new ResponseEntity<>(HttpStatus.OK);
+    }
+	
+	@GetMapping("/profile_picture/{filename:.+}")
+	public ResponseEntity<Resource> getFile(@PathVariable String filename) throws IOException {
+		Resource file = storageService.loadAvatar(filename);
+		return ResponseEntity.ok()
+				.header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + file.getFilename() + "\"")
+				.contentType(MediaType.IMAGE_JPEG)
+				.body(file);
+	}
+	
+	
 }

@@ -57,7 +57,7 @@ public class User implements Serializable, UserDetails {
 	private String password;
     
     @Column
-    private String avatar = "https://t4.ftcdn.net/jpg/02/15/84/43/360_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg";
+    private String avatar;
 	
 	@JsonIgnore
     private boolean enabled = false;

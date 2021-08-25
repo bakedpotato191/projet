@@ -17,4 +17,8 @@ public interface FileStorageService {
 	Resource load(String filename) throws MalformedURLException, FileNotFoundException;
 
 	void init() throws IOException;
+
+	String saveAvatar(MultipartFile file) throws IncorrectFileExtensionException, IOException;
+
+	Resource loadAvatar(String filename) throws MalformedURLException, FileNotFoundException;
 }
