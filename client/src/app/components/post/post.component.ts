@@ -54,7 +54,7 @@ export class PostComponent implements OnInit {
         }
       },
       _error => {
-        this.isContent= true;
+        this.isContent = true;
       }
     );
   }
