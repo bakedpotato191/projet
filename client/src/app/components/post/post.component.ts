@@ -25,6 +25,7 @@ export class PostComponent implements OnInit {
   comment: Commentaire = new Commentaire();
   liked!: boolean;
   isLoading = false;
+  isMyPost!: boolean;
 
   loginRef!: MatDialogRef<LoginComponent>;
 
@@ -46,11 +47,18 @@ export class PostComponent implements OnInit {
     this.postService.getPostById(this.id).subscribe(
       data => {
         this.post = data;
+        if (this.post.utilisateur.username === this.tokenService.getUser().username){
+          this.isMyPost = true;
+        }
       }
     );
   }
 
   onSubmit(id: number) {
+    if (this.tokenService.getToken() == null) {
+      this.dialog.open(LoginComponent);
+      return;
+    }
     this.comment.id = id;
     this.isLoading = true;
       this.commentService.submitComment(this.comment).subscribe(
@@ -96,8 +104,8 @@ export class PostComponent implements OnInit {
           _data => {
             this.router.navigate([`/profile/${this.tokenService.getUser().username}`]);
           },
-          _error => {
-            return this.sharedService.showSnackbar("Request failed with status code " + _error.status, 'Dismiss', 5000);
+          error => {
+            return this.sharedService.showSnackbar("Request failed with status code " + error.status, 'Dismiss', 5000);
           }
         )
       }

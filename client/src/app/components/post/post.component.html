@@ -6,9 +6,11 @@
         <a routerLink="/profile/{{post.utilisateur.username}}"><img class="avatar"
             src="{{ post.utilisateur.avatar }}"></a>
       </div>
+      <div fxLayout="column">
       <mat-card-title><a routerLink="/profile/{{post.utilisateur.username}}">{{ post.utilisateur.prenom }} {{
           post.utilisateur.nom }}</a></mat-card-title>
       <mat-card-subtitle>@{{ post.utilisateur.username }}</mat-card-subtitle>
+    </div>
     </ng-container>
     </mat-card-header>
     <mat-divider></mat-divider>
@@ -28,7 +30,7 @@
         <mat-icon aria-hidden="false" aria-label="like icon">favorite</mat-icon>
       </button>
       <button mat-button id="shareBtn">SHARE</button>
-      <button mat-button id="deleteBtn" (click)="openDeletePostDialog(post.id)">
+      <button *ngIf="isMyPost" mat-button id="deleteBtn" (click)="openDeletePostDialog(post.id)">
         <mat-icon aria-hidden="false" aria-label="like icon">delete</mat-icon>
       </button>
       <mat-divider></mat-divider>
