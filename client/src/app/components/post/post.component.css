@@ -142,3 +142,16 @@ h5 {
   border: 1px solid #e4486a;
   border-radius: 2px;
 }
+
+#notfound {
+  display: flex;
+  flex-direction: column;
+  color: white;
+  text-align: center;
+  font-size: 2em;
+}
+
+#error {
+  color: white;
+  font-size: 4em;
+}

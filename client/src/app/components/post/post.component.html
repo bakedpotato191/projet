@@ -29,7 +29,7 @@
       <button mat-button id="likeBtn" *ngIf="!post.liked" (click)="like()">
         <mat-icon aria-hidden="false" aria-label="like icon">favorite</mat-icon>
       </button>
-      <button mat-button id="shareBtn">SHARE</button>
+      <button mat-button id="shareBtn">Partager</button>
       <button *ngIf="isMyPost" mat-button id="deleteBtn" (click)="openDeletePostDialog(post.id)">
         <mat-icon aria-hidden="false" aria-label="like icon">delete</mat-icon>
       </button>
@@ -52,8 +52,9 @@
     <app-comments></app-comments>
   </mat-card>
   <ng-template #elseBlock>
-    <div id="notfound"><img src="https://static.thenounproject.com/png/1527904-200.png"><span>404 - Post n'a pas été
-        trouvé ou a été supprimé par son auteur.</span></div>
+    <div id="notfound">
+      <span id="error">404</span>
+      <span>Post n'a pas ététrouvé ou a été supprimé par son auteur.</span></div>
   </ng-template>
 
 </div>
