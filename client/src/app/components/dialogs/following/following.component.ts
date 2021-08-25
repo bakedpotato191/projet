@@ -14,6 +14,7 @@ export class FollowingComponent implements OnInit {
   private readonly size: number = 9;
   private readonly sort: string = "date";
   canLoad = false;
+  isLoading = false;
 
   followings!: Follower[];
 
@@ -31,13 +32,27 @@ export class FollowingComponent implements OnInit {
   }
 
   getSubscriptions(){
-    this.userService.getSubscriptions(this.username, this.page, this.size, this.sort).subscribe(data => {
-      console.log(data);
-      this.followings = data;
-    },
-    error => {
-      console.log(error);
-    })
+    this.isLoading = true;
+    setTimeout(() => {
+      this.userService.getSubscriptions(this.username, this.page, this.size, this.sort).subscribe(data => {
+        console.log(data);
+        this.followings = data;
+        this.isLoading = false;
+      },
+      error => {
+        this.isLoading = false;
+        console.log(error);
+      })
+    }, 1000);
   }
+
+  follow(){
+
+  }
+
+  unfollow(){
+
+  }
+  
 
 }
