@@ -71,7 +71,6 @@ export class RestoreComponent implements OnInit {
       return;
     }
     this.isLoading = true;
-    setTimeout(() => {
       this.authService.restore(this.restoreForm.value).subscribe(
         _data=> {
           this.sent = true;
@@ -82,8 +81,6 @@ export class RestoreComponent implements OnInit {
         }
 
       );
-    }, 1000);
-
   };
 
   submitPasswords() {
