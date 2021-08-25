@@ -36,5 +36,9 @@ export class UserService {
 
   public setProfilePicture(form: FormData): Observable<any>{
     return this.http.post(this.API + '/profile_picture', form);
-  }  
+  }
+
+  public getSubscriptions(username: String, page: Number, size: Number, sort: String): Observable<any> {
+    return this.http.get(`${this.API}/subscriptions/${username}?page=${page}&size=${size}&sort=${sort}`);
+  }
 }

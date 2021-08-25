@@ -91,6 +91,11 @@
 #profile-name {
   color: #e1b649;
   font-size: 20px;
+  margin-bottom: 5px;
+}
+
+#profile-username {
+  color:darkgray;
 }
 
 #data {
@@ -112,6 +117,7 @@
 .count{
   margin-bottom: 2px;
   color: #e1b649;
+  cursor: pointer;
 }
 
 /* user posts */

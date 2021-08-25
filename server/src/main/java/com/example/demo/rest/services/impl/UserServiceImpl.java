@@ -1,6 +1,12 @@
 package com.example.demo.rest.services.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -86,6 +92,19 @@ public class UserServiceImpl implements UserService {
 		path = "http://localhost:8081/api/user/profile_picture/" + path;
 		userRepository.setProfilePicture(getUserFromSession(), path);
 		return path;
+	}
+	
+	@Override
+	public List<Follower> getSubscriptions(String username, int pageNo, int pageSize){
+		Pageable paging = PageRequest.of(pageNo, pageSize);
+		Slice<Follower> slicedResult = followerRepository.findAllUtilisateur2ByUtilisateur1Username(username, paging);
+		
+		if (slicedResult.hasContent()) {
+			return slicedResult.getContent();
+		}
+		else {
+			return new ArrayList<>();
+		}
 	}
 	
 	@Override

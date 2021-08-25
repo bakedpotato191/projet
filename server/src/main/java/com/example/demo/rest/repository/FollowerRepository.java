@@ -1,5 +1,7 @@
 package com.example.demo.rest.repository;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -27,4 +29,6 @@ public interface FollowerRepository extends JpaRepository<Follower, Long> {
 
 	@Query(value = "SELECT COUNT(utilisateur1_id) FROM Follower f CROSS JOIN utilisateur u on f.utilisateur1_id = u.id WHERE u.username= :username", nativeQuery=true)
 	Long countFollowing(@Param ("username") String username);
+	
+	Slice<Follower> findAllUtilisateur2ByUtilisateur1Username(String username, Pageable paging);
 }

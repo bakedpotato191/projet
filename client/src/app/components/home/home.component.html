@@ -21,6 +21,7 @@
                     </div>
                     <div class="profile-flex" fxLayout="column">
                         <div id="profile-name">{{ user.nom }} {{ user.prenom }}</div>
+                        <div id="profile-username">@{{ user.username }}</div>
                         <div *ngIf="!mypage" class="sub-buttons">
                             <button mat-raised-button *ngIf="!user.followed" color="accent" (click)="follow()">
                                 S'abonner
@@ -51,7 +52,7 @@
                         <span class="count">{{ user.followerCount }}</span> abonnés
                     </li>
                     <li id="numberSubbed" fxLayout="column">
-                        <span class="count">{{ user.followingCount }}</span> abonnements
+                        <span class="count" (click)="openSubbedDialog()">{{ user.followingCount }}</span> abonnements
                     </li>
                 </ul>
             </div>

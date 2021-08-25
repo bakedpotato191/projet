@@ -17,7 +17,6 @@ export class UserpostsComponent implements OnInit {
   private readonly sort: string = "date";
   isLoading = false;
   canLoad = false;
-
   constructor(private readonly router: Router,
               private readonly userService: UserService,
               private readonly parent: HomeComponent) { }

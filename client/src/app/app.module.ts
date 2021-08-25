@@ -29,6 +29,7 @@ import { UserpostsComponent } from './components/userposts/userposts.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { CommentsComponent } from './components/comments/comments.component';
 import { RestoreComponent } from './components/restore/restore.component';
+import { FollowingComponent } from './components/dialogs/following/following.component';
 
 @NgModule({
   imports: [
@@ -55,7 +56,8 @@ import { RestoreComponent } from './components/restore/restore.component';
     FavoritesComponent,
     UserpostsComponent,
     CommentsComponent,
-    RestoreComponent
+    RestoreComponent,
+    FollowingComponent
   ],
   exports: [
     UploadComponent

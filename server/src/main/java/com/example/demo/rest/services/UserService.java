@@ -1,5 +1,8 @@
 package com.example.demo.rest.services;
 
+import java.util.List;
+
+import com.example.demo.rest.models.Follower;
 import com.example.demo.rest.models.User;
 
 public interface UserService {
@@ -13,4 +16,6 @@ public interface UserService {
 	void unfollow(String username);
 
 	String setPicture(String path);
+
+	List<Follower> getSubscriptions(String username, int pageNo, int pageSize);
 }

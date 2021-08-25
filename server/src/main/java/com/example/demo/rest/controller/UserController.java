@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.rest.exceptions.IncorrectFileExtensionException;
+import com.example.demo.rest.models.Follower;
 import com.example.demo.rest.models.Like;
 import com.example.demo.rest.models.Post;
 import com.example.demo.rest.models.User;
@@ -77,6 +78,13 @@ public class UserController {
 									            @RequestParam Integer size,
 									            @RequestParam String sort) {
 		return postService.getUserPosts(username, page, size, sort);
+	}
+	
+	@GetMapping(value = "/subscriptions/{username}")
+	public List<Follower> getSubscriptions( @PathVariable("username") String username,
+												@RequestParam Integer page, 
+									            @RequestParam Integer size) {
+		return userService.getSubscriptions(username, page, size);
 	}
 	
 	@PostMapping(value= "/profile_picture")

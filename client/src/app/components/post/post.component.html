@@ -4,9 +4,19 @@
     <mat-card class="card">
       <mat-card-header class="card-header">
         <ng-container *ngIf="post.utilisateur">
+          
           <div mat-card-avatar class="card-avatar">
-            <a routerLink="/profile/{{ post.utilisateur.username }}"><img class="avatar"
-                src="{{ post.utilisateur.avatar }}" /></a>
+            <div *ngIf="post.utilisateur.avatar; then avatar else default"></div>
+            <ng-template #avatar>
+              <a routerLink="/profile/{{ post.utilisateur.username }}">
+                <img class="avatar" src="{{ post.utilisateur.avatar }}" />
+                </a>
+            </ng-template>
+            <ng-template #default>
+              <a routerLink="/profile/{{ post.utilisateur.username }}">
+                <img class="avatar" src="https://t4.ftcdn.net/jpg/02/15/84/43/360_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg" />
+              </a>
+            </ng-template>
           </div>
           <div fxLayout="column">
             <mat-card-title><a routerLink="/profile/{{ post.utilisateur.username }}">{{ post.utilisateur.prenom }} {{
@@ -56,11 +66,11 @@
       <app-comments></app-comments>
     </mat-card>
   </ng-template>
-    
-    <ng-template #error>
-      <div id="notfound">
-        <span id="error">404</span>
-        <span>Post n'a pas ététrouvé ou a été supprimé par son auteur.</span>
-      </div>
-    </ng-template>
-  </div>
+
+  <ng-template #error>
+    <div id="notfound">
+      <span id="error">404</span>
+      <span>Post n'a pas ététrouvé ou a été supprimé par son auteur.</span>
+    </div>
+  </ng-template>
+</div>

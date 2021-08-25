@@ -1,0 +1,21 @@
+#title {
+    text-align: center;
+    margin: 0;
+}
+
+#actions {
+    padding: 0;
+    width: 100%;
+}
+
+#close {
+    width: 100%;
+}
+
+::ng-deep .mat-dialog-content {
+    padding: 0;
+}
+
+::ng-deep .cdk-overlay-pane {
+    border-radius: 8px;
+}

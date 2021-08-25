@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/class/user';
 import { UserService } from 'src/app/services/user.service';
@@ -11,6 +11,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { LoginComponent } from '../login/login.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { FollowingComponent } from '../dialogs/following/following.component';
 
 @Component({
   selector: 'app-home',
@@ -19,7 +20,6 @@ import { Subscription } from 'rxjs';
 })
 export class HomeComponent implements OnInit {
   @ViewChild('input') input: any;
-  @ViewChild('overlay') overlay: any;
 
   mypage!: boolean;
   isContent: boolean = false;
@@ -131,7 +131,15 @@ export class HomeComponent implements OnInit {
         return this.sharedService.showSnackbar("La demande a échoué avec le statut http " + error.status, 'Dismiss', 7000);
       });
     }, 1000);
+  }
 
+  openSubbedDialog() {
+    console.log ("clicked subscribbed count");
+    this.dialog.open(FollowingComponent, {
+      width: '500px',
+      data: this.username,
+      panelClass: ["dialog-window-style"]
+    });
 
   }
 
