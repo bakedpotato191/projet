@@ -81,8 +81,8 @@ export class CommentsComponent implements OnInit {
           _data => {
             this.ngOnInit();
           },
-          _error => {
-            return this.sharedService.showSnackbar("Request failed with status code" + _error.status, 'Dismiss', 5000);
+          error => {
+            return this.sharedService.showSnackbar("La demande a échoué avec le statut http " + error.status, 'Dismiss', 5000);
           }
         )
       }

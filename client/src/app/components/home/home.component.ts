@@ -19,6 +19,7 @@ import { Subscription } from 'rxjs';
 })
 export class HomeComponent implements OnInit {
   @ViewChild('input') input: any;
+  @ViewChild('overlay') overlay: any;
 
   mypage!: boolean;
   isContent: boolean = false;
@@ -34,6 +35,8 @@ export class HomeComponent implements OnInit {
   imgFile!: String;
 
   subscription!: Subscription;
+
+  isOverlayed!: boolean;
 
   ngOnInit(): void {
     this.username = this.activatedRoute.snapshot.paramMap.get('username');
@@ -116,13 +119,20 @@ export class HomeComponent implements OnInit {
     }
 
     var formData: any = new FormData();
-    formData.append("avatar", this.fileData);;
-    this.userService.setProfilePicture(formData).subscribe(data => {
-      window.location.reload();
-    },
-    error => {
-      return this.sharedService.showSnackbar("La demande a échoué avec le statut http " + error.status, 'Dismiss', 7000);
-    });
+    formData.append("avatar", this.fileData);
+    this.isOverlayed = true;
+    setTimeout(() => {
+      this.userService.setProfilePicture(formData).subscribe(data => {
+        this.user.avatar = data;
+        this.isOverlayed = false
+      },
+      error => {
+        this.isOverlayed = false
+        return this.sharedService.showSnackbar("La demande a échoué avec le statut http " + error.status, 'Dismiss', 7000);
+      });
+    }, 1000);
+
+
   }
 
 }

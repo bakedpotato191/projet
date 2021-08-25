@@ -8,6 +8,9 @@
             <div id="profile-container">
                 <div id="profile">
                     <div id="profile-picture" (click)="input.click()">
+                        <div [style.display]="isOverlayed ? 'block' : 'none'" class="overlay">
+                            <div class="spinner"></div>
+                        </div>
                         <div *ngIf="user.avatar; then avatar else default"></div>
                         <ng-template #avatar>
                             <img src="{{ user.avatar }}" alt="avatar" />
