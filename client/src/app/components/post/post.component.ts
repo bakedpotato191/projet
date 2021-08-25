@@ -26,6 +26,7 @@ export class PostComponent implements OnInit {
   liked!: boolean;
   isLoading = false;
   isMyPost!: boolean;
+  isContent: boolean = false;
 
   loginRef!: MatDialogRef<LoginComponent>;
 
@@ -47,9 +48,13 @@ export class PostComponent implements OnInit {
     this.postService.getPostById(this.id).subscribe(
       data => {
         this.post = data;
+        this.isContent= true;
         if (this.post.utilisateur.username === this.tokenService.getUser().username){
           this.isMyPost = true;
         }
+      },
+      _error => {
+        this.isContent= true;
       }
     );
   }
