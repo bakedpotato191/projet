@@ -1,6 +1,8 @@
 package com.example.demo.rest.controller;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -78,9 +80,9 @@ public class UserController {
 	}
 	
 	@PostMapping(value= "/profile_picture")
-    public ResponseEntity<HttpStatus> setProfilePicture(@RequestPart("avatar") MultipartFile file) throws IncorrectFileExtensionException, IOException {
-		storageService.saveAvatar(file);
-		return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Collection<String>> setProfilePicture(@RequestPart("avatar") MultipartFile file) throws IncorrectFileExtensionException, IOException {
+		String avatar = storageService.saveAvatar(file);
+		return new ResponseEntity<>(Collections.singleton(avatar), HttpStatus.OK);
     }
 	
 	@GetMapping("/profile_picture/{filename:.+}")
