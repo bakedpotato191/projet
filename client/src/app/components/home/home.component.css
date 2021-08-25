@@ -110,4 +110,25 @@
   margin-right: 5px!important;
 }
 
+/* 404 */
+
+#notfound {
+  display: flex;
+  flex-direction: column;
+  color: white;
+  text-align: center;
+  font-size: 1em;
+  padding: 40px 0 40px 0;
+}
+
+#error {
+  color: white;
+  font-size: 4em;
+}
+
+#first {
+  padding: 10px;
+  font-size: 1.5em;
+}
+
 

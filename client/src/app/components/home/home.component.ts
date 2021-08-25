@@ -18,6 +18,7 @@ import { LoginComponent } from '../login/login.component';
 export class HomeComponent implements OnInit {
 
   mypage!: boolean;
+  isContent: boolean = false;
   user!: User;
   posts!: Post[];
   public username!: any;
@@ -44,6 +45,10 @@ export class HomeComponent implements OnInit {
   getUserData(username: String) {
     this.userService.getUser(username).subscribe(data => {
       this.user = data;
+      this.isContent = true;
+    },
+    _error => {
+      this.isContent = true;
     });
   }
 
