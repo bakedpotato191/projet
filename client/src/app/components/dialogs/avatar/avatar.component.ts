@@ -6,13 +6,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   templateUrl: './avatar.component.html',
   styleUrls: ['./avatar.component.css']
 })
-export class AvatarComponent implements OnInit {
+export class AvatarComponent {
 
   constructor(public dialogRef: MatDialogRef<AvatarComponent>,
               @Inject(MAT_DIALOG_DATA) public input: any) { }
-
-  ngOnInit(): void {
-  }
 
   closeDialog(){
     this.dialogRef.close();
