@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/class/user';
 import { UserService } from 'src/app/services/user.service';
@@ -21,7 +21,6 @@ import { AvatarComponent } from '../dialogs/avatar/avatar.component';
 })
 export class HomeComponent implements OnInit {
   @ViewChild('input') input: any;
-  @ViewChild('#profile-picture') picture: any;
 
   mypage!: boolean;
   isContent: boolean = false;
