@@ -52,3 +52,29 @@ nav img {
     color: white!important;
 }
 
+button .mat-icon {
+    margin-right: 5px;
+}
+
+img {
+    border-radius: 10%;
+}
+
+#disconnect {
+    font-weight:500;
+    color: rgb(221, 114, 114);
+    border-top: 1px solid rgb(58, 58, 58);
+}
+
+#disconnect .mat-icon {
+    color: rgb(221, 114, 114);
+}
+
+::ng-deep .mat-menu-panel {
+    border: 1px solid rgb(58, 58, 58);
+    -webkit-box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.38); 
+    box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.38);
+    background-color: rgba(36,36,36,255);
+}
+
+
