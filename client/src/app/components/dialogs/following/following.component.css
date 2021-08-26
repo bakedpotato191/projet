@@ -45,8 +45,7 @@
     padding: 0;
 }
 
-::ng-deep .cdk-overlay-pane {
-    height: 400px;
+.cdk-overlay-pane {
     border-radius: 8px;
 }
 
