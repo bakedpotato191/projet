@@ -106,6 +106,9 @@ public class UserServiceImpl implements UserService {
 		Slice<Follower> slicedResult = followerRepository.findAllUtilisateur2ByUtilisateur1Username(username, paging);
 		
 		if (slicedResult.hasContent()) {
+			slicedResult.forEach(entity -> 
+			entity.getUtilisateur2().setFollowed(followerRepository.isFollowed(getUserFromSession(), entity.getUtilisateur2())));
+				
 			return slicedResult.getContent();
 		}
 		else {
