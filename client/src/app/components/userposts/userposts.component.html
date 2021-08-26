@@ -1,4 +1,4 @@
-<div class="content" infinite-scroll [infiniteScrollDistance]="2" [immediateCheck]="false" (scrolled)="onScrollDown()">
+<div class="content" infinite-scroll [infiniteScrollDistance]="3" [immediateCheck]="false" (scrolled)="onScrollDown()">
     <mat-card-list *ngIf="posts.length > 0; else elseBlock" fxLayout="row wrap" fxLayoutAlign="center center"
         fxLayoutGap="grid">
         <mat-card matRipple [matRippleCentered]="true" fxFlex="25%" fxFlex.xs="100%" fxFlex.sm="33%"
