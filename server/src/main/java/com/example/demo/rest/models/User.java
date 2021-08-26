@@ -60,6 +60,7 @@ public class User implements Serializable, UserDetails {
     private String avatar;
 	
 	@JsonIgnore
+	@Column
     private boolean enabled = false;
 	
 	@Transient
