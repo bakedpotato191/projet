@@ -94,6 +94,11 @@ public class UserServiceImpl implements UserService {
 		return path;
 	}
 	
+	@Override
+	public String getProfilePicture() {
+		return userRepository.getProfilePicture(getUserFromSession());	 
+	}
+	
 
 	@Override
 	public void resetProfilePicture() {
@@ -101,7 +106,7 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public List<Follower> getSubscriptions(String username, int pageNo, int pageSize){
+	public List<Follower> getSubscriptions(String username, int pageNo, int pageSize) {
 		Pageable paging = PageRequest.of(pageNo, pageSize);
 		Slice<Follower> slicedResult = followerRepository.findAllUtilisateur2ByUtilisateur1Username(username, paging);
 		

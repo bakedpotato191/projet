@@ -88,6 +88,12 @@ public class UserController {
 		return userService.getSubscriptions(username, page, size);
 	}
 	
+	@GetMapping(value="/profile_picture")
+	public ResponseEntity<Collection<String>> getProfilePicture() {
+		String avatar = userService.getProfilePicture();
+		return new ResponseEntity<>(Collections.singleton(avatar), HttpStatus.OK);
+	}
+	
 	@PostMapping(value= "/profile_picture")
     public ResponseEntity<Collection<String>> setProfilePicture(@RequestPart("avatar") MultipartFile file) throws IncorrectFileExtensionException, IOException {
 		String avatar = storageService.saveAvatar(file);

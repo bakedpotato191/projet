@@ -4,42 +4,19 @@
             <mat-card-title class="card-title">Créez votre compte</mat-card-title>
         </mat-card-header>
 
-        <form 
-        class="form" 
-        *ngIf="!isSuccessful"
-        name="form" 
-        [formGroup]="registrationForm"
-        (ngSubmit)="onSubmit()">
-
+        <form class="form" *ngIf="!isSuccessful" name="form" [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
             <mat-card-content class="card-content">
                 <mat-form-field class="form-field" color="accent" appearance="outline">
                     <mat-label>Nom</mat-label>
-                    <input
-                    matInput
-                    class="form-control"
-                    formControlName="nom" 
-                    type="text" 
-                    name="nom"
-                    minlength="2"
-                    maxlength="16"
-                    placeholder="Doe"
-                    required>
+                    <input matInput class="form-control" formControlName="nom" type="text" name="nom" minlength="2"
+                        maxlength="16" placeholder="Doe" required />
                     <mat-error>Le nom doit comporter au moins 2 caractères</mat-error>
                 </mat-form-field>
 
                 <mat-form-field class="form-field" color="accent" appearance="outline">
                     <mat-label>Prenom</mat-label>
-                    <input 
-                    matInput
-                    class="form-control"
-                    formControlName="prenom" 
-                    type="text" 
-                    name="prenom"
-                    required
-                    minlength="2"
-                    maxlength="16"
-                    placeholder="John"
-                    >
+                    <input matInput class="form-control" formControlName="prenom" type="text" name="prenom" required
+                        minlength="2" maxlength="16" placeholder="John" />
                     <mat-error>
                         Le prénom doit comporter au moins 2 caractères
                     </mat-error>
@@ -47,16 +24,8 @@
 
                 <mat-form-field class="form-field" color="accent" appearance="outline">
                     <mat-label>Nom d'utilisateur</mat-label>
-                    <input 
-                    matInput
-                    class="form-control"
-                    formControlName="username" 
-                    type="text"
-                    name="username"
-                    required
-                    maxlength="32"
-                    placeholder="johndoe"
-                    >
+                    <input matInput class="form-control" formControlName="username" type="text" name="username" required
+                        maxlength="32" placeholder="johndoe" />
                     <mat-error>
                         Le nom d'utilisateur doit comporter de 3 à 20 caractères au plus
                     </mat-error>
@@ -64,50 +33,34 @@
 
                 <mat-form-field class="form-field" color="accent" appearance="outline">
                     <mat-label>Adresse courriel</mat-label>
-                    <input 
-                    matInput
-                    class="form-control"
-                    formControlName="email" 
-                    type="email"
-                    name="email"
-                    required
-                    maxlength="50"
-                    placeholder="johndoe@example.org"
-                    >
-                    <mat-error>
-                        L'adresse email doit être valide
-                    </mat-error>
+                    <input matInput class="form-control" formControlName="email" type="email" name="email" required
+                        maxlength="50" placeholder="johndoe@example.org" />
+                    <mat-error> L'adresse email doit être valide </mat-error>
                 </mat-form-field>
 
                 <mat-form-field class="form-field" color="accent" appearance="outline">
                     <mat-label>Mot de passe</mat-label>
-                    <input
-                    matInput
-                    class="form-control"
-                    formControlName="password"
-                    name="password"
-                    required
-                    minlength="8"
-                    maxlength="32"
-                    [type]="hide ? 'password' : 'text'"
-                    >
-                    <button mat-icon-button type="button" matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                      </button>
+                    <input matInput class="form-control" formControlName="password" name="password" required
+                        minlength="8" maxlength="32" [type]="hide ? 'password' : 'text'" />
+                    <button mat-icon-button type="button" matSuffix (click)="hide = !hide"
+                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                        <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    </button>
                     <mat-error>
                         Le mot de passe doit comporter de 8 à 32 caractères
                     </mat-error>
                 </mat-form-field>
             </mat-card-content>
             <button mat-stroked-button class="btn-block">Register</button>
-
         </form>
         <mat-divider *ngIf="!isSuccessful"></mat-divider>
         <mat-card-content class="alert alert-success" *ngIf="isSuccessful">
             Success! Un mail de confirmation vous sera envoyé.
         </mat-card-content>
         <mat-card-footer class="card-footer" *ngIf="!isSuccessful">
-            <div class="card-footer-element restore">Vouz avez deja un compte?<span><a routerLink="/login"> Connectez-vous</a></span></div>
+            <div class="card-footer-element restore">
+                Vouz avez deja un compte?<span><a routerLink="/login"> Connectez-vous</a></span>
+            </div>
         </mat-card-footer>
     </mat-card>
 </div>
