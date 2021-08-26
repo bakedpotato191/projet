@@ -7,7 +7,7 @@
         <div class="container">
             <div id="profile-container">
                 <div id="profile">
-                    <div id="profile-picture" (click)="input.click()">
+                    <div id="profile-picture" [style.cursor]="mypage? 'pointer' : 'default'" (click)="click()">
                         <div [style.display]="isOverlayed ? 'block' : 'none'" class="overlay">
                             <div class="spinner"></div>
                         </div>

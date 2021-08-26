@@ -5,7 +5,7 @@ export class User {
     prenom!: String;
     username!: String;
     posts!: Post[];
-    avatar!: String;
+    avatar!: String | null;
     postCount!: Number;
     followerCount!: Number;
     followingCount!:Number;

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/class/user';
 import { UserService } from 'src/app/services/user.service';
@@ -12,6 +12,7 @@ import { LoginComponent } from '../login/login.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { FollowingComponent } from '../dialogs/following/following.component';
+import { AvatarComponent } from '../dialogs/avatar/avatar.component';
 
 @Component({
   selector: 'app-home',
@@ -20,6 +21,7 @@ import { FollowingComponent } from '../dialogs/following/following.component';
 })
 export class HomeComponent implements OnInit {
   @ViewChild('input') input: any;
+  @ViewChild('#profile-picture') picture: any;
 
   mypage!: boolean;
   isContent: boolean = false;
@@ -29,6 +31,7 @@ export class HomeComponent implements OnInit {
 
   uploadRef!: MatDialogRef<UploadComponent>;
   loginRef!: MatDialogRef<LoginComponent>;
+  avatarRef!: MatDialogRef<AvatarComponent>;
 
   avatarForm!: FormGroup;
   fileData!: Blob;
@@ -62,7 +65,7 @@ export class HomeComponent implements OnInit {
     public dialog: MatDialog,
     private fb: FormBuilder) { }
 
-  getUserData(username: String) {
+  getUserData(username: String): void {
     this.userService.getUser(username).subscribe(data => {
       this.user = data;
       this.isContent = true;
@@ -72,7 +75,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  openUploadDialog() {
+  openUploadDialog(): void {
     this.uploadRef = this.dialog.open(UploadComponent);
   }
 
@@ -106,10 +109,14 @@ export class HomeComponent implements OnInit {
   }
 
   onFileChange(e: any) {
-
     if (e.target.files && e.target.files.length) {
       this.fileData = e.target.files[0];
     }
+
+    if (this.avatarRef !== undefined) {
+      this.avatarRef.close();
+    }
+
     this.submitAvatar();
   }
 
@@ -133,14 +140,46 @@ export class HomeComponent implements OnInit {
     }, 1000);
   }
 
-  openSubbedDialog() {
-    console.log ("clicked subscribbed count");
+  openSubbedDialog(): void {
     this.dialog.open(FollowingComponent, {
+      height: '400px',
       width: '500px',
       data: this.username,
       panelClass: ["dialog-window-style"]
     });
 
+  }
+
+  click(): void {
+    if (!this.mypage){
+      return;
+    }
+    if (this.user.avatar != null) {
+      this.avatarRef = this.dialog.open(AvatarComponent, {
+        width: '400px',
+        panelClass: ["dialog-window-style"],
+        data: this.input,
+        autoFocus: false
+      });
+      this.avatarRef.afterClosed().subscribe(result => {
+        if (result === 'delete') {
+          this.isOverlayed = true;
+          setTimeout(() => {
+            this.userService.deleteProfilePicture().subscribe(_data => {
+              this.user.avatar = null;
+              this.isOverlayed = false;
+            },
+            error => {
+              this.isOverlayed = false;
+              this.sharedService.showSnackbar(JSON.stringify("La requete DELETE a échoué avec le code statut" + error.status), 'Dismiss', 7000);
+            });
+          }, 1000);
+        }
+      })
+    }
+    else {
+      this.input.nativeElement.click();
+    }
   }
 
 }

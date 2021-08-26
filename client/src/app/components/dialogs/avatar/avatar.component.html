@@ -1,0 +1,11 @@
+<div id="container">
+    <div fxLayout="row" fxLayoutAlign="center">
+        <h1 mat-dialog-title id="title">Modifier la photo de profil</h1>
+    </div>
+
+    <div mat-dialog-actions id="actions">
+        <button id='new' mat-button (click)="addPhoto()">Importer une photo</button>
+        <button id='delete' mat-button (click)="resetPhoto()">Supprimer la photo actuelle</button>
+        <button id='close' mat-button (click)="closeDialog()">Annuler</button>
+    </div>
+</div>

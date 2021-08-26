@@ -15,7 +15,10 @@ public interface UserService {
 
 	void unfollow(String username);
 
-	String setPicture(String path);
-
+	String setProfilePicture(String path);
+	
 	List<Follower> getSubscriptions(String username, int pageNo, int pageSize);
+
+	void resetProfilePicture();
+
 }

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpStatusCode } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Favorite } from '../class/favorite';
@@ -36,6 +36,10 @@ export class UserService {
 
   public setProfilePicture(form: FormData): Observable<any>{
     return this.http.post(this.API + '/profile_picture', form);
+  }
+
+  public deleteProfilePicture(): Observable<any> {
+    return this.http.delete(this.API + '/reset_profile_picture');
   }
 
   public getSubscriptions(username: String, page: Number, size: Number, sort: String): Observable<any> {

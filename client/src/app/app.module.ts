@@ -30,6 +30,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { CommentsComponent } from './components/comments/comments.component';
 import { RestoreComponent } from './components/restore/restore.component';
 import { FollowingComponent } from './components/dialogs/following/following.component';
+import { AvatarComponent } from './components/dialogs/avatar/avatar.component';
 
 @NgModule({
   imports: [
@@ -57,7 +58,8 @@ import { FollowingComponent } from './components/dialogs/following/following.com
     UserpostsComponent,
     CommentsComponent,
     RestoreComponent,
-    FollowingComponent
+    FollowingComponent,
+    AvatarComponent
   ],
   exports: [
     UploadComponent

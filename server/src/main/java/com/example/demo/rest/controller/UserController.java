@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -91,6 +92,13 @@ public class UserController {
     public ResponseEntity<Collection<String>> setProfilePicture(@RequestPart("avatar") MultipartFile file) throws IncorrectFileExtensionException, IOException {
 		String avatar = storageService.saveAvatar(file);
 		return new ResponseEntity<>(Collections.singleton(avatar), HttpStatus.OK);
+    }
+	
+	
+	@DeleteMapping(value= "/reset_profile_picture")
+    public ResponseEntity<Collection<String>> resetProfilePicture() {
+		userService.resetProfilePicture();
+		return new ResponseEntity<>(HttpStatus.OK);
     }
 	
 	@GetMapping("/profile_picture/{filename:.+}")

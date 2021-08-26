@@ -23,6 +23,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	@Query("UPDATE User u SET u.avatar=:path WHERE u=:user")
     int setProfilePicture(User user, String path);
 	
+	@Transactional
+	@Modifying
+	@Query("UPDATE User u SET u.avatar=NULL WHERE u=:user")
+	void resetProfilePicture(User user);
+	
 	@Override
 	@Transactional
     void delete(User user);

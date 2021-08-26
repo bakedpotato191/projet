@@ -1,0 +1,23 @@
+#actions button {
+    width: 100%;
+    padding: 8px;
+}
+
+#actions #new {
+    border-top: 1px solid rgb(58, 58, 58);
+    border-radius: 0;
+    color: rgb(110, 161, 255);
+}
+
+#actions #delete {
+    border-bottom: 1px solid rgb(58, 58, 58);
+    border-top: 1px solid rgb(58, 58, 58);
+    border-top: 1px solid rgb(58, 58, 58);
+    border-radius: 0;
+    color: rgb(236, 124, 124);
+}
+
+::ng-deep .cdk-overlay-pane {
+    border-radius: 8px;
+}
+

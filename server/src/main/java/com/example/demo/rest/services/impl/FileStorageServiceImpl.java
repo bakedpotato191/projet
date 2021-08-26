@@ -83,7 +83,7 @@ public class FileStorageServiceImpl implements FileStorageService {
 
 			Files.copy(file.getInputStream(), this.avatars.resolve(generatedName));
 			log.info(generatedName);
-			return userService.setPicture(generatedName);
+			return userService.setProfilePicture(generatedName);
 
 		} else {
 			throw new IncorrectFileExtensionException("Invalid file extension. Only png/jpeg/webp/bmp files are allowed");
