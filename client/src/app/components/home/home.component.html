@@ -7,22 +7,16 @@
         <div class="container">
             <div id="profile-container">
                 <div id="profile">
-                    <div id="profile-picture" [style.cursor]="mypage? 'pointer' : 'default'" (click)="click()">
+                    <div id="profile-picture" [style.cursor]="isMyPage? 'pointer' : 'default'" (click)="click()">
                         <div [style.display]="isOverlayed ? 'block' : 'none'" class="overlay">
                             <div class="spinner"></div>
                         </div>
-                        <div *ngIf="user.avatar; then avatar else default"></div>
-                        <ng-template #avatar>
-                            <img src="{{ user.avatar }}" alt="avatar" />
-                        </ng-template>
-                        <ng-template #default>
-                            <img src="https://t4.ftcdn.net/jpg/02/15/84/43/360_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg" alt="avatar">
-                        </ng-template> 
+                        <img src="{{ user.avatar }}" alt="avatar" />
                     </div>
                     <div class="profile-flex" fxLayout="column">
                         <div id="profile-name">{{ user.nom }} {{ user.prenom }}</div>
                         <div id="profile-username">@{{ user.username }}</div>
-                        <div *ngIf="!mypage" class="sub-buttons">
+                        <div *ngIf="!isMyPage" class="sub-buttons">
                             <button mat-raised-button *ngIf="!user.followed" color="accent" (click)="follow()">
                                 S'abonner
                             </button>
@@ -33,12 +27,12 @@
                     </div>
                     <ul id="buttons">
                         <li id="upload-button">
-                            <button mat-stroked-button *ngIf="mypage" color="accent" (click)="openUploadDialog()">
+                            <button mat-stroked-button *ngIf="isMyPage" color="accent" (click)="openUploadDialog()">
                                 <mat-icon aria-hidden="false" aria-label="Upload icon">add_a_photo</mat-icon>
                             </button>
                         </li>
                         <li id="settings-button">
-                            <a id="settings" mat-stroked-button *ngIf="mypage" routerLink="/accounts/edit">
+                            <a id="settings" mat-stroked-button *ngIf="isMyPage" routerLink="/accounts/edit">
                                 <mat-icon aria-hidden="false" aria-label="Settigns icon">settings</mat-icon>
                             </a>
                         </li>
@@ -65,8 +59,8 @@
                     </ng-template>
                     <app-userposts #userposts></app-userposts>
                 </mat-tab>
-    
-                <mat-tab *ngIf="mypage" mat-tab-link>
+
+                <mat-tab *ngIf="isMyPage" mat-tab-link>
                     <ng-template mat-tab-label>
                         <mat-icon class="example-tab-icon">star</mat-icon>
                         <span>Enregistrements</span>
@@ -75,13 +69,13 @@
                 </mat-tab>
             </mat-tab-group>
         </div>
-  
+
     </ng-template>
     <ng-template #error>
         <div id="notfound">
-          <span id="error">404</span>
-          <span id="first">Cette page n’est malheureusement pas disponible.</span>
-          <span id="second">Le lien que vous avez suivi est peut-être rompu, ou la page a été supprimée. </span>
+            <span id="error">404</span>
+            <span id="first">Cette page n’est malheureusement pas disponible.</span>
+            <span id="second">Le lien que vous avez suivi est peut-être rompu, ou la page a été supprimée. </span>
         </div>
-      </ng-template>
+    </ng-template>
 </div>

@@ -56,12 +56,15 @@ public class User implements Serializable, UserDetails {
 	@Column(length = 60)
 	private String password;
     
-    @Column
+    @Column(columnDefinition="varchar(255) default 'http://localhost:8081/api/user/profile_picture/default.jpg'")
     private String avatar;
+    
+    @Column(columnDefinition="boolean default false")
+    private boolean has_avatar;
 	
 	@JsonIgnore
-	@Column
-    private boolean enabled = false;
+	@Column(columnDefinition="boolean default false")
+    private boolean enabled;
 	
 	@Transient
 	private Long postCount;
@@ -86,7 +89,7 @@ public class User implements Serializable, UserDetails {
     					referencedColumnName = "id"))
     private Collection<Role> roles;
     
-    @OneToMany(mappedBy="utilisateur", cascade = CascadeType.ALL, orphanRemoval=true, fetch = FetchType.LAZY) // @OneToMany default fetch = LAZY
+    @OneToMany(mappedBy="utilisateur", cascade = CascadeType.ALL, orphanRemoval=true) // @OneToMany default fetch = LAZY
 	@JsonIgnore
     private List<Post> posts = new ArrayList<>();
        
@@ -230,6 +233,14 @@ public class User implements Serializable, UserDetails {
 
 	public void setFollowing(List<Follower> following) {
 		this.following = following;
+	}
+	
+	public boolean isHas_avatar() {
+		return has_avatar;
+	}
+
+	public void setHas_avatar(boolean has_avatar) {
+		this.has_avatar = has_avatar;
 	}
 
 	public VerificationToken getToken() {

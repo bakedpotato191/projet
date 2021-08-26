@@ -11,15 +11,15 @@ export class AvatarComponent {
   constructor(public dialogRef: MatDialogRef<AvatarComponent>,
               @Inject(MAT_DIALOG_DATA) public input: any) { }
 
-  closeDialog(){
+  closeDialog(): void {
     this.dialogRef.close();
   }
 
-  addPhoto() {
+  addPhoto(): void {
     this.input.nativeElement.click();
   }
 
-  resetPhoto() {
+  resetPhoto(): void {
     this.dialogRef.close('delete');
   }
 

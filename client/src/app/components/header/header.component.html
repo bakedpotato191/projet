@@ -12,19 +12,20 @@
                 <ng-template #online>
                     <ul *ngIf="isLoggedIn" fxLayout="row">
                         <li class="flex">
-                            <span>
-                                <img mat-button [src]="avatar" [matMenuTriggerFor]="menu" />
+                            <div id="border">
+                                <img mat-button [src]="avatar" [matMenuTriggerFor]="menu" matTooltip="Mon Profil" [matTooltipPosition]="position.value"
+                                matTooltipHideDelay="100"/>
                                 <mat-menu backdropClass="customize" #menu="matMenu" xPosition="before">
-                                    <button id="profile" (click)="open_home_page()" mat-menu-item #tooltip="matTooltip" matTooltip="My Profile" matTooltipHideDelay="100" [matTooltipPosition]="position.value">
+                                    <button id="profile" (click)="open_home_page()" mat-menu-item>
                                         <mat-icon aria_hidden="true" aria-label="my account icon">account_circle</mat-icon>Mon profil
                                     </button>
                                     <button id="favorites" (click)="open_favorites_page()" mat-menu-item><mat-icon aria_hidden="true" aria-label="bookmarked icon">star_border</mat-icon>Enregistrements</button>
-                                    <button id="disconnect" (click)="logout()" mat-menu-item #tooltip="matTooltip" matTooltip="Logout" [matTooltipPosition]="position.value" matTooltipHideDelay="100">
+                                    <button id="disconnect" (click)="logout()" mat-menu-item>
                                         <mat-icon aria-hidden="false" aria-label="logout icon">logout</mat-icon>
                                         Deconnexion
                                     </button>
                                 </mat-menu>
-                            </span>
+                            </div>
                         </li>
                     </ul>
                 </ng-template>

@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.io.FilenameUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -23,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.rest.exceptions.IncorrectFileExtensionException;
 import com.example.demo.rest.models.Post;
+import com.example.demo.rest.response.AvatarResponse;
 import com.example.demo.rest.services.FileStorageService;
 import com.example.demo.rest.services.PostService;
 import com.example.demo.rest.services.UserService;
@@ -31,7 +30,6 @@ import com.example.demo.rest.services.UserService;
 @Transactional
 public class FileStorageServiceImpl implements FileStorageService {
 
-	private static final Logger log = LoggerFactory.getLogger(FileStorageServiceImpl.class);
 	private final Path avatars = Paths.get("avatars");
 	private final Path uploads = Paths.get("uploads");
 	private static final List<String> contentTypes = Arrays.asList("image/png", "image/jpeg", "image/webp", "image/bmp", "image/jpg");
@@ -73,7 +71,7 @@ public class FileStorageServiceImpl implements FileStorageService {
 	}
 	
 	@Override
-	public String saveAvatar(MultipartFile file) throws IncorrectFileExtensionException, IOException {
+	public AvatarResponse saveAvatar(MultipartFile file) throws IncorrectFileExtensionException, IOException {
 
 		String fileContentType = file.getContentType();
 
@@ -82,7 +80,6 @@ public class FileStorageServiceImpl implements FileStorageService {
 					+ FilenameUtils.getExtension(file.getOriginalFilename());
 
 			Files.copy(file.getInputStream(), this.avatars.resolve(generatedName));
-			log.info(generatedName);
 			return userService.setProfilePicture(generatedName);
 
 		} else {

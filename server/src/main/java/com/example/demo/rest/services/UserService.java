@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.example.demo.rest.models.Follower;
 import com.example.demo.rest.models.User;
+import com.example.demo.rest.response.AvatarResponse;
 
 public interface UserService {
 
@@ -15,12 +16,12 @@ public interface UserService {
 
 	void unfollow(String username);
 
-	String setProfilePicture(String path);
+	AvatarResponse setProfilePicture(String path);
 	
 	List<Follower> getSubscriptions(String username, int pageNo, int pageSize);
 
-	void resetProfilePicture();
+	AvatarResponse resetProfilePicture();
 
-	String getProfilePicture();
+	AvatarResponse getProfilePicture();
 
 }

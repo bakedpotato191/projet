@@ -29,7 +29,7 @@ export class HeaderComponent implements OnInit {
       const user = this.tokenStorageService.getUser();
       this.username = user.username;
       this.userService.getProfilePicture().subscribe(data => {
-        this.avatar = data;
+        this.avatar = data.avatar;
       },
         error => {
           console.log(error);

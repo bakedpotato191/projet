@@ -1,8 +1,6 @@
 package com.example.demo.rest.controller;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -30,6 +28,7 @@ import com.example.demo.rest.models.Follower;
 import com.example.demo.rest.models.Like;
 import com.example.demo.rest.models.Post;
 import com.example.demo.rest.models.User;
+import com.example.demo.rest.response.AvatarResponse;
 import com.example.demo.rest.services.FileStorageService;
 import com.example.demo.rest.services.PostService;
 import com.example.demo.rest.services.UserService;
@@ -89,22 +88,20 @@ public class UserController {
 	}
 	
 	@GetMapping(value="/profile_picture")
-	public ResponseEntity<Collection<String>> getProfilePicture() {
-		String avatar = userService.getProfilePicture();
-		return new ResponseEntity<>(Collections.singleton(avatar), HttpStatus.OK);
+	public AvatarResponse getProfilePicture() {
+		return userService.getProfilePicture();
 	}
 	
 	@PostMapping(value= "/profile_picture")
-    public ResponseEntity<Collection<String>> setProfilePicture(@RequestPart("avatar") MultipartFile file) throws IncorrectFileExtensionException, IOException {
-		String avatar = storageService.saveAvatar(file);
-		return new ResponseEntity<>(Collections.singleton(avatar), HttpStatus.OK);
+    public AvatarResponse setProfilePicture(@RequestPart("avatar") MultipartFile file) throws IncorrectFileExtensionException, IOException {
+		return storageService.saveAvatar(file);
+
     }
 	
 	
 	@DeleteMapping(value= "/reset_profile_picture")
-    public ResponseEntity<Collection<String>> resetProfilePicture() {
-		userService.resetProfilePicture();
-		return new ResponseEntity<>(HttpStatus.OK);
+    public AvatarResponse resetProfilePicture() {
+		return userService.resetProfilePicture();
     }
 	
 	@GetMapping("/profile_picture/{filename:.+}")

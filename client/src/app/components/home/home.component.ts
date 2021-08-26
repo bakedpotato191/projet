@@ -22,7 +22,7 @@ import { AvatarComponent } from '../dialogs/avatar/avatar.component';
 export class HomeComponent implements OnInit {
   @ViewChild('input') input: any;
 
-  mypage!: boolean;
+  isMyPage!: boolean;
   isContent: boolean = false;
   user!: User;
   posts!: Post[];
@@ -45,7 +45,7 @@ export class HomeComponent implements OnInit {
     this.getUserData(this.username);
     this.sharedService.setTitle("@" + this.username);
     if (this.username == this.tokenService.getUser().username) {
-      this.mypage = true;
+      this.isMyPage = true;
     }
     this.initAvatarForm();
   }
@@ -129,7 +129,8 @@ export class HomeComponent implements OnInit {
     this.isOverlayed = true;
     setTimeout(() => {
       this.userService.setProfilePicture(formData).subscribe(data => {
-        this.user.avatar = data;
+        this.user.avatar = data.avatar;
+        this.user.has_avatar = data.has_avatar;
         this.isOverlayed = false
       },
       error => {
@@ -150,10 +151,10 @@ export class HomeComponent implements OnInit {
   }
 
   click(): void {
-    if (!this.mypage){
+    if (!this.isMyPage){
       return;
     }
-    if (this.user.avatar != null) {
+    if (this.user.has_avatar !== false) {
       this.avatarRef = this.dialog.open(AvatarComponent, {
         width: '400px',
         panelClass: ["dialog-window-style"],
@@ -164,8 +165,9 @@ export class HomeComponent implements OnInit {
         if (result === 'delete') {
           this.isOverlayed = true;
           setTimeout(() => {
-            this.userService.deleteProfilePicture().subscribe(_data => {
-              this.user.avatar = null;
+            this.userService.deleteProfilePicture().subscribe(data => {
+              this.user.has_avatar = data.has_avatar;
+              this.user.avatar = data.avatar;
               this.isOverlayed = false;
             },
             error => {

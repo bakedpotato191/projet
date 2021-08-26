@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.rest.exceptions.IncorrectFileExtensionException;
 import com.example.demo.rest.models.Post;
+import com.example.demo.rest.response.AvatarResponse;
 
 public interface FileStorageService {
 
@@ -18,7 +19,7 @@ public interface FileStorageService {
 
 	void init() throws IOException;
 
-	String saveAvatar(MultipartFile file) throws IncorrectFileExtensionException, IOException;
+	AvatarResponse saveAvatar(MultipartFile file) throws IncorrectFileExtensionException, IOException;
 
 	Resource loadAvatar(String filename) throws MalformedURLException, FileNotFoundException;
 }

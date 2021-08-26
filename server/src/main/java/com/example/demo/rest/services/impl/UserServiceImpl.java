@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import com.example.demo.rest.models.User;
 import com.example.demo.rest.repository.FollowerRepository;
 import com.example.demo.rest.repository.PostRepository;
 import com.example.demo.rest.repository.UserRepository;
+import com.example.demo.rest.response.AvatarResponse;
 import com.example.demo.rest.services.UserService;
 
 @Service
@@ -88,21 +90,26 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public String setProfilePicture(String path) {
+	public AvatarResponse setProfilePicture(String path) {
 		path = "http://localhost:8081/api/user/profile_picture/" + path;
 		userRepository.setProfilePicture(getUserFromSession(), path);
-		return path;
+		return new AvatarResponse("true", path, HttpStatus.OK);
 	}
 	
 	@Override
-	public String getProfilePicture() {
-		return userRepository.getProfilePicture(getUserFromSession());	 
+	public AvatarResponse getProfilePicture() {
+		var records = userRepository.getProfilePicture(getUserFromSession());
+	    Object[] userDetails = records.get(0);
+	    var avatar = String.valueOf(userDetails[0]);
+	    var has_avatar = String.valueOf(userDetails[1]);
+		return new AvatarResponse(has_avatar, avatar, HttpStatus.OK);
 	}
 	
 
 	@Override
-	public void resetProfilePicture() {
+	public AvatarResponse resetProfilePicture() {
 		userRepository.resetProfilePicture(getUserFromSession());
+		return getProfilePicture();
 	}
 	
 	@Override
