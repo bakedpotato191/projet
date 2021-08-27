@@ -18,9 +18,9 @@ export class HeaderComponent implements OnInit {
   position = new FormControl('below');
 
   constructor(private readonly tokenStorageService: TokenStorageService,
-    private readonly route: ActivatedRoute,
-    private readonly router: Router,
-    private readonly userService: UserService) { }
+              private readonly router: Router,
+              private readonly activatedRoute: ActivatedRoute,
+              private readonly userService: UserService) { }
 
   ngOnInit(): void {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
@@ -38,11 +38,17 @@ export class HeaderComponent implements OnInit {
   }
 
   open_home_page(): void {
-    this.router.navigate(['/profile/' + this.username]).then(_page => {window.location.reload()});
+    this.router.navigate(['/profile/' + this.username]) 
+               .then(_page => {window.location.reload()});
   }
 
   open_favorites_page():void {
-    this.router.navigate([{ outlets: { favorites: ['profile', this.username, 'favorites'] } }]);
+    this.router.navigate(['profile/'+ this.username+ '/favorites'], {relativeTo: this.activatedRoute})
+               .then(_page => { window.location.reload() });
+  }
+
+  open_settings_page(): void {
+    
   }
 
   logout() {
