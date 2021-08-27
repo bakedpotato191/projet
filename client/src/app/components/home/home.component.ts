@@ -46,7 +46,7 @@ export class HomeComponent implements OnInit {
     this.activatedRoute.paramMap
     .subscribe(param => {
       this.username = param.get('username')!;
-      this.sharedService.setTitle("@" + this.username);
+      this.sharedService.setTitle('@' + this.username);
       this.getUserData(this.username);
       this.isMyPage = this.username == this.tokenService.getUser().username;
 
@@ -55,7 +55,7 @@ export class HomeComponent implements OnInit {
 
     this.activatedRoute.firstChild?.paramMap.subscribe(params => {
       const tab = params.get('tabname');
-      this.selectedIndex = tab == 'favorites' ? 1 : 0;  
+      this.selectedIndex = tab == 'favorites' ? 1 : 0;
   });
   }
 
