@@ -9,4 +9,5 @@ export class Post {
     utilisateur!: User;
     comments!: Commentaire[];
     liked!: boolean;
+    countLike!: number;
 }

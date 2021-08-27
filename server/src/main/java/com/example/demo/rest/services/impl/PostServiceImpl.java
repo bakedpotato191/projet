@@ -122,6 +122,8 @@ public class PostServiceImpl implements PostService {
 		Slice<Post> slicedResult = postRepository.findAllByUtilisateurUsername(username, paging);
 		
 		if (slicedResult.hasContent()) {
+			slicedResult.forEach(post -> 
+			post.setCountLike(likeRepository.countByPost(post)));
 			return slicedResult.getContent();
 		}
 		else {
