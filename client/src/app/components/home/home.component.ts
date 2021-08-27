@@ -23,10 +23,10 @@ export class HomeComponent implements OnInit {
   @ViewChild('input') input: any;
 
   isMyPage!: boolean;
+  username!: string;
   isContent: boolean = false;
   user!: User;
   posts!: Post[];
-  public username!: any;
 
   uploadRef!: MatDialogRef<UploadComponent>;
   loginRef!: MatDialogRef<LoginComponent>;
@@ -40,20 +40,23 @@ export class HomeComponent implements OnInit {
 
   isOverlayed!: boolean;
 
-  ngOnInit(): void {
-    this.username = this.activatedRoute.snapshot.paramMap.get('username');
-    this.getUserData(this.username);
-    this.sharedService.setTitle("@" + this.username);
-    if (this.username == this.tokenService.getUser().username) {
-      this.isMyPage = true;
-    }
-    this.initAvatarForm();
-  }
+  selectedIndex!: number;
 
-  initAvatarForm() {
-    this.avatarForm = this.fb.group({
-      avatar: ["", [Validators.nullValidator]]
-    });
+  ngOnInit(): void {
+    this.activatedRoute.paramMap
+    .subscribe(param => {
+      this.username = param.get('username')!;
+      this.sharedService.setTitle("@" + this.username);
+      this.getUserData(this.username);
+      this.isMyPage = this.username == this.tokenService.getUser().username;
+
+    })
+    this.initAvatarForm();
+
+    this.activatedRoute.firstChild?.paramMap.subscribe(params => {
+      const tab = params.get('tabname');
+      this.selectedIndex = tab == 'favorites' ? 1 : 0;  
+  });
   }
 
   constructor(private userService: UserService,
@@ -71,6 +74,12 @@ export class HomeComponent implements OnInit {
     },
     _error => {
       this.isContent = true;
+    });
+  }
+
+  initAvatarForm() {
+    this.avatarForm = this.fb.group({
+      avatar: ["", [Validators.nullValidator]]
     });
   }
 
@@ -97,10 +106,10 @@ export class HomeComponent implements OnInit {
   onTabChanged(event: MatTabChangeEvent): void {
     switch (event.index) {
       case 0:
-        this.router.navigate([''], { relativeTo: this.activatedRoute, skipLocationChange: true });
+        this.router.navigate([''], { relativeTo: this.activatedRoute });
         break;
       case 1:
-        this.router.navigate([{ outlets: { favorites: ['favorites'] } }], { relativeTo: this.activatedRoute });
+        this.router.navigate(['favorites'], { relativeTo: this.activatedRoute });
         break;
       default:
         break;
@@ -131,30 +140,30 @@ export class HomeComponent implements OnInit {
       this.userService.setProfilePicture(formData).subscribe(data => {
         this.user.avatar = data.avatar;
         this.user.has_avatar = data.has_avatar;
-        this.isOverlayed = false
       },
       error => {
-        this.isOverlayed = false
         return this.sharedService.showSnackbar("La demande a échoué avec le statut http " + error.status, 'Dismiss', 7000);
+      },
+      () => {
+        this.isOverlayed = false
       });
     }, 1000);
   }
 
   openSubbedDialog(): void {
     this.dialog.open(FollowingComponent, {
-      height: '400px',
+      height: '450px',
       width: '500px',
       data: this.username,
       panelClass: ["dialog-window-style"]
     });
-
   }
 
   click(): void {
     if (!this.isMyPage){
       return;
     }
-    if (this.user.has_avatar !== false) {
+    if (this.user.has_avatar) {
       this.avatarRef = this.dialog.open(AvatarComponent, {
         width: '400px',
         panelClass: ["dialog-window-style"],
@@ -168,11 +177,12 @@ export class HomeComponent implements OnInit {
             this.userService.deleteProfilePicture().subscribe(data => {
               this.user.has_avatar = data.has_avatar;
               this.user.avatar = data.avatar;
-              this.isOverlayed = false;
             },
             error => {
-              this.isOverlayed = false;
               this.sharedService.showSnackbar(JSON.stringify("La requete DELETE a échoué avec le code statut" + error.status), 'Dismiss', 7000);
+            },
+            () => {
+              this.isOverlayed = false;
             });
           }, 1000);
         }

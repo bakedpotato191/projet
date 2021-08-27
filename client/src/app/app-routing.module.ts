@@ -6,7 +6,6 @@ import { LoginComponent } from './components/login/login.component';
 import { PostComponent } from './components/post/post.component';
 import { RegisterComponent } from './components/register/register.component';
 import { RestoreComponent } from './components/restore/restore.component';
-import { AuthGuard } from './guards/AuthGuard.guard';
 import { LoggedInAuthGuard } from './guards/loggedinauthguard.guard';
 
 const routes: Routes = [
@@ -15,9 +14,10 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate:[LoggedInAuthGuard] },
   { path: 'password_reset', redirectTo: 'password_reset/', pathMatch: 'full'},
   { path: 'password_reset/:token', component: RestoreComponent },
+  { path: 'profile', redirectTo:'/login', pathMatch:'full' },
   { path: 'profile/:username', component:HomeComponent,
   children: [
-      { path:'favorites', component: FavoritesComponent, outlet: 'favorites' }
+      { path:':tabname', component: FavoritesComponent }
     ] 
   },
   { path: 'p/:id', component: PostComponent }

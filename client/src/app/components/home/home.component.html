@@ -50,7 +50,7 @@
                     </li>
                 </ul>
             </div>
-            <mat-tab-group (selectedTabChange)="onTabChanged($event)" mat-stretched-tabs animationDuration="700ms"
+            <mat-tab-group (selectedTabChange)="onTabChanged($event)" [selectedIndex]="selectedIndex" mat-stretched-tabs animationDuration="700ms"
                 mat-align-tabs="center" color="accent">
                 <mat-tab id="first-tab" mat-tab-link>
                     <ng-template mat-tab-label>
@@ -65,7 +65,7 @@
                         <mat-icon class="example-tab-icon">star</mat-icon>
                         <span>Enregistrements</span>
                     </ng-template>
-                    <router-outlet name="favorites"></router-outlet>
+                    <app-favorites></app-favorites>
                 </mat-tab>
             </mat-tab-group>
         </div>

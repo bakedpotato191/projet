@@ -31,6 +31,7 @@ import { CommentsComponent } from './components/comments/comments.component';
 import { RestoreComponent } from './components/restore/restore.component';
 import { FollowingComponent } from './components/dialogs/following/following.component';
 import { AvatarComponent } from './components/dialogs/avatar/avatar.component';
+import { ExploreComponent } from './components/explore/explore.component';
 
 @NgModule({
   imports: [
@@ -59,7 +60,8 @@ import { AvatarComponent } from './components/dialogs/avatar/avatar.component';
     CommentsComponent,
     RestoreComponent,
     FollowingComponent,
-    AvatarComponent
+    AvatarComponent,
+    ExploreComponent
   ],
   exports: [
     UploadComponent
