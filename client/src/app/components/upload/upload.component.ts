@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PostService } from 'src/app/services/post.service';
 import { SharedService } from 'src/app/services/shared.service';
+import { UserpostsComponent } from '../userposts/userposts.component';
 
 
 @Component({
@@ -23,6 +24,7 @@ export class UploadComponent {
 
   constructor(
     public dialogRef: MatDialogRef<UploadComponent>,
+    @Inject(MAT_DIALOG_DATA) public userposts: UserpostsComponent,
     private postService: PostService,
     private sharedService: SharedService) { }
 
@@ -48,7 +50,7 @@ export class UploadComponent {
   }
 
   closeDialog() {
-    this.dialogRef.close();
+    this.dialogRef.close('uploaded');
   }
 
   submit() {
@@ -61,7 +63,7 @@ export class UploadComponent {
     this.isSending = true;
     this.postService.postPhoto(formData).subscribe(
       _data => {
-          window.location.reload();
+          this.closeDialog();
       },
       error => {
         this.isSending = false;

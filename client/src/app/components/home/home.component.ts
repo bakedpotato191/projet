@@ -13,6 +13,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { FollowingComponent } from '../dialogs/following/following.component';
 import { AvatarComponent } from '../dialogs/avatar/avatar.component';
+import { UserpostsComponent } from '../userposts/userposts.component';
 
 @Component({
   selector: 'app-home',
@@ -21,6 +22,7 @@ import { AvatarComponent } from '../dialogs/avatar/avatar.component';
 })
 export class HomeComponent implements OnInit {
   @ViewChild('input') input: any;
+  @ViewChild(UserpostsComponent) userposts: any;
 
   isMyPage!: boolean;
   username!: string;
@@ -63,7 +65,7 @@ export class HomeComponent implements OnInit {
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router,
     private readonly tokenService: TokenStorageService,
-    private sharedService: SharedService,
+    private readonly sharedService: SharedService,
     public dialog: MatDialog,
     private fb: FormBuilder) { }
 
@@ -84,7 +86,15 @@ export class HomeComponent implements OnInit {
   }
 
   openUploadDialog(): void {
-    this.uploadRef = this.dialog.open(UploadComponent);
+    this.uploadRef = this.dialog.open(UploadComponent, {
+      data: this.userposts
+    });
+
+    this.uploadRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.userposts.getNewPost();
+      }
+    });
   }
 
   follow() {
