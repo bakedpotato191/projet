@@ -9,7 +9,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,19 +92,48 @@ public class FileStorageServiceImpl implements FileStorageService {
 
 	@Override
 	public Resource load(String filename) throws MalformedURLException, FileNotFoundException {
-
 		Path file = uploads.resolve(filename);
-
 		return getResource(file.toUri(), filename);
 	}
 	
 	@Override
 	public Resource loadAvatar(String filename) throws MalformedURLException, FileNotFoundException {
-
 		Path file = avatars.resolve(filename);
-
-		return getResource(file.toUri(), filename);
-		
+		return getResource(file.toUri(), filename);	
+	}
+	
+	@Override
+	public Set<String> listUploadedPhotos() throws IOException {
+	    try (var stream = Files.list(uploads)) {
+	        return stream
+	          .filter(file -> !Files.isDirectory(file))
+	          .map(Path::getFileName)
+	          .map(Path::toString)
+	          .collect(Collectors.toSet());
+	    }
+	}
+	
+	@Override
+	public Set<String> listUploadedAvatars() throws IOException {
+	    try (var stream = Files.list(avatars)) {
+	        return stream
+	          .filter(file -> !Files.isDirectory(file))
+	          .map(Path::getFileName)
+	          .map(Path::toString)
+	          .collect(Collectors.toSet());
+	    }
+	}
+	
+	@Override
+	public void deleteUploadedPhoto(String filename) throws IOException {
+		Path file = uploads.resolve(filename);
+		Files.delete(file);
+	}
+	
+	@Override
+	public void deleteUploadedAvatar(String filename) throws IOException {
+		Path file = avatars.resolve(filename);
+		Files.delete(file);
 	}
 	
 	private Resource getResource(URI uri, String filename) throws FileNotFoundException, MalformedURLException {
@@ -115,6 +146,6 @@ public class FileStorageServiceImpl implements FileStorageService {
 			throw new FileNotFoundException("Optional file " + filename + " was not found.");
 		}
 		
-	}
+	}	
 }
 

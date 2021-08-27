@@ -16,7 +16,7 @@
             </ng-template>
             <mat-card-title>{{favorite.post.utilisateur.username}}</mat-card-title>
         </mat-card-header>
-        <img src="{{ favorite.post.url }}">
+        <img src="{{ favorite.post.photo }}">
     </mat-card>
 </mat-card-list>
 <mat-progress-bar id="progress" mode="query" *ngIf="isLoading" color="accent"></mat-progress-bar>

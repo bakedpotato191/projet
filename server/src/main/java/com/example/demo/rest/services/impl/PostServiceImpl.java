@@ -40,12 +40,11 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public Post createPost(String generatedName, String description) {
-		var user = userService.getUserFromSession();
 		var post = new Post();
-		post.setUrl("http://localhost:8081/api/post/view/" + generatedName);
+		post.setPhoto("http://localhost:8081/api/post/view/" + generatedName);
 		post.setDate(new Timestamp(System.currentTimeMillis()));
 		post.setDescription(description);
-		post.setUtilisateur(user);
+		post.setUtilisateur(userService.getUserFromSession());
 		return postRepository.save(post);
 	}
 
@@ -69,7 +68,7 @@ public class PostServiceImpl implements PostService {
 			post.setDescription(found.get().getDescription());
 			post.setCountLike(likeRepository.countByPost(found.get()));
 			post.setDate(found.get().getDate());
-			post.setUrl(found.get().getUrl());
+			post.setPhoto(found.get().getPhoto());
 			post.setUtilisateur(found.get().getUtilisateur());
 			
 			if (SecurityContextHolder.getContext().getAuthentication() 

@@ -33,11 +33,13 @@ public class Post implements Serializable {
 	@Column(length=1024)
 	private String description;
 	
-	private String url;
-	
+	@Column
 	private Timestamp date;
+
+	@Column
+	private String photo;
 	
-	@ManyToOne(optional=false) //important, @ManyToOne default fetch = EAGER
+	@ManyToOne(optional=false) // @ManyToOne default fetch = EAGER
 	@JoinColumn(name = "user_id")
 	@JsonIgnoreProperties("posts")
 	private User utilisateur;
@@ -58,11 +60,12 @@ public class Post implements Serializable {
 
 	public Post() {}
 
-	public Post(Long id, String description, String url, User utilisateur) {
+	public Post(Long id, String description, Timestamp date, String photo, User utilisateur) {
 		super();
 		this.id = id;
 		this.description = description;
-		this.url = url;
+		this.date = date;
+		this.photo = photo;
 		this.utilisateur = utilisateur;
 	}
 
@@ -82,12 +85,12 @@ public class Post implements Serializable {
 		this.description = description;
 	}
 
-	public String getUrl() {
-		return url;
+	public String getPhoto() {
+		return photo;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public void setPhoto(String photo) {
+		this.photo = photo;
 	}
 
 	public User getUtilisateur() {

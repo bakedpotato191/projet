@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +32,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	
 	@Query("SELECT u.avatar, u.has_avatar FROM User u WHERE u=:user")
 	List<Object[]> getProfilePicture(User user);
+	
+	@Query("SELECT COUNT(u)>0 from User u WHERE u.avatar like %:avatar")
+	boolean existsByAvatar(@Param("avatar") String filename);
 	
 	@Override
 	@Transactional

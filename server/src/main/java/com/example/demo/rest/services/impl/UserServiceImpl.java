@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService {
 	public AvatarResponse setProfilePicture(String path) {
 		path = "http://localhost:8081/api/user/profile_picture/" + path;
 		userRepository.setProfilePicture(getUserFromSession(), path);
-		return new AvatarResponse("true", path, HttpStatus.OK);
+		return new AvatarResponse(true, path, HttpStatus.OK);
 	}
 	
 	@Override
@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
 		var records = userRepository.getProfilePicture(getUserFromSession());
 	    Object[] userDetails = records.get(0);
 	    var avatar = String.valueOf(userDetails[0]);
-	    var has_avatar = String.valueOf(userDetails[1]);
+	    var has_avatar = Boolean.valueOf(String.valueOf(userDetails[1]));
 		return new AvatarResponse(has_avatar, avatar, HttpStatus.OK);
 	}
 	

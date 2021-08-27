@@ -3,6 +3,7 @@ package com.example.demo.rest.services;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Set;
 
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,4 +23,12 @@ public interface FileStorageService {
 	AvatarResponse saveAvatar(MultipartFile file) throws IncorrectFileExtensionException, IOException;
 
 	Resource loadAvatar(String filename) throws MalformedURLException, FileNotFoundException;
+
+	Set<String> listUploadedPhotos() throws IOException;
+
+	Set<String> listUploadedAvatars() throws IOException;
+
+	void deleteUploadedPhoto(String filename) throws IOException;
+
+	void deleteUploadedAvatar(String filename) throws IOException;
 }

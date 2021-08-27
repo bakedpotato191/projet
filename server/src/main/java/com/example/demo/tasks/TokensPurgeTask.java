@@ -21,11 +21,9 @@ public class TokensPurgeTask {
     @Autowired
     PasswordResetTokenRepository passwordTokenRepository;
 
-    @Scheduled(cron = "${purge.cron.expression}")
+    @Scheduled(cron = "${purge.tokens.cron.expression}")
     public void purgeExpired() {
-
         var now = Date.from(Instant.now());
-
         passwordTokenRepository.deleteAllExpiredSince(now);
         tokenRepository.deleteAllExpiredSince(now);
     }

@@ -4,24 +4,24 @@ import org.springframework.http.HttpStatus;
 
 public class AvatarResponse {
 	
-	private String has_avatar;
+	private boolean has_avatar;
 	
 	private String avatar;
 	
 	private HttpStatus status;
 
-	public AvatarResponse(String has_avatar, String avatar, HttpStatus status) {
+	public AvatarResponse(boolean has_avatar, String avatar, HttpStatus status) {
 		super();
 		this.has_avatar = has_avatar;
 		this.avatar = avatar;
 		this.status = status;
 	}
 
-	public String getHas_avatar() {
+	public boolean getHas_avatar() {
 		return has_avatar;
 	}
 
-	public void setHas_avatar(String has_avatar) {
+	public void setHas_avatar(boolean has_avatar) {
 		this.has_avatar = has_avatar;
 	}
 

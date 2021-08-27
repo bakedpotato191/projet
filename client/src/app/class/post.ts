@@ -3,7 +3,7 @@ import { User } from "./user";
 
 export class Post {
     id!: number;
-    url!: string;
+    photo!: string;
     description!: string;
     date!: Date;
     utilisateur!: User;
