@@ -3,7 +3,7 @@ package com.example.validation;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import com.example.web.dto.NewPasswordDto;
+import com.example.web.dto.request.NewPasswordDto;
 
 public class PasswordMatchesValidator implements ConstraintValidator<PasswordMatches, Object> {
 

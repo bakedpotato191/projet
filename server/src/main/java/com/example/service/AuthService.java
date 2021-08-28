@@ -7,9 +7,9 @@ import com.example.jwt.response.JwtResponse;
 import com.example.rest.model.PasswordResetToken;
 import com.example.rest.model.User;
 import com.example.rest.model.VerificationToken;
-import com.example.web.dto.LoginDto;
-import com.example.web.dto.NewPasswordDto;
-import com.example.web.dto.SignupDto;
+import com.example.web.dto.request.LoginDto;
+import com.example.web.dto.request.NewPasswordDto;
+import com.example.web.dto.request.SignupDto;
 
 public interface AuthService {
 

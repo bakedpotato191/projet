@@ -17,7 +17,7 @@ import com.example.rest.model.Comment;
 import com.example.rest.model.Post;
 import com.example.service.CommentService;
 import com.example.service.UserService;
-import com.example.web.dto.CommentDto;
+import com.example.web.dto.request.CommentDto;
 import com.example.web.exception.EntityNotFoundException;
 import com.example.web.exception.HttpUnauthorizedException;
 

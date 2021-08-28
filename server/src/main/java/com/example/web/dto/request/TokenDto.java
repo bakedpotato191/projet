@@ -1,4 +1,4 @@
-package com.example.web.dto;
+package com.example.web.dto.request;
 
 import com.example.validation.ValidUUID;
 

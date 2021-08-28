@@ -17,11 +17,11 @@ import com.example.event.OnPasswordResetRequestedEvent;
 import com.example.event.OnRegistrationCompleteEvent;
 import com.example.jwt.response.JwtResponse;
 import com.example.service.AuthService;
-import com.example.web.dto.LoginDto;
-import com.example.web.dto.NewPasswordDto;
-import com.example.web.dto.PasswordResetDto;
-import com.example.web.dto.SignupDto;
-import com.example.web.dto.TokenDto;
+import com.example.web.dto.request.LoginDto;
+import com.example.web.dto.request.NewPasswordDto;
+import com.example.web.dto.request.PasswordResetDto;
+import com.example.web.dto.request.SignupDto;
+import com.example.web.dto.request.TokenDto;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController

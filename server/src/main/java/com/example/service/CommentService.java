@@ -3,7 +3,7 @@ package com.example.service;
 import java.util.Map;
 
 import com.example.rest.model.Comment;
-import com.example.web.dto.CommentDto;
+import com.example.web.dto.request.CommentDto;
 
 public interface CommentService {
 

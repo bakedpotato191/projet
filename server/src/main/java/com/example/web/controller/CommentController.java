@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.service.CommentService;
-import com.example.web.dto.CommentDto;
+import com.example.web.dto.request.CommentDto;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
