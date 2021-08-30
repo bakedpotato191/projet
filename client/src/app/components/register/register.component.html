@@ -4,7 +4,7 @@
             <mat-card-title class="card-title">Créez votre compte</mat-card-title>
         </mat-card-header>
 
-        <form class="form" *ngIf="!isSuccessful" name="form" [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+        <form class="form" *ngIf="!isSuccessful" name="form" [formGroup]="registrationForm" (ngSubmit)="submit()">
             <mat-card-content class="card-content">
                 <mat-form-field class="form-field" color="accent" appearance="outline">
                     <mat-label>Nom</mat-label>
@@ -41,10 +41,10 @@
                 <mat-form-field class="form-field" color="accent" appearance="outline">
                     <mat-label>Mot de passe</mat-label>
                     <input matInput class="form-control" formControlName="password" name="password" required
-                        minlength="8" maxlength="32" [type]="hide ? 'password' : 'text'" />
-                    <button mat-icon-button type="button" matSuffix (click)="hide = !hide"
-                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                        <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+                        minlength="8" maxlength="32" [type]="isHidden ? 'password' : 'text'" />
+                    <button mat-icon-button type="button" matSuffix (click)="isHidden = !isHidden"
+                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="isHidden">
+                        <mat-icon>{{ isHidden ? 'visibility_off' : 'visibility' }}</mat-icon>
                     </button>
                     <mat-error>
                         Le mot de passe doit comporter de 8 à 32 caractères

@@ -28,17 +28,17 @@ export class FavoritesComponent implements OnInit {
 
   ngOnInit(): void {
     this.canLoad = true;
-    this.getUserFavorites();
+    this.get_favorites();
   }
 
-  openPostPage(id: number) {
+  open_post_page(id: number) {
     this.router.navigate(['p', id]);
   }
 
-  getUserFavorites() {
+  get_favorites(): void {
       this.userService.getFavoritePosts(this.page, this.size, this.sort).subscribe(data => {
       
-        if (data.length !== 0) {
+        if (data.length) {
           this.favorites = this.favorites.concat(data);
           this.page++;
           this.canLoad = true;
@@ -55,12 +55,12 @@ export class FavoritesComponent implements OnInit {
   }
 
   
-  onScrollDown(ev: any) {
-    if (this.canLoad){
+  on_scroll_down(): void {
+    if (this.canLoad) {
       this.canLoad = false;
       this.isLoading = true;
       setTimeout(() => {
-        this.getUserFavorites();
+        this.get_favorites();
       }, 1500);
     } 
   }

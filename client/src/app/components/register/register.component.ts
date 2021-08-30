@@ -12,10 +12,10 @@ export class RegisterComponent implements OnInit {
 
   registrationForm!: FormGroup;
 
-  hide = true;
-  isSuccessful = false;
-  isSignUpFailed = false;
-  errorMessage = '';
+  isHidden: boolean = true;
+  isSuccessful: boolean = false;
+  isSignUpFailed: boolean = false;
+  errorMessage: string = '';
 
   constructor(private authService: AuthService,
     private sharedService: SharedService,
@@ -23,10 +23,10 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.sharedService.setTitle("Inscription");
-    this.initRegistrationForm();
+    this.init_signup_form();
   }
 
-  initRegistrationForm() {
+  init_signup_form() {
     this.registrationForm = this.fb.group({
       nom: ["", Validators.required],
       prenom: ["", Validators.required],
@@ -36,7 +36,7 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  onSubmit(): void {
+  submit(): void {
     if (this.registrationForm.invalid) {
       return;
     }

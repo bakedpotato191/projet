@@ -5,8 +5,8 @@
             <mat-card-title *ngIf="isRequest" class="card-title">Modifier votre mot de passe</mat-card-title>
         </mat-card-header>
         <mat-card-content class="card-content">
-            <form class="form" name="restoreForm" *ngIf="!sent && !isRequest && restoreForm" [formGroup]="restoreForm"
-                (ngSubmit)="submitEmail()">
+            <form class="form" name="restoreForm" *ngIf="!isUpdated && !isRequest && restoreForm" [formGroup]="restoreForm"
+                (ngSubmit)="submit_email()">
                 <mat-form-field class="form-field" color="accent" appearance="outline">
                     <mat-label>Adresse courriel</mat-label>
                     <input matInput class="form-control input" formControlName="email" type="email" name="email">
@@ -20,15 +20,15 @@
                 </mat-spinner>
             </form>
 
-            <form class="form" name="passwordForm" *ngIf="isRequest && passwordForm && !updated"
-                [formGroup]="passwordForm" (ngSubmit)="submitPasswords()">
+            <form class="form" name="passwordForm" *ngIf="isRequest && passwordForm && !isUpdated"
+                [formGroup]="passwordForm" (ngSubmit)="submit_new_password()">
                 <mat-form-field class="form-field" color="accent" appearance="outline">
                     <mat-label>Nouveau mot de passe</mat-label>
                     <input matInput class="form-control" formControlName="password" name="password"
-                        [type]="hide ? 'password' : 'text'">
-                    <button mat-icon-button type="button" matSuffix (click)="hide = !hide"
-                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        [type]="isHiden ? 'password' : 'text'">
+                    <button mat-icon-button type="button" matSuffix (click)="isHiden = !isHiden"
+                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="isHiden">
+                        <mat-icon>{{isHiden ? 'visibility_off' : 'visibility'}}</mat-icon>
                     </button>
                     <mat-error>
                         Le mot de passe doit comporter de 8 à 32 caractères
@@ -37,10 +37,10 @@
                 <mat-form-field class="form-field" color="accent" appearance="outline">
                     <mat-label>Répéter le nouveau mot de passe</mat-label>
                     <input matInput class="form-control" name="passwordRepeat" formControlName="passwordRepeat"
-                        [type]="hide ? 'password' : 'text'">
-                    <button mat-icon-button type="button" matSuffix (click)="hide = !hide"
-                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        [type]="isHiden ? 'password' : 'text'">
+                    <button mat-icon-button type="button" matSuffix (click)="isHiden = !isHiden"
+                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="isHiden">
+                        <mat-icon>{{isHiden ? 'visibility_off' : 'visibility'}}</mat-icon>
                     </button>
                     <mat-error>
                         Le mot de passe doit comporter de 8 à 32 caractères
@@ -51,12 +51,12 @@
                 </mat-spinner>
             </form>
 
-            <ng-container *ngIf="sent">
+            <ng-container *ngIf="isSent">
                 <div id="else">Consultez votre boite de réception pour trouver un lien permettant de réinitialiser
                     votre mot de passe. S'il n'apparaît pas dans les minutes qui suivent, vérifiez votre dossier spam.
                 </div>
             </ng-container>
-            <ng-container *ngIf="updated">
+            <ng-container *ngIf="isUpdated">
                 <div id="else">Votre mot de passe a été mis à jour avec succès. Vous pouvez maintenant vous connecter
                     avec vos nouvelles informations d'identification.
                 </div>

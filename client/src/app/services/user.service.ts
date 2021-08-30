@@ -10,27 +10,27 @@ import { User } from '../class/user';
 })
 export class UserService {
 
-  private API: String = 'http://localhost:8081/api/user';
+  private API: string = 'http://localhost:8081/api/user';
 
   constructor(private http: HttpClient) { }
 
-  public getUser(username: String): Observable<User>{
+  public getUser(username: string): Observable<User>{
     return this.http.get<User>(`${this.API}/info/${username}`);
   }
 
-  public follow(username: String): Observable<any>{
+  public follow(username: string): Observable<any>{
     return this.http.post(this.API + '/follow', username);
   }
 
-  public unfollow(username: String): Observable<any>{
+  public unfollow(username: string): Observable<any>{
     return this.http.post(this.API + '/unfollow', username);
   }
 
-  public getFavoritePosts(page: Number, size:Number, sort: String): Observable<Favorite[]> {
+  public getFavoritePosts(page: number, size:number, sort: string): Observable<Favorite[]> {
     return this.http.get<Favorite[]>(`${this.API}/favorites?page=${page}&size=${size}&sort=${sort}`);
   }
 
-  public getUserPosts(username: String, page: Number, size: Number, sort: String): Observable<Post[]>{
+  public getUserPosts(username: string, page: number, size: number, sort: string): Observable<Post[]>{
     return this.http.get<Post[]>(`${this.API}/posts/${username}?page=${page}&size=${size}&sort=${sort}`);
   }
 
@@ -46,7 +46,7 @@ export class UserService {
     return this.http.delete(this.API + '/reset_profile_picture');
   }
 
-  public getSubscriptions(username: String, page: Number, size: Number, sort: String): Observable<any> {
+  public getSubscriptions(username: string, page: number, size: number, sort: string): Observable<any> {
     return this.http.get(`${this.API}/subscriptions/${username}?page=${page}&size=${size}&sort=${sort}`);
   }
 }

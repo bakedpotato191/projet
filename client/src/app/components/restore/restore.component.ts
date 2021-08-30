@@ -11,15 +11,16 @@ import { SharedService } from 'src/app/services/shared.service';
 })
 export class RestoreComponent implements OnInit {
   
-  hide = true;
   restoreForm!: FormGroup;
   passwordForm!: FormGroup;
-  sent = false;
-  isLoading = false;
-  isRequest = false;
-  isInvalid = false;
-  isVisible = false;
-  updated = false;
+
+  isSent: boolean = false;
+  isHiden: boolean = true;
+  isLoading: boolean = false;
+  isRequest: boolean = false;
+  isInvalid: boolean = false;
+  isVisible: boolean = false;
+  isUpdated: boolean = false;
   uuid!:string | null;
 
   constructor(private readonly route: ActivatedRoute,
@@ -30,35 +31,35 @@ export class RestoreComponent implements OnInit {
   ngOnInit(): void {
     this.uuid = this.route.snapshot.paramMap.get('token');
     
-    if (this.uuid) {
+    if (this.uuid !== null) {
       const json = { "token": this.uuid };
       this.authService.verifyToken(json).subscribe(
         _data => {
           this.isRequest = true;
-          this.initPasswordsForm();
+          this.init_password_form();
         },
         _error => {
           this.isInvalid = true;
-          this.initLoginForm();
-          return this.sharedService.showSnackbar("It looks like you clicked on an invalid password reset link. Please try again.", 'Dismiss', 0);
+          this.init_login_form();
+          this.sharedService.showSnackbar("It looks like you clicked on an invalid password reset link. Please try again.", 'Dismiss', 0);
         }
       )
       this.sharedService.setTitle("Mis a jour de mot de passe");
     }
     else {
       this.sharedService.setTitle("Reinitialisation");
-      this.initLoginForm();
+      this.init_login_form();
     }
 
   };
 
-  initLoginForm() {
+  init_login_form() {
     this.restoreForm = this.fb.group({
       email: ["", [Validators.required, Validators.email, Validators.maxLength(128)]],
     });
   };
 
-  initPasswordsForm() {
+  init_password_form() {
     this.passwordForm = this.fb.group({
       password: ["", [Validators.required, Validators.minLength(8), Validators.maxLength(32)]],
       passwordRepeat: ["", [Validators.required, Validators.minLength(8), Validators.maxLength(32)]],
@@ -66,33 +67,33 @@ export class RestoreComponent implements OnInit {
     })
   };
 
-  submitEmail(): void {
+  submit_email(): void {
     if (this.restoreForm.invalid) {
       return;
     }
     this.isLoading = true;
       this.authService.restore(this.restoreForm.value).subscribe(
-        _data=> {
-          this.sent = true;
+        _data => {
+          this.isSent = true;
           this.isLoading = false;
         },
-        error=> {
-          return this.sharedService.showSnackbar(error.error, 'Dismiss', 0);
+        error => {
+          this.sharedService.showSnackbar(error.error, 'Dismiss', 0);
         }
 
       );
   };
 
-  submitPasswords() {
+  submit_new_password() {
     this.passwordForm.patchValue({
       token: this.uuid
     })
     this.authService.reset(this.passwordForm.value).subscribe(
       _data=> {
-        this.updated = true;
+        this.isUpdated = true;
       },
       error => {
-        return this.sharedService.showSnackbar(error.error, 'Dismiss', 0);
+        this.sharedService.showSnackbar(error.error, 'Dismiss', 0);
       }
     )
   }

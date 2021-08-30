@@ -1,13 +1,16 @@
 <div *ngIf="isContent">
-    <form [formGroup]="avatarForm">
-        <input #input type="file" accept="image/*" (change)="onFileChange($event)">
+
+    <form>
+        <input #input type="file" accept="image/*" (change)="on_file_change($event)">
     </form>
+
     <div *ngIf="user; then container else error"></div>
+
     <ng-template #container>
         <div class="container">
             <div id="profile-container">
                 <div id="profile">
-                    <div id="profile-picture" [style.cursor]="isMyPage? 'pointer' : 'default'" (click)="click()">
+                    <div id="profile-picture" [style.cursor]="isMyPage? 'pointer' : 'default'" (click)="on_avatar_click()">
                         <div [style.display]="isOverlayed ? 'block' : 'none'" class="overlay">
                             <div class="spinner"></div>
                         </div>
@@ -27,7 +30,7 @@
                     </div>
                     <ul id="buttons">
                         <li id="upload-button">
-                            <button mat-stroked-button *ngIf="isMyPage" color="accent" (click)="openUploadDialog()">
+                            <button mat-stroked-button *ngIf="isMyPage" color="accent" (click)="open_upload_dialog()">
                                 <mat-icon aria-hidden="false" aria-label="Upload icon">add_a_photo</mat-icon>
                             </button>
                         </li>
@@ -46,12 +49,12 @@
                         <span class="count">{{ user.followerCount }}</span> abonnés
                     </li>
                     <li id="numberSubbed" fxLayout="column">
-                        <span class="count" (click)="openSubbedDialog()">{{ user.followingCount }}</span> abonnements
+                        <span class="count" (click)="open_subscriptions_dialog()">{{ user.followingCount }}</span> abonnements
                     </li>
                 </ul>
             </div>
-            <mat-tab-group class="tab-group" (selectedTabChange)="onTabChanged($event)" [selectedIndex]="selectedIndex" mat-stretched-tabs animationDuration="0ms"
-                mat-align-tabs="center" color="accent">
+            <mat-tab-group class="tab-group" (selectedTabChange)="on_tab_change($event)" [selectedIndex]="selectedIndex"
+                mat-stretched-tabs animationDuration="0ms" mat-align-tabs="center" color="accent">
                 <mat-tab id="first-tab" mat-tab-link>
                     <ng-template mat-tab-label>
                         <mat-icon class="example-tab-icon">photo_library</mat-icon>
@@ -71,6 +74,7 @@
         </div>
 
     </ng-template>
+
     <ng-template #error>
         <div id="notfound">
             <span id="error">404</span>

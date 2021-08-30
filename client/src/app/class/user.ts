@@ -1,14 +1,14 @@
 import { Post } from "./post";
 
 export class User {
-    nom!: String;
-    prenom!: String;
-    username!: String;
+    nom!: string;
+    prenom!: string;
+    username!: string;
     posts!: Post[];
-    avatar!: String;
+    avatar!: string;
     has_avatar!: boolean;
-    postCount!: Number;
-    followerCount!: Number;
-    followingCount!:Number;
+    postCount!: number;
+    followerCount!: number;
+    followingCount!:number;
     followed!: boolean;
 }

@@ -59,3 +59,7 @@
   line-height: 20px;
   min-width: auto;
 }
+
+#uploadBtn {
+  width: 100%;
+}

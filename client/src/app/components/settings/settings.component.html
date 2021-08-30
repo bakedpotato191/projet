@@ -1,0 +1,18 @@
+<div class="container">
+    <span id="form1">Modifier profil</span>
+    <form class="form" name="form" fxLayout="column" [formGroup]="editForm">
+        <div class="ligne" fxLayout="row">
+            <mat-label class="label">Prenom</mat-label>
+        <mat-form-field class="form-field" color="accent" appearance="outline">
+            <input matInput class="form-control input" formControlName="prenom" type="text" name="prenom">
+        </mat-form-field>
+        </div>
+        <div class="ligne" fxLayout="row">
+            <mat-label class="label">Nom</mat-label>
+        <mat-form-field class="form-field" color="accent" appearance="outline">
+            <input matInput class="form-control input" formControlName="nom" type="text" name="nom">
+        </mat-form-field>
+        </div>
+        
+    </form>
+</div>

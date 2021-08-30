@@ -11,7 +11,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class HeaderComponent implements OnInit {
 
-  isLoggedIn = false;
+  isLoggedIn: boolean = false;
   username!: string;
   avatar!: string;
 
@@ -37,12 +37,12 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  open_home_page(): void {
+  open_home_page() {
     this.router.navigate(['/profile/' + this.username]) 
                .then(_page => {window.location.reload()});
   }
 
-  open_favorites_page():void {
+  open_favorites_page() {
     this.router.navigate(['profile/'+ this.username+ '/favorites'], {relativeTo: this.activatedRoute})
                .then(_page => { window.location.reload() });
   }
@@ -51,7 +51,7 @@ export class HeaderComponent implements OnInit {
     
   }
 
-  logout() {
+  sign_out() {
     this.tokenStorageService.signOut();
   }
 

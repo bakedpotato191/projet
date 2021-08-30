@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
@@ -9,17 +9,17 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class AvatarComponent {
 
   constructor(public dialogRef: MatDialogRef<AvatarComponent>,
-              @Inject(MAT_DIALOG_DATA) public input: any) { }
+              @Inject(MAT_DIALOG_DATA) public input: ElementRef) { }
 
-  closeDialog(): void {
+  close_dialog(): void {
     this.dialogRef.close();
   }
 
-  addPhoto(): void {
+  import_avatar(): void {
     this.input.nativeElement.click();
   }
 
-  resetPhoto(): void {
+  reset_avatar(): void {
     this.dialogRef.close('delete');
   }
 

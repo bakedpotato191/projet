@@ -38,10 +38,10 @@ export class CommentsComponent implements OnInit {
   ngOnInit(): void {
     this.pageNumber = 0;
     this.comments = [];
-    this.getAllComments();
+    this.get_all_comments();
   }
 
-  getAllComments() {
+  get_all_comments(): void {
     this.commentService.getPostComments(this.parent.id, this.pageNumber, this.pageSize, this.sort).subscribe(data => {
       if (data.length !== 0) {
         this.comments = data.comments;
@@ -59,17 +59,17 @@ export class CommentsComponent implements OnInit {
     });
   }
 
-  handlePageEvent(ev: PageEvent) {
+  handle_page_event(ev: PageEvent): void {
     this.pageNumber = ev.pageIndex;
     this.pageSize = ev.pageSize;
     this.canLoad = false;
     this.isLoading = true;
       setTimeout(() => {
-        this.getAllComments();
+        this.get_all_comments();
       }, 1000);
   }
 
-  openDeleteCommentDialog(id: Number): void {
+  open_delete_comment_dialog(id: number): void {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '350px',
       data: "Êtes-vous sûr de vouloir supprimer ce commentaire?",

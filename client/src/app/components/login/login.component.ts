@@ -11,7 +11,7 @@ import { TokenStorageService } from 'src/app/services/token-storage.service';
 })
 export class LoginComponent implements OnInit {
 
-  hide = true;
+  isHiden = true;
   loginForm!: FormGroup;
 
   isLoggedIn = false;
@@ -27,21 +27,21 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.sharedService.setTitle("Connexion");
-    this.initLoginForm();
+    this.init_login_form();
     if (this.tokenStorage.getToken()) {
       this.isLoggedIn = true;
       this.roles = this.tokenStorage.getUser().roles;
     }
   }
 
-  initLoginForm() {
+  init_login_form(): void {
     this.loginForm = this.fb.group({
       email: ["", [Validators.required, Validators.email, Validators.maxLength(128)]],
       password: ["", [Validators.required, Validators.minLength(8), Validators.maxLength(32)]]
     });
   }
 
-  onSubmit(): void {
+  submit(): void {
     if (this.loginForm.invalid) {
       return;
     }
@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
         this.isLoginFailed = true;
         this.isLoading = false;
         if (error.status === 401) {
-          return this.sharedService.showSnackbar("Invalid email or password", 'Dismiss', 7000);
+          this.sharedService.showSnackbar("Invalid email or password", 'Dismiss', 7000);
         }
       }
     );

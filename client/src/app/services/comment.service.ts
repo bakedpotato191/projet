@@ -8,11 +8,11 @@ import { Commentaire } from '../class/commentaire';
 })
 export class CommentService {
 
-  private API: String = 'http://localhost:8081/api/comment';
+  private API: string = 'http://localhost:8081/api/comment';
 
   constructor(private http: HttpClient) { }
 
-  public getPostComments(id:Number, page: Number, size: Number, sort: String): Observable<any>{
+  public getPostComments(id:number, page: number, size: number, sort: string): Observable<any>{
     return this.http.get<any>(`${this.API}/all/${id}?page=${page}&size=${size}&sort=${sort}`);
   }
 
@@ -20,7 +20,7 @@ export class CommentService {
     return this.http.post(this.API + '/add', comment);
   }
 
-  public deleteComment(id: Number):Observable<any>{
+  public deleteComment(id: number):Observable<any>{
     return this.http.delete(`${this.API}/delete/${id}`);
   }
 }

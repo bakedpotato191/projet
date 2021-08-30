@@ -8,7 +8,7 @@ import { Commentaire } from '../class/commentaire';
 })
 export class PostService {
 
-  private API: String = 'http://localhost:8081/api/post';
+  private API: string = 'http://localhost:8081/api/post';
 
   constructor(private http: HttpClient) { }
 
@@ -16,7 +16,7 @@ export class PostService {
     return this.http.post(this.API+ '/create', form);
   }
 
-  public getPostById(id: Number): Observable<any>{
+  public getPostById(id: number): Observable<any>{
     return this.http.get(`${this.API}/${id}`);
   }
 
@@ -24,15 +24,15 @@ export class PostService {
     return this.http.post(this.API + '/addcomment', comment);
   }
 
-  public likePost(id: Number): Observable<any> {
+  public likePost(id: number): Observable<any> {
     return this.http.post(this.API + '/like', id);
   }
 
-  public dislikePost(id: Number): Observable<any>{
+  public dislikePost(id: number): Observable<any>{
     return this.http.post(this.API + '/dislike', id);
   }
 
-  public removePost(id: Number): Observable<any>{
+  public removePost(id: number): Observable<any>{
     return this.http.delete(`${this.API}/delete/${id}`);
   }
 }

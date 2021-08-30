@@ -11,7 +11,7 @@ export class SharedService {
   constructor(private matSnackBar: MatSnackBar,
               private titleService: Title) { }
 
-  public showSnackbar(content: any, action: any, duration: number) {
+  public showSnackbar(content: any, action: any, duration: number): void {
     let sb = this.matSnackBar.open(content, action, {
       duration,
       panelClass: ["custom-style"],

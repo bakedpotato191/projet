@@ -4,7 +4,7 @@
             <mat-card-title class="card-title">Se connecter</mat-card-title>
         </mat-card-header>
         <mat-card-content class="card-content">
-            <form class="form" name="form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <form class="form" name="form" [formGroup]="loginForm" (ngSubmit)="submit()">
                 <mat-form-field class="form-field" color="accent" appearance="outline">
                     <mat-label>Adresse courriel</mat-label>
                     <input matInput class="form-control input" formControlName="email" type="email" name="email">
@@ -16,10 +16,10 @@
                 <mat-form-field class="form-field" color="accent" appearance="outline">
                     <mat-label>Mot de passe</mat-label>
                     <input matInput class="form-control" formControlName="password" type="password" name="password"
-                        [type]="hide ? 'password' : 'text'">
-                    <button mat-icon-button type="button" matSuffix (click)="hide = !hide"
-                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        [type]="isHiden ? 'password' : 'text'">
+                    <button mat-icon-button type="button" matSuffix (click)="isHiden = !isHiden"
+                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="isHiden">
+                        <mat-icon>{{isHiden ? 'visibility_off' : 'visibility'}}</mat-icon>
                     </button>
                     <mat-error>
                         Mot de passe doit contenir de 8 au 32 caracteres

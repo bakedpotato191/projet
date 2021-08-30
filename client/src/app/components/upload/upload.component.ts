@@ -13,9 +13,10 @@ import { UserpostsComponent } from '../userposts/userposts.component';
 })
 export class UploadComponent {
 
-  imgFile!: String;
+  imageFile!: string;
   fileData!: Blob;
   isSending!: boolean;
+  isSent: boolean = false;
 
   uploadForm = new FormGroup({
     file: new FormControl('', [Validators.required]),
@@ -32,7 +33,7 @@ export class UploadComponent {
     return this.uploadForm.controls;
   }
 
-  onImageChange(e: any) {
+  on_file_change(e: any) {
     const reader = new FileReader();
 
     if (e.target.files && e.target.files.length) {
@@ -40,7 +41,7 @@ export class UploadComponent {
       reader.readAsDataURL(this.fileData);
 
       reader.onload = () => {
-        this.imgFile = reader.result as string;
+        this.imageFile = reader.result as string;
         this.uploadForm.patchValue({
           imgSrc: reader.result
         });
@@ -49,8 +50,8 @@ export class UploadComponent {
     }
   }
 
-  closeDialog() {
-    this.dialogRef.close('uploaded');
+  close_dialog() {
+    this.dialogRef.close(this.isSent);
   }
 
   submit() {
@@ -63,7 +64,8 @@ export class UploadComponent {
     this.isSending = true;
     this.postService.postPhoto(formData).subscribe(
       _data => {
-          this.closeDialog();
+          this.isSent = true;
+          this.close_dialog();
       },
       error => {
         this.isSending = false;
