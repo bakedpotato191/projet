@@ -20,8 +20,7 @@ import { HomeComponent } from '../home/home.component';
     ]
 })
 export class UserpostsComponent implements OnInit {
-    
-  posts: Post[] = [];
+    posts: Post[] = [];
 
     private page: number = 0;
     private readonly size: number = 9;
@@ -57,26 +56,26 @@ export class UserpostsComponent implements OnInit {
         this.userService
             .getUserPosts(this.parent.username, this.page, this.size, this.sort)
             .subscribe(
-              (data) => {
-                if (data.length !== 0) {
-                    this.posts = this.posts.concat(data);
-                    this.page++;
-                    this.canLoad = true;
+                (data) => {
+                    if (data.length !== 0) {
+                        this.posts = this.posts.concat(data);
+                        this.page++;
+                        this.canLoad = true;
 
-                    if (data.length < this.size) {
+                        if (data.length < this.size) {
+                            this.canLoad = false;
+                        }
+                    } else {
                         this.canLoad = false;
                     }
-                } else {
-                    this.canLoad = false;
+                },
+                (error) => {
+                    console.log(error);
                 }
-            },
-            error => {
-              console.log(error);
-            }).add(
-              () => {
+            )
+            .add(() => {
                 this.isLoading = false;
-              }
-            );
+            });
     }
 
     handle_scroll_down() {

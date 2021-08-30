@@ -137,23 +137,24 @@ export class HomeComponent implements OnInit {
         formData.append('avatar', this.fileData);
         this.isOverlayed = true;
         setTimeout(() => {
-            this.userService.setProfilePicture(formData).subscribe(
-                (data) => {
-                    this.user.avatar = data.avatar;
-                    this.user.has_avatar = data.has_avatar;
-                },
-                (error) => {
-                    this.sharedService.showSnackbar(
-                        'La demande a échoué avec le statut http ' + error.status,
-                        'Dismiss',
-                        7000
-                    );
-                },
-            ).add(
-              () => {
-                this.isOverlayed = false;
-              }
-            );
+            this.userService
+                .setProfilePicture(formData)
+                .subscribe(
+                    (data) => {
+                        this.user.avatar = data.avatar;
+                        this.user.has_avatar = data.has_avatar;
+                    },
+                    (error) => {
+                        this.sharedService.showSnackbar(
+                            'La demande a échoué avec le statut http ' + error.status,
+                            'Dismiss',
+                            7000
+                        );
+                    }
+                )
+                .add(() => {
+                    this.isOverlayed = false;
+                });
         }, 1000);
     }
 
@@ -182,24 +183,25 @@ export class HomeComponent implements OnInit {
                 if (result === 'delete') {
                     this.isOverlayed = true;
                     setTimeout(() => {
-                        this.userService.deleteProfilePicture().subscribe(
-                            (data) => {
-                                this.user.has_avatar = data.has_avatar;
-                                this.user.avatar = data.avatar;
-                            },
-                            (error) => {
-                                this.sharedService.showSnackbar(
-                                    'La requete DELETE a échoué avec le code statut' +
-                                        error.status,
-                                    'Dismiss',
-                                    7000
-                                );
-                            }
-                        ).add(
-                          () => {
-                            this.isOverlayed = false;
-                          }
-                        );
+                        this.userService
+                            .deleteProfilePicture()
+                            .subscribe(
+                                (data) => {
+                                    this.user.has_avatar = data.has_avatar;
+                                    this.user.avatar = data.avatar;
+                                },
+                                (error) => {
+                                    this.sharedService.showSnackbar(
+                                        'La requete DELETE a échoué avec le code statut' +
+                                            error.status,
+                                        'Dismiss',
+                                        7000
+                                    );
+                                }
+                            )
+                            .add(() => {
+                                this.isOverlayed = false;
+                            });
                     }, 1000);
                 }
             });
