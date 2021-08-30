@@ -9,7 +9,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AngularMaterialModule } from './angular-material.module';
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
 import { authInterceptorProviders } from './helpers/auth.interceptor';
 import { LoggedInAuthGuard } from './guards/loggedinauthguard.guard';
@@ -19,12 +18,10 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
-import { HomeComponent } from './components/home/home.component';
 import { PostComponent } from './components/post/post.component';
 import { UploadComponent } from './components/upload/upload.component';
 import { ConfirmationDialogComponent } from './components/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { FavoritesComponent } from './components/favorites/favorites.component';
-import { MatTabNav } from '@angular/material/tabs';
 import { UserpostsComponent } from './components/userposts/userposts.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { CommentsComponent } from './components/comments/comments.component';
@@ -32,6 +29,8 @@ import { RestoreComponent } from './components/restore/restore.component';
 import { FollowingComponent } from './components/dialogs/following/following.component';
 import { AvatarComponent } from './components/dialogs/avatar/avatar.component';
 import { ExploreComponent } from './components/explore/explore.component';
+import { HomepageComponent } from './components/homepage/homepage.component';
+import { UserPageComponent } from './components/userpage/userpage.component';
 
 @NgModule({
   imports: [
@@ -51,7 +50,7 @@ import { ExploreComponent } from './components/explore/explore.component';
     HeaderComponent,
     RegisterComponent,
     LoginComponent,
-    HomeComponent,
+    UserPageComponent,
     PostComponent,
     UploadComponent,
     ConfirmationDialogComponent,
@@ -61,7 +60,8 @@ import { ExploreComponent } from './components/explore/explore.component';
     RestoreComponent,
     FollowingComponent,
     AvatarComponent,
-    ExploreComponent
+    ExploreComponent,
+    HomepageComponent
   ],
   exports: [
     UploadComponent
@@ -70,9 +70,7 @@ import { ExploreComponent } from './components/explore/explore.component';
     authInterceptorProviders, 
     LoggedInAuthGuard, 
     AuthGuard,
-    Title,
-    MatTabNav,
-    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } }
+    Title
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

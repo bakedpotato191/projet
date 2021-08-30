@@ -1,16 +1,16 @@
 <div *ngIf="isContent">
-
     <form>
-        <input #input type="file" accept="image/*" (change)="on_file_change($event)">
+        <input #input type="file" accept="image/*" (change)="on_file_change($event)" />
     </form>
 
-    <div *ngIf="user; then container else error"></div>
+    <div *ngIf="user; then container; else error"></div>
 
     <ng-template #container>
         <div class="container">
             <div id="profile-container">
                 <div id="profile">
-                    <div id="profile-picture" [style.cursor]="isMyPage? 'pointer' : 'default'" (click)="on_avatar_click()">
+                    <div id="profile-picture" [style.cursor]="isMyPage ? 'pointer' : 'default'"
+                        (click)="on_avatar_click()">
                         <div [style.display]="isOverlayed ? 'block' : 'none'" class="overlay">
                             <div class="spinner"></div>
                         </div>
@@ -49,7 +49,10 @@
                         <span class="count">{{ user.followerCount }}</span> abonnés
                     </li>
                     <li id="numberSubbed" fxLayout="column">
-                        <span class="count" (click)="open_subscriptions_dialog()">{{ user.followingCount }}</span> abonnements
+                        <span class="count" (click)="open_subscriptions_dialog()">{{
+                            user.followingCount
+                            }}</span>
+                        abonnements
                     </li>
                 </ul>
             </div>
@@ -72,14 +75,15 @@
                 </mat-tab>
             </mat-tab-group>
         </div>
-
     </ng-template>
 
     <ng-template #error>
         <div id="notfound">
             <span id="error">404</span>
             <span id="first">Cette page n’est malheureusement pas disponible.</span>
-            <span id="second">Le lien que vous avez suivi est peut-être rompu, ou la page a été supprimée. </span>
+            <span id="second">Le lien que vous avez suivi est peut-être rompu, ou la page a été
+                supprimée.
+            </span>
         </div>
     </ng-template>
 </div>

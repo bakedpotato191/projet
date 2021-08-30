@@ -1,9 +1,10 @@
-import { HttpClient, HttpStatusCode } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Favorite } from '../class/favorite';
-import { Post } from '../class/post';
-import { User } from '../class/user';
+import { Favorite } from '../interfaces/favorite';
+import { Post } from '../interfaces/post';
+import { User } from '../interfaces/user';
+
 
 @Injectable({
   providedIn: 'root'

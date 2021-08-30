@@ -1,7 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Post } from 'src/app/class/post';
-import { Commentaire } from 'src/app/class/commentaire';
+
 import { PostService } from 'src/app/services/post.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
@@ -10,6 +9,8 @@ import { CommentService } from 'src/app/services/comment.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { CommentsComponent } from '../comments/comments.component';
 import { LoginComponent } from '../login/login.component';
+import { Commentaire } from 'src/app/interfaces/commentaire';
+import { Post } from 'src/app/interfaces/post';
 
 @Component({
     selector: 'app-post',
@@ -22,7 +23,7 @@ export class PostComponent implements OnInit {
 
     id!: number;
     post!: Post;
-    comment: Commentaire = new Commentaire();
+    comment!: Commentaire;
     liked!: boolean;
     isLoading = false;
     isMyPost!: boolean;

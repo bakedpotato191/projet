@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Lobster&family=Poiret+One&family=Rampart+One&display=swap');.container {
+    height: 100%;
+    max-width: 975px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.cover {
+    height: inherit;
+    width: inherit;
+}
+
+.cover::before {
+    content: '';
+    z-index: -1;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: url(https://wallpaperaccess.com/full/1237874.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    filter: brightness(80%) grayscale(0.6) blur(12px);
+}
+
+.content {
+    text-align: center;
+    margin-top: 100px;
+}
+
+#test {
+    font-size: 40px;
+    color: rgb(250, 230, 255);
+}
+
+#test1 {
+    font-weight: bold;
+    font-size: 50px;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    color:rgb(255, 221, 108);
+}
+
+#test, #test1 {
+    font-family: 'Poiret One', cursive; 
+    margin-bottom: 20px; 
+}
+
+#logo {
+    font-family: 'Lobster', cursive;
+    font-size: 3em;
+    text-shadow: -1px 0 black, 0 0.5px black, 0.5px 0 black, 0 -1px black;
+    color: rgb(224, 203, 79);
+}
+
+nav {
+    margin-top: 100px;
+}
+
+button {
+    font-size: 1.2em;
+    font-family: 'Lobster Two', cursive;
+    width: 300px;
+    padding: 10px;
+    border: 1px solid rgb(58, 58, 58);
+    border-radius: 12px;
+}
+
+#signupBtn {
+    background-color: #e4b948;
+    color: rgb(58, 58, 58);
+}
+
+#signupBtn:hover {
+    background-color:rgb(58, 58, 58);
+    color:  #e4b948;
+    border: 1px solid  #e4b948;
+}
+
+#loginBtn:hover {
+    background-color: rgb(164, 255, 152);
+    color:  rgb(58, 58, 58);
+    border: 1px solid rgb(58, 58, 58);
+}
+
+#loginBtn {
+    color: rgb(250, 250, 250);
+}

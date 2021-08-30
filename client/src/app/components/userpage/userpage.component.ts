@@ -1,8 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { User } from 'src/app/class/user';
+
 import { UserService } from 'src/app/services/user.service';
-import { Post } from 'src/app/class/post';
+
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { SharedService } from 'src/app/services/shared.service';
@@ -14,13 +14,15 @@ import { Subscription } from 'rxjs';
 import { FollowingComponent } from '../dialogs/following/following.component';
 import { AvatarComponent } from '../dialogs/avatar/avatar.component';
 import { UserpostsComponent } from '../userposts/userposts.component';
+import { User } from 'src/app/interfaces/user';
+import { Post } from 'src/app/interfaces/post';
 
 @Component({
-    selector: 'app-home',
-    templateUrl: './home.component.html',
-    styleUrls: ['./home.component.css']
+    selector: 'app-userpage',
+    templateUrl: './userpage.component.html',
+    styleUrls: ['./userpage.component.css']
 })
-export class HomeComponent implements OnInit {
+export class UserPageComponent implements OnInit {
     @ViewChild('input') input!: ElementRef;
     @ViewChild(UserpostsComponent) userposts: any;
 
@@ -81,22 +83,23 @@ export class HomeComponent implements OnInit {
     open_upload_dialog(): void {
         this.uploadRef = this.dialog.open(UploadComponent, {
             data: this.userposts,
+            width: '500px',
             autoFocus: false
         });
 
         this.uploadRef.afterClosed().subscribe((result) => {
             if (result) {
-                this.userposts.getNewPost();
+                this.userposts.get_latest_post();
             }
         });
     }
 
     follow() {
         if (this.tokenService.getToken() == null) {
-            return this.dialog.open(LoginComponent);
+            this.dialog.open(LoginComponent);
         }
         this.user.followed = true;
-        return this.userService.follow(this.user.username).subscribe();
+        this.userService.follow(this.user.username).subscribe();
     }
 
     unfollow() {
@@ -110,7 +113,7 @@ export class HomeComponent implements OnInit {
     on_tab_change(event: MatTabChangeEvent): void {
         switch (event.index) {
             case 0:
-                this.router.navigate([''], { relativeTo: this.activatedRoute });
+                this.router.navigate(['profile/' + this.username]);
                 break;
             case 1:
                 this.router.navigate(['favorites'], { relativeTo: this.activatedRoute });

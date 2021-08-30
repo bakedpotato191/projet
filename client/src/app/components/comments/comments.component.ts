@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
-import { Commentaire } from 'src/app/class/commentaire';
+import { Commentaire } from 'src/app/interfaces/commentaire';
 import { CommentService } from 'src/app/services/comment.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { PostComponent } from '../post/post.component';

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Favorite } from 'src/app/class/favorite';
-import { Post } from 'src/app/class/post';
+import { Favorite } from 'src/app/interfaces/favorite';
+import { Post } from 'src/app/interfaces/post';
+
 import { UserService } from 'src/app/services/user.service';
 
 @Component({

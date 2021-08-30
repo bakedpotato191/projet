@@ -1,5 +1,4 @@
 <div mat-dialog-content class="dialog-content">
-    <button class="close" mat-button (click)="close_dialog()">X</button>
     <mat-card class="box">
         <mat-card-header>
             <mat-card-title>Publier une photo</mat-card-title>
@@ -7,21 +6,25 @@
 
         <form class="example-form" name="form" [formGroup]="uploadForm" (ngSubmit)="submit()">
             <mat-card-content>
-                <div class="preview flex" *ngIf="imageFile">
-                    <img [src]="imageFile" style="width:400px; height:250px">
+                <div class="preview" *ngIf="imageFile">
+                    <img [src]="imageFile" style="width: 400px; height: 250px" />
                 </div>
 
                 <input type="file" class="form-control file-input" (change)="on_file_change($event)"
-                    formControlName="file" accept="image/png, image/jpeg">
+                    formControlName="file" accept="image/png, image/jpeg" />
 
                 <mat-form-field color="accent" floatLabel="always">
                     <mat-label>Description</mat-label>
                     <textarea matInput class="form-control" type="text" formControlName="description" maxlength="1024">
-                </textarea>
+                    </textarea>
                 </mat-form-field>
             </mat-card-content>
-            <button id="uploadBtn" *ngIf="!isSending" mat-stroked-button color="accent" type="submit">Upload</button>
-            <mat-spinner *ngIf="isSending" [diameter]="70" color="accent" aria-label="upload in progress"></mat-spinner>
+            <div fxLayout="column wrap">
+                <button id="uploadBtn" *ngIf="!isSending" mat-stroked-button color="accent" type="submit">Upload</button>
+                <button id="closeBtn" *ngIf="!isSending" mat-stroked-button (click)="close_dialog()">Close</button>
+                <mat-spinner *ngIf="isSending" [diameter]="70" color="accent" aria-label="upload in progress">
+                </mat-spinner>
+            </div>
         </form>
     </mat-card>
 </div>

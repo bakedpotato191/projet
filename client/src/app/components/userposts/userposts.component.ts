@@ -1,9 +1,9 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Post } from 'src/app/class/post';
+import { Post } from 'src/app/interfaces/post';
 import { UserService } from 'src/app/services/user.service';
-import { HomeComponent } from '../home/home.component';
+import { UserPageComponent } from '../userpage/userpage.component';
 
 @Component({
     selector: 'app-userposts',
@@ -32,7 +32,7 @@ export class UserpostsComponent implements OnInit {
     constructor(
         private readonly router: Router,
         private readonly userService: UserService,
-        private readonly parent: HomeComponent
+        private readonly parent: UserPageComponent
     ) {}
 
     ngOnInit(): void {
