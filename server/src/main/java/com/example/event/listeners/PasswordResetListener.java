@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
+import org.springframework.context.event.EventListener;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
@@ -30,6 +31,7 @@ public class PasswordResetListener implements ApplicationListener<OnPasswordRese
 	private String supportEmail;
 
 	@Override
+	@EventListener
 	public void onApplicationEvent(final OnPasswordResetRequestedEvent event) {
 		this.confirmReset(event);
 	}

@@ -9,8 +9,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.rest.model.Post;
+import com.example.web.dto.response.AvatarResponse;
 import com.example.web.exception.IncorrectFileExtensionException;
-import com.example.web.response.AvatarResponse;
 
 public interface FileStorageService {
 

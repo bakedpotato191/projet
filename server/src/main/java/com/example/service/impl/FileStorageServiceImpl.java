@@ -25,8 +25,8 @@ import com.example.rest.model.Post;
 import com.example.service.FileStorageService;
 import com.example.service.PostService;
 import com.example.service.UserService;
+import com.example.web.dto.response.AvatarResponse;
 import com.example.web.exception.IncorrectFileExtensionException;
-import com.example.web.response.AvatarResponse;
 
 @Service
 @Transactional

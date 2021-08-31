@@ -1,4 +1,4 @@
-package com.example.web.response;
+package com.example.web.dto.response;
 
 import org.springframework.http.HttpStatus;
 

@@ -19,8 +19,8 @@ import com.example.rest.dao.UserRepository;
 import com.example.rest.model.Follower;
 import com.example.rest.model.User;
 import com.example.service.UserService;
+import com.example.web.dto.response.AvatarResponse;
 import com.example.web.exception.EntityNotFoundException;
-import com.example.web.response.AvatarResponse;
 
 @Service
 @Transactional

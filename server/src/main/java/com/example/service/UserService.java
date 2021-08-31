@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.example.rest.model.Follower;
 import com.example.rest.model.User;
-import com.example.web.response.AvatarResponse;
+import com.example.web.dto.response.AvatarResponse;
 
 public interface UserService {
 
