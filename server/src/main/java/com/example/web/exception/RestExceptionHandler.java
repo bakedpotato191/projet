@@ -296,13 +296,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.CONFLICT, request);
 	}
 	
-	@ExceptionHandler(value = javax.mail.AuthenticationFailedException.class)
-	protected ResponseEntity<Object> handleMailAuthFail(RuntimeException ex, WebRequest request) {
-		var apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR);
-		apiError.setMessage("Unknown error occured. Please try later.");
-		return buildResponseEntity(apiError);
-	}
-	
 	/**
 	 * Handles UsernameAlreadyExistsException. Happens when server received the sign up request, but
 	 * the username is already in use.

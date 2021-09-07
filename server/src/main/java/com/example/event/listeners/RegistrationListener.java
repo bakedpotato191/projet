@@ -2,10 +2,13 @@ package com.example.event.listeners;
 
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
+import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
@@ -17,6 +20,8 @@ import com.example.service.AuthService;
 @Component
 public class RegistrationListener implements ApplicationListener<OnRegistrationCompleteEvent> {
 
+	private static final Logger logger = LoggerFactory.getLogger(RegistrationListener.class);
+	
 	@Autowired
     private AuthService authService;
 	
@@ -40,7 +45,12 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
         authService.createVerificationTokenForUser(user, token);
 
         final SimpleMailMessage email = constructEmailMessage(event, user, token);
+        try {
         mailSender.send(email);
+        }
+        catch (MailAuthenticationException ex) {
+        	logger.error(ex.getMessage());
+        }
     }
 
     //
