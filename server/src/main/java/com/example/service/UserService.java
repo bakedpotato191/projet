@@ -5,12 +5,13 @@ import java.util.List;
 import com.example.rest.model.Follower;
 import com.example.rest.model.User;
 import com.example.web.dto.response.AvatarResponse;
+import com.example.web.dto.response.UserDto;
 
 public interface UserService {
 
 	User getUserFromSession();
 
-	User getUserData(String username);
+	UserDto getUserData(String username);
 
 	void follow(String username);
 

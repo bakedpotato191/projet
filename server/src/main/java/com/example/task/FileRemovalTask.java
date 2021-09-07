@@ -10,7 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.rest.dao.PostRepository;
+import com.example.rest.dao.PublicationRepository;
 import com.example.rest.dao.UserRepository;
 import com.example.service.FileStorageService;
 
@@ -21,7 +21,7 @@ public class FileRemovalTask {
 	private static final Logger log = LoggerFactory.getLogger(FileRemovalTask.class);
 
 	@Autowired
-	PostRepository postRepository;
+	PublicationRepository publicationRepository;
 
 	@Autowired
 	UserRepository userRepository;
@@ -34,7 +34,7 @@ public class FileRemovalTask {
 		log.info("started purging unused photo files");
 		Set<String> photos = storageService.listUploadedPhotos();
 		photos.stream().forEach(photo -> {
-			if (!photo.endsWith(".tmp") && !postRepository.existsByFilepath(photo)) {
+			if (!photo.endsWith(".tmp") && !publicationRepository.existsByFilepath(photo)) {
 				try {
 					storageService.deleteUploadedPhoto(photo);
 				} catch (IOException ex) {

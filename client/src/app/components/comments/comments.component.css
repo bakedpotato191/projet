@@ -1,3 +1,19 @@
+:host{
+    flex-basis: 300px;
+	flex-grow: 0;
+	flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    background: rgba(36, 36, 36, 255);
+    border: 1px solid #7c7156;
+    border-radius: 0;
+}
+
+.comments {
+  overflow-y: scroll;
+  height: 400px;
+}
+
 .card .comment-avatar {
     padding: 0;
 }
@@ -9,6 +25,10 @@
 
 .card .comment-username {
     color:rgb(158, 158, 158);
+}
+
+::ng-deep .mat-list-item-content {
+  padding: 8px 0!important;
 }
 
 .comment-avatar {
@@ -68,3 +88,43 @@
     background: rgba(36,36,36,255);
     border-bottom: 1px solid #353535;
 }
+
+.form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: auto;
+  }
+
+  
+  .form > button {
+    width: 100%;
+  }
+  
+  .form textarea {
+    resize: none;
+    height: 100px;
+    color: white;
+  }
+  
+  .form-field {
+    width:100%!important;
+  }
+
+  ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-infix {
+    padding: 0.8375em 0 !important;
+  }
+  
+  ::ng-deep .mat-focused .mat-form-field-label {
+    /*change color of label*/
+    color: #e4b948 !important;
+  }
+  
+  ::ng-deep .mat-form-field-ripple {
+    /*change color of underline when focused*/
+    background-color: #69f0ae !important;
+  }
+  
+  .form-control {
+    caret-color: white;
+  }

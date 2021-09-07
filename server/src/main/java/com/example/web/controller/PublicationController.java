@@ -22,14 +22,14 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.rest.model.Post;
 import com.example.service.FileStorageService;
 import com.example.service.PostService;
+import com.example.web.dto.response.PublicationDto;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/post")
-public class PostController {
+@RequestMapping("/api/publication")
+public class PublicationController {
 
 	@Autowired
 	private FileStorageService storageService;
@@ -53,7 +53,7 @@ public class PostController {
 	}
 	
 	@GetMapping("/{id}")
-    public Post userPage(@PathVariable("id") Long id) {
+    public PublicationDto userPage(@PathVariable("id") Long id) {
 		return postService.getPostByID(id);
     }
 	

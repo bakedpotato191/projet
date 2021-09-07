@@ -9,7 +9,7 @@ import { Commentaire } from '../interfaces/commentaire';
 })
 export class PostService {
 
-  private API: string = 'http://localhost:8081/api/post';
+  private API: string = 'http://localhost:8081/api/publication';
 
   constructor(private http: HttpClient) { }
 

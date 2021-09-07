@@ -5,15 +5,12 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Comment implements Serializable {
@@ -31,14 +28,11 @@ public class Comment implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id")
-	@JsonIgnoreProperties("posts")
 	private User utilisateur;
 	
-	@ManyToOne
-	@JsonIgnore
+	@ManyToOne(fetch= FetchType.LAZY)
 	@JoinColumn(name = "post_id")
-	@JsonManagedReference
-	private Post post;
+	private Publication post;
 	
 	public Comment() {
 		super();
@@ -68,11 +62,11 @@ public class Comment implements Serializable {
 		this.utilisateur = utilisateur;
 	}
 
-	public Post getPost() {
+	public Publication getPost() {
 		return post;
 	}
 
-	public void setPost(Post post) {
+	public void setPost(Publication post) {
 		this.post = post;
 	}
 	

@@ -24,13 +24,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.rest.model.Follower;
-import com.example.rest.model.Like;
-import com.example.rest.model.Post;
-import com.example.rest.model.User;
 import com.example.service.FileStorageService;
 import com.example.service.PostService;
 import com.example.service.UserService;
 import com.example.web.dto.response.AvatarResponse;
+import com.example.web.dto.response.FavoriDto;
+import com.example.web.dto.response.PublicationDto;
+import com.example.web.dto.response.UserDto;
 import com.example.web.exception.IncorrectFileExtensionException;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
@@ -48,7 +48,7 @@ public class UserController {
 	private FileStorageService storageService;
 
 	@GetMapping(value= "/info/{username}")
-    public User getUser(@PathVariable("username") String username) {
+    public UserDto getUser(@PathVariable("username") String username) {
 		return userService.getUserData(username);
     }
 	
@@ -66,14 +66,14 @@ public class UserController {
     }
 	
 	@GetMapping(value = "/favorites")
-	public List<Like> getFavorites(	@RequestParam Integer page, 
+	public List<FavoriDto> getFavorites(	@RequestParam Integer page, 
 						            @RequestParam Integer size,
 						            @RequestParam String sort) {
 		return postService.getFavorites(page, size, sort);
 	}
 	
 	@GetMapping(value = "/posts/{username}")
-	public List<Post> getPosts( @PathVariable("username") String username,
+	public List<PublicationDto> getPosts( @PathVariable("username") String username,
 												@RequestParam Integer page, 
 									            @RequestParam Integer size,
 									            @RequestParam String sort) {

@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.rest.model.Post;
+import com.example.rest.model.Publication;
 import com.example.service.FileStorageService;
 import com.example.service.PostService;
 import com.example.service.UserService;
@@ -55,7 +55,7 @@ public class FileStorageServiceImpl implements FileStorageService {
 	}
 
 	@Override
-	public Post save(MultipartFile file, String description) throws IncorrectFileExtensionException, IOException {
+	public Publication save(MultipartFile file, String description) throws IncorrectFileExtensionException, IOException {
 
 		String fileContentType = file.getContentType();
 

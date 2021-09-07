@@ -36,7 +36,6 @@ public class User implements Serializable, UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique = true, nullable = false)
-	@JsonIgnore
     private Long id;
 
 	@Column
@@ -45,14 +44,12 @@ public class User implements Serializable, UserDetails {
 	@Column
     private String prenom;
     
-    @JsonIgnore
     @Column(length=128)
     private String email;
     
     @Column(unique=true)
     private String username;
 
-    @JsonIgnore
 	@Column(length = 60)
 	private String password;
     
@@ -62,7 +59,6 @@ public class User implements Serializable, UserDetails {
     @Column(columnDefinition="boolean default false")
     private boolean has_avatar;
 	
-	@JsonIgnore
 	@Column(columnDefinition="boolean default false")
     private boolean enabled;
 	
@@ -78,7 +74,6 @@ public class User implements Serializable, UserDetails {
 	@Transient
 	private boolean followed;
 	
-	@JsonIgnore
     @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER) // @ManyToMany default fetch = LAZY
     @JoinTable(name = "utilisateur_roles", 
     			joinColumns = @JoinColumn(
@@ -91,25 +86,20 @@ public class User implements Serializable, UserDetails {
     
     @OneToMany(mappedBy="utilisateur", cascade = CascadeType.ALL, orphanRemoval=true) // @OneToMany default fetch = LAZY
 	@JsonIgnore
-    private List<Post> posts = new ArrayList<>();
+    private List<Publication> posts = new ArrayList<>();
        
-    @JsonIgnore
     @OneToMany(mappedBy="utilisateur", cascade = CascadeType.ALL, orphanRemoval=true)
     private List<Comment> comments = new ArrayList<>();
     
-    @JsonIgnore
     @OneToMany(mappedBy="utilisateur", cascade = CascadeType.ALL)
-    private Set<Like> likes = new HashSet<>();
+    private Set<Favori> likes = new HashSet<>();
     
-    @JsonIgnore
     @OneToOne(fetch=FetchType.LAZY, mappedBy="user", cascade = CascadeType.ALL, orphanRemoval=true)  // @OneToOne default fetch = EAGER	
     private VerificationToken token;
     
-    @JsonIgnore
     @OneToMany(mappedBy="utilisateur2", cascade = CascadeType.ALL, orphanRemoval=true)
     private List<Follower> followers;
     
-    @JsonIgnore
     @OneToMany(mappedBy="utilisateur1", cascade = CascadeType.ALL, orphanRemoval=true)
     private List<Follower> following;
 
@@ -179,11 +169,11 @@ public class User implements Serializable, UserDetails {
 		this.roles = roles;
 	}
 	
-	public List<Post> getPosts() {
+	public List<Publication> getPosts() {
 		return posts;
 	}
 
-	public void setPosts(List<Post> posts) {
+	public void setPosts(List<Publication> posts) {
 		this.posts = posts;
 	}
 
@@ -211,11 +201,11 @@ public class User implements Serializable, UserDetails {
 		this.comments = comments;
 	}
 	
-	public Set<Like> getLikes() {
+	public Set<Favori> getLikes() {
 		return likes;
 	}
 
-	public void setLikes(Set<Like> likes) {
+	public void setLikes(Set<Favori> likes) {
 		this.likes = likes;
 	}
 	

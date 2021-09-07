@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.jwt.JwtUtils;
 import com.example.jwt.response.JwtResponse;
@@ -33,6 +34,7 @@ import com.example.web.exception.HttpUnauthorizedException;
 import com.example.web.exception.UsernameAlreadyExistsException;
 
 @Service
+@Transactional
 public class AuthServiceImpl implements AuthService {
 	
 	private static final String TOKEN_INVALID = "invalidToken";

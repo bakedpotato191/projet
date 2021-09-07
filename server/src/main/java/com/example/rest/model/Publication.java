@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name= "post")
-public class Post implements Serializable {
+public class Publication implements Serializable {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -50,7 +50,7 @@ public class Post implements Serializable {
 	
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonBackReference
-	private List<Like> likes = new ArrayList<>();
+	private List<Favori> likes = new ArrayList<>();
 	
 	@Transient
 	private boolean isLiked;
@@ -58,9 +58,9 @@ public class Post implements Serializable {
 	@Transient
 	private Long countLike;
 
-	public Post() {}
+	public Publication() {}
 
-	public Post(Long id, String description, Timestamp date, String photo, User utilisateur) {
+	public Publication(Long id, String description, Timestamp date, String photo, User utilisateur) {
 		super();
 		this.id = id;
 		this.description = description;
@@ -149,7 +149,7 @@ public class Post implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Post other = (Post) obj;
+		Publication other = (Publication) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

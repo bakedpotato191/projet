@@ -14,13 +14,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.rest.dao.FollowerRepository;
-import com.example.rest.dao.PostRepository;
+import com.example.rest.dao.PublicationRepository;
 import com.example.rest.dao.UserRepository;
 import com.example.rest.model.Follower;
 import com.example.rest.model.User;
 import com.example.service.UserService;
 import com.example.web.dto.response.AvatarResponse;
+import com.example.web.dto.response.UserDto;
 import com.example.web.exception.EntityNotFoundException;
+import com.example.web.mappers.MapstructMapper;
 
 @Service
 @Transactional
@@ -32,20 +34,23 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 	
 	@Autowired
-	private PostRepository postRepository;
+	private PublicationRepository publicationRepository;
 
     @Autowired
     private FollowerRepository followerRepository;
+    
+    @Autowired
+    private MapstructMapper mapper;
 
 	@Override
-	public User getUserData(String username){
+	public UserDto getUserData(String username){
 		
 		var user = userRepository.findByUsername(username);
 		
 		if(user.isPresent())
 		{	
 			var result = user.get();
-			result.setPostCount(postRepository.countByUtilisateur(user.get()));
+			result.setPostCount(publicationRepository.countByUtilisateur(user.get()));
 			
 			if (SecurityContextHolder.getContext().getAuthentication() 
 			          instanceof AnonymousAuthenticationToken) {
@@ -57,7 +62,7 @@ public class UserServiceImpl implements UserService {
 			
 			result.setFollowerCount(followerRepository.countFollowers(username));
 			result.setFollowingCount(followerRepository.countFollowing(username));
-			return result;
+			return mapper.userToUserDto(result);
         }
 		else {
 			throw new EntityNotFoundException(User.class, USERNAME, username);

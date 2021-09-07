@@ -1,20 +1,21 @@
 <div *ngIf="isContent" class="wrapper">
-  <div *ngIf="post; then card else error"></div>
+  <div class="container">
+  <div *ngIf="post; then card; else error"></div>
   <ng-template #card>
     <mat-card class="card">
       <mat-card-header class="card-header">
         <ng-container *ngIf="post.utilisateur">
-          
           <div mat-card-avatar class="card-avatar">
-            <div *ngIf="post.utilisateur.avatar; then avatar else default"></div>
+            <div *ngIf="post.utilisateur.avatar; then avatar; else default"></div>
             <ng-template #avatar>
               <a routerLink="/profile/{{ post.utilisateur.username }}">
                 <img class="avatar" src="{{ post.utilisateur.avatar }}" />
-                </a>
+              </a>
             </ng-template>
             <ng-template #default>
               <a routerLink="/profile/{{ post.utilisateur.username }}">
-                <img class="avatar" src="https://t4.ftcdn.net/jpg/02/15/84/43/360_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg" />
+                <img class="avatar"
+                  src="https://t4.ftcdn.net/jpg/02/15/84/43/360_F_215844325_ttX9YiIIyeaR7Ne6EaLLjMAmy4GvPC69.jpg" />
               </a>
             </ng-template>
           </div>
@@ -45,26 +46,9 @@
           <mat-icon aria-hidden="false" aria-label="like icon">delete</mat-icon>
         </button>
         <mat-divider></mat-divider>
-        <form class="form" name="form" (ngSubmit)="submit(post.id)" novalidate>
-          <input type="hidden" name="post_id" ng-value="post.id" [(ngModel)]="comment.id" required />
-          <mat-form-field class="form-field" color="accent" floatLabel="always">
-            <mat-label>Comment</mat-label>
-            <textarea matInput name="text" #textarea class="form-control" type="text" minlength="2" maxlength="128"
-              required [(ngModel)]="comment.text"></textarea>
-            <mat-error>
-              Le commentaire doit comporter de 2 à 128 caractères au plus
-            </mat-error>
-          </mat-form-field>
-          <button mat-stroked-button *ngIf="!isLoading" color="accent" class="btn-block">
-            Ajouter un commentaire
-          </button>
-          <mat-spinner *ngIf="isLoading" color="accent" [diameter]="25" aria-label="submitting the comment">
-          </mat-spinner>
-        </form>
       </mat-card-actions>
-      <mat-divider></mat-divider>
-      <app-comments></app-comments>
     </mat-card>
+    <app-comments></app-comments>
   </ng-template>
 
   <ng-template #error>
@@ -73,4 +57,5 @@
       <span>Post n'a pas ététrouvé ou a été supprimé par son auteur.</span>
     </div>
   </ng-template>
+</div>
 </div>

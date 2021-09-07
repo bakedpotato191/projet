@@ -1,6 +1,6 @@
 package com.example.web.controller;
 
-import java.util.Map;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.service.CommentService;
-import com.example.web.dto.request.CommentDto;
+import com.example.web.dto.request.CommentReqDto;
+import com.example.web.dto.response.CommentResDto;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -29,7 +30,7 @@ public class CommentController {
 	private CommentService commentService;
 	
 	@PostMapping("/add")
-	public ResponseEntity<HttpStatus> addComment(@RequestBody @Valid final CommentDto comment) {
+	public ResponseEntity<HttpStatus> addComment(@RequestBody @Valid final CommentReqDto comment) {
 		commentService.addComment(comment);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
@@ -41,7 +42,7 @@ public class CommentController {
 	}
 	
 	@GetMapping(value = "/all/{postID}")
-	public Map<String, Object> getPosts( @PathVariable("postID") Long id,
+	public List<CommentResDto> getPosts( @PathVariable("postID") Long id,
 												@RequestParam Integer page, 
 									            @RequestParam Integer size,
 									            @RequestParam String sort) {

@@ -1,6 +1,5 @@
 import { User } from "./user";
 
-
 export interface Commentaire {
     id: number;
     text: string;

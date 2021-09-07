@@ -9,21 +9,21 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.rest.model.Post;
+import com.example.rest.model.Publication;
 import com.example.rest.model.User;
 
 @Repository
 @Transactional(readOnly = true)
-public interface PostRepository extends JpaRepository<Post, Long> {
+public interface PublicationRepository extends JpaRepository<Publication, Long> {
 
-	Slice<Post> findAllByUtilisateurUsername(String username, Pageable paging);
+	Slice<Publication> findAllByUtilisateurUsername(String username, Pageable paging);
 	
-	@Query("SELECT p FROM Post p JOIN FETCH p.comments WHERE p.id = (:id)")
-    Post findByIdAndFetchCommentsEagerly(@Param("id") Long id);
+	@Query("SELECT p FROM Publication p JOIN FETCH p.comments WHERE p.id = (:id)")
+    Publication findByIdAndFetchCommentsEagerly(@Param("id") Long id);
 	
 	Long countByUtilisateur(User user);
 	
-	@Query("SELECT COUNT(p)>0 from Post p WHERE p.photo like %:name")
+	@Query("SELECT COUNT(p)>0 from Publication p WHERE p.photo like %:name")
 	boolean existsByFilepath(@Param("name") String filename);
 	
 	@Modifying

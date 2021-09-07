@@ -74,6 +74,11 @@
 		    <artifactId>commons-io</artifactId>
 		    <version>2.11.0</version>
 		</dependency>
+		<dependency>
+		    <groupId>org.mapstruct</groupId>
+		    <artifactId>mapstruct</artifactId>
+		    <version>1.4.2.Final</version> 
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -88,6 +93,13 @@
 			    <configuration>
 			        <source>${java.version}</source>
 			        <target>${java.version}</target>
+			        <annotationProcessorPaths>
+            		<path>
+                		<groupId>org.mapstruct</groupId>
+                		<artifactId>mapstruct-processor</artifactId>
+                		<version>1.4.2.Final</version>
+            		</path>
+        </annotationProcessorPaths>
 			    </configuration>
 			</plugin>
 		</plugins>

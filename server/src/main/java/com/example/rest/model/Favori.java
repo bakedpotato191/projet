@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name="postlikes", uniqueConstraints= @UniqueConstraint(columnNames={"user_id", "post_id"}))
-public class Like implements Serializable {
+public class Favori implements Serializable {
 	
 	private static final long serialVersionUID = -4538179406393643986L;
 
@@ -36,13 +36,13 @@ public class Like implements Serializable {
 	@JoinColumn(name = "post_id")
 	@JsonManagedReference
 	@JsonIgnoreProperties("comments")
-	private Post post;
+	private Publication post;
 	
 	private Timestamp date;
 	
-	public Like() {}
+	public Favori() {}
 
-	public Like(Long id, User utilisateur, Post post) {
+	public Favori(Long id, User utilisateur, Publication post) {
 		super();
 		this.id = id;
 		this.utilisateur = utilisateur;
@@ -65,11 +65,11 @@ public class Like implements Serializable {
 		this.utilisateur = utilisateur;
 	}
 
-	public Post getPost() {
+	public Publication getPost() {
 		return post;
 	}
 
-	public void setPost(Post post) {
+	public void setPost(Publication post) {
 		this.post = post;
 	}
 	
@@ -98,7 +98,7 @@ public class Like implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Like other = (Like) obj;
+		Favori other = (Favori) obj;
 		if (post == null) {
 			if (other.post != null)
 				return false;

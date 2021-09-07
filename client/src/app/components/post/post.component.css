@@ -5,12 +5,18 @@
   margin: 50px auto 0 auto;
 }
 
+.container {
+  display: flex;
+  flex-direction: row;
+}
+
 .card {
   background: rgba(36, 36, 36, 255);
-  border: 1px solid #7c7156;
-  border-radius: 10px;
+  border-top: 1px solid #7c7156;
+  border-left: 1px solid #7c7156;
+  border-bottom: 1px solid #7c7156;
+  border-radius: 0;
   margin: 0 auto;
-  box-shadow: 0px 0px 10px 0px#1f1f1f;
 }
 
 .card a {
@@ -50,28 +56,6 @@
   margin: 0;
 }
 
-.form {
-  display: flex;
-  flex-direction: column;
-  margin-top: 20px;
-  padding: 8px;
-  width: 100%;
-  margin: 8px auto;
-}
-
-.form > button {
-  width: 180px;
-}
-
-.form textarea {
-  resize: none;
-  height: 100px;
-}
-
-.form-field {
-  padding: 10px;
-}
-
 .card .card-image {
   display: flex;
   flex-direction: row;
@@ -109,23 +93,6 @@ h5 {
 .avatar-container {
   height: inherit;
 }
-::ng-deep .mat-form-field-appearance-legacy .mat-form-field-infix {
-  padding: 0.8375em 0 !important;
-}
-
-::ng-deep .mat-focused .mat-form-field-label {
-  /*change color of label*/
-  color: #e4b948 !important;
-}
-
-::ng-deep .mat-form-field-ripple {
-  /*change color of underline when focused*/
-  background-color: #69f0ae !important;
-}
-
-.form-control {
-  caret-color: white;
-}
 
 #deleteBtn {
   float: right;
@@ -136,6 +103,10 @@ h5 {
 #shareBtn,
 #deleteBtn {
   margin: 8px;
+}
+
+#likeBtn {
+  transition: .5s ease-out;
 }
 
 ::ng-deep .dialog-style {

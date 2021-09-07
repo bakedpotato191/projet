@@ -1,15 +1,16 @@
 package com.example.service;
 
-import java.util.Map;
+import java.util.List;
 
 import com.example.rest.model.Comment;
-import com.example.web.dto.request.CommentDto;
+import com.example.web.dto.request.CommentReqDto;
+import com.example.web.dto.response.CommentResDto;
 
 public interface CommentService {
 
-	Comment addComment(CommentDto comment);
+	Comment addComment(CommentReqDto comment);
 	
 	void deleteComment(Long id);
 
-	Map<String, Object> listComments(Long id, int pageNo, int pageSize, String sortBy);
+	List<CommentResDto> listComments(Long id, int pageNo, int pageSize, String sortBy);
 }

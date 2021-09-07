@@ -8,13 +8,13 @@ import java.util.Set;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.rest.model.Post;
+import com.example.rest.model.Publication;
 import com.example.web.dto.response.AvatarResponse;
 import com.example.web.exception.IncorrectFileExtensionException;
 
 public interface FileStorageService {
 
-	Post save(MultipartFile file, String description) throws IncorrectFileExtensionException, IOException;
+	Publication save(MultipartFile file, String description) throws IncorrectFileExtensionException, IOException;
 
 	Resource load(String filename) throws MalformedURLException, FileNotFoundException;
 

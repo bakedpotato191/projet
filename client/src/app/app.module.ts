@@ -8,7 +8,7 @@ import { TimeSinceModule } from '@thisissoon/angular-timesince';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 
-import { AngularMaterialModule } from './angular-material.module';
+import { MaterialModule } from './material.module';
 
 import { authInterceptorProviders } from './helpers/auth.interceptor';
 import { LoggedInAuthGuard } from './guards/loggedinauthguard.guard';
@@ -41,7 +41,7 @@ import { UserPageComponent } from './components/userpage/userpage.component';
     BrowserAnimationsModule,
     FormsModule,
     FlexLayoutModule,
-    AngularMaterialModule,
+    MaterialModule,
     TimeSinceModule,
     InfiniteScrollModule
   ],
