@@ -55,7 +55,7 @@
     height: 100%;
     width: 100%;
     opacity: 0;
-    background: rgba(0, 0, 0, 0.3) none repeat scroll 0% 0%;
+    background: rgba(0, 0, 0, 0.5) none repeat scroll 0% 0%;
     transition: .5s ease;
   }
 

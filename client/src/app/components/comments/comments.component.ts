@@ -4,10 +4,10 @@ import { Commentaire } from 'src/app/interfaces/commentaire';
 import { CommentService } from 'src/app/services/comment.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { PostComponent } from '../post/post.component';
-import { ConfirmationDialogComponent } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { LoginComponent } from '../login/login.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ConfirmationDialogComponent } from '../shared/dialogs/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
     selector: 'app-comments',
@@ -18,7 +18,7 @@ export class CommentsComponent implements OnInit {
     @ViewChild('textarea') inputName!: ElementRef;
 
     commentForm!: FormGroup;
-    comments!: Commentaire[];
+    comments: Commentaire[] = [];
     comment!: Commentaire;
     loginRef!: MatDialogRef<LoginComponent>;
 
@@ -45,7 +45,7 @@ export class CommentsComponent implements OnInit {
     init_comment_form(): void {
         this.commentForm = this.fb.group({
             comment: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(128)]],
-            post_id: [this.parent.post.id]
+            post_id: [this.parent.post.id, [Validators.nullValidator]]
         });
     }
 
@@ -62,7 +62,6 @@ export class CommentsComponent implements OnInit {
         this.isLoading = true;
         this.commentService.submitComment(this.commentForm.value).subscribe(
           (_data) => {
-            this.comments = [];
             this.isLoading = false;
             this.inputName.nativeElement.value = '';
           },
@@ -74,23 +73,17 @@ export class CommentsComponent implements OnInit {
               7000
             );
           }
-        ).add(
-            () => {
-                this.ngOnInit();
-            }
-        );
+        )
       }
 
     get_all_comments(): void {
         this.commentService
             .getPostComments(this.parent.id, this.page, this.size, this.sort)
             .subscribe((data) => {
-                console.log(data);
                 if (data.length !== 0) {
-                    this.comments = data;
+                    this.comments = this.comments.concat(data);
                     this.page++;
                     this.canLoad = true;
-                    console.log(this.comments);
                     if (data.length < this.size) {
                         this.canLoad = false;
                     }
@@ -108,10 +101,7 @@ export class CommentsComponent implements OnInit {
     handle_scroll_down() {
         if (this.canLoad) {
             this.canLoad = false;
-            this.isLoading = true;
-            setTimeout(() => {
-                this.get_all_comments();
-            }, 1000);
+            this.get_all_comments();
         }
     }
 

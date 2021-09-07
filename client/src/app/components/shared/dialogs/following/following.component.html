@@ -1,0 +1,41 @@
+<div id="container">
+    <div fxLayout="row" fxLayoutAlign="center">
+        <h1 mat-dialog-title id="title">Abonnements</h1>
+    </div>
+
+    <div *ngIf="followings.length>0; then card else elseBlock"></div>
+    <ng-template #card>
+        <div mat-dialog-content id="content">
+            <ul id="subs">
+                <li *ngFor="let following of followings">
+                    <mat-card id="card">
+                        <mat-card-header id="header">
+                            <div mat-card-avatar class="example-header-image" [style.background-image]="'url('+following.to.avatar+')'"></div>
+                            <mat-card-title class="title">{{following.to.nom}} {{following.to.prenom}}</mat-card-title>
+                            <mat-card-subtitle>@{{following.to.username}}</mat-card-subtitle>
+                        </mat-card-header>
+                        <div>
+                            <button class="options" [ngClass]="{'button--loading': isOverlayed}" mat-raised-button *ngIf="!following.to.followed" color="accent" (click)="follow(following)">
+                                <span class="button__text">S'abonner</span>
+                            </button>
+                            <button class="options" [ngClass]="{'button--loading': isOverlayed}" mat-raised-button *ngIf="following.to.followed" color="warn" (click)="unfollow(following)">
+                                <span class="button__text">Se désabonner</span>
+                            </button>
+                        </div>
+                    </mat-card>
+                </li>
+            </ul>
+        </div>
+    </ng-template>
+    <mat-spinner *ngIf="isLoading" id="spinner" color="accent" diameter="50"></mat-spinner>
+    <ng-template #elseBlock>
+        <span class="notfound">Vous n'avez encore souscrit à personne</span>
+    </ng-template>
+
+
+    <div mat-dialog-actions id="actions">
+        <button id='close' mat-button (click)="close_dialog()" cdkFocusInitial>
+            Fermer
+        </button>
+    </div>
+</div>

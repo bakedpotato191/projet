@@ -10,7 +10,7 @@ import { User } from '../interfaces/user';
   providedIn: 'root'
 })
 export class UserService {
-
+ 
   private API: string = 'http://localhost:8081/api/user';
 
   constructor(private http: HttpClient) { }
@@ -49,5 +49,9 @@ export class UserService {
 
   public getSubscriptions(username: string, page: number, size: number, sort: string): Observable<any> {
     return this.http.get(`${this.API}/subscriptions/${username}?page=${page}&size=${size}&sort=${sort}`);
+  }
+
+  public getSubscribers(username: string, page: number, size: number, sort: string): Observable<any> {
+    return this.http.get(`${this.API}/subscribers/${username}?page=${page}&size=${size}&sort=${sort}`);
   }
 }

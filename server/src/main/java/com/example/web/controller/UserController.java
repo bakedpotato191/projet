@@ -23,12 +23,13 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.rest.model.Follower;
 import com.example.service.FileStorageService;
 import com.example.service.PostService;
 import com.example.service.UserService;
 import com.example.web.dto.response.AvatarResponse;
 import com.example.web.dto.response.FavoriDto;
+import com.example.web.dto.response.FollowerDto;
+import com.example.web.dto.response.FollowingDto;
 import com.example.web.dto.response.PublicationDto;
 import com.example.web.dto.response.UserDto;
 import com.example.web.exception.IncorrectFileExtensionException;
@@ -81,10 +82,17 @@ public class UserController {
 	}
 	
 	@GetMapping(value = "/subscriptions/{username}")
-	public List<Follower> getSubscriptions( @PathVariable("username") String username,
+	public List<FollowingDto> getSubscriptions( @PathVariable("username") String username,
 												@RequestParam Integer page, 
 									            @RequestParam Integer size) {
 		return userService.getSubscriptions(username, page, size);
+	}
+	
+	@GetMapping(value = "/subscribers/{username}")
+	public List<FollowerDto> getSubscribers( @PathVariable("username") String username,
+												@RequestParam Integer page, 
+									            @RequestParam Integer size) {
+		return userService.getSubscribers(username, page, size);
 	}
 	
 	@GetMapping(value="/profile_picture")

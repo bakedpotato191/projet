@@ -18,17 +18,22 @@ public interface FollowerRepository extends JpaRepository<Follower, Long> {
 
 	@Modifying
 	@Transactional
-	@Query(value = "DELETE f.* FROM  follower AS f CROSS JOIN utilisateur AS u ON f.utilisateur2_id = u.id WHERE u.username=:username AND f.utilisateur1_id=:user", nativeQuery = true)
+	@Query(value = "DELETE f.* FROM  follower AS f CROSS JOIN utilisateur AS u ON f.to_id = u.id WHERE u.username=:username AND f.from_id=:user", nativeQuery = true)
 	int unfollow(@Param("user") User user, @Param("username") String username);
 	
-	@Query("SELECT COUNT(f)>0 from Follower f WHERE f.utilisateur1 = :user1 AND f.utilisateur2 = :user2")
+	@Query("SELECT COUNT(f)>0 from Follower f WHERE f.from = :user1 AND f.to = :user2")
 	boolean isFollowed(@Param ("user1") User currentUser, @Param("user2") User browsedUser);
 	
-	@Query(value = "SELECT COUNT(utilisateur2_id) FROM Follower f CROSS JOIN utilisateur u on f.utilisateur2_id = u.id WHERE u.username= :username", nativeQuery=true)
+	@Query("SELECT COUNT(f)>0 from Follower f WHERE f.from = :user1 AND f.to = :user2")
+	boolean isFollowing(@Param ("user1") User browsedUser, @Param("user2") User currentUser);
+	
+	@Query(value = "SELECT COUNT(to_id) FROM Follower f CROSS JOIN utilisateur u on f.to_id = u.id WHERE u.username= :username", nativeQuery=true)
 	Long countFollowers(@Param ("username") String username);
 
-	@Query(value = "SELECT COUNT(utilisateur1_id) FROM Follower f CROSS JOIN utilisateur u on f.utilisateur1_id = u.id WHERE u.username= :username", nativeQuery=true)
+	@Query(value = "SELECT COUNT(from_id) FROM Follower f CROSS JOIN utilisateur u on f.from_id = u.id WHERE u.username= :username", nativeQuery=true)
 	Long countFollowing(@Param ("username") String username);
 	
-	Slice<Follower> findAllUtilisateur2ByUtilisateur1Username(String username, Pageable paging);
+	Slice<Follower> findAllToByFromUsername(String username, Pageable paging);
+
+	Slice<Follower> findAllFromByToUsername(String username, Pageable paging);
 }

@@ -69,13 +69,8 @@ public class PostServiceImpl implements PostService {
 		var found = publicationRepository.findById(id);
 
 		if (found.isPresent()) {
-			var post = new Publication();
-			post.setId(found.get().getId());
-			post.setDescription(found.get().getDescription());
-			post.setCountLike(likeRepository.countByPost(found.get()));
-			post.setDate(found.get().getDate());
-			post.setPhoto(found.get().getPhoto());
-			post.setUtilisateur(found.get().getUtilisateur());
+			var post = found.get();
+			post.setCountLike(post.getLikes().size());
 			
 			if (SecurityContextHolder.getContext().getAuthentication() 
 			          instanceof AnonymousAuthenticationToken) {

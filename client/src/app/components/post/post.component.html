@@ -41,7 +41,8 @@
         <button mat-button id="likeBtn" *ngIf="!post.liked" (click)="like()">
           <mat-icon aria-hidden="false" aria-label="like icon">favorite</mat-icon>
         </button>
-        <button mat-button id="shareBtn">Partager</button>
+        <button mat-button id="shareBtn"><mat-icon aria-hidden="false" aria-label="like icon">share</mat-icon></button>
+        <button mat-button id="fullscrnBtn" (click)="open_image(post.photo)"><mat-icon aria-hidden="true">fullscreen</mat-icon></button>
         <button *ngIf="isMyPost" mat-button id="deleteBtn" (click)="open_delete_post_dialog(post.id)">
           <mat-icon aria-hidden="false" aria-label="like icon">delete</mat-icon>
         </button>

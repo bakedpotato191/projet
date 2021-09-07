@@ -6,10 +6,13 @@ import org.mapstruct.Mapper;
 
 import com.example.rest.model.Comment;
 import com.example.rest.model.Favori;
+import com.example.rest.model.Follower;
 import com.example.rest.model.Publication;
 import com.example.rest.model.User;
 import com.example.web.dto.response.CommentResDto;
 import com.example.web.dto.response.FavoriDto;
+import com.example.web.dto.response.FollowerDto;
+import com.example.web.dto.response.FollowingDto;
 import com.example.web.dto.response.PublicationDto;
 import com.example.web.dto.response.UserDto;
 
@@ -29,5 +32,8 @@ public interface MapstructMapper {
 	
 	/* Favorites */
 	List<FavoriDto> listFavToListFavDto(List<Favori> favorites);
-
+	
+	/* Followers */
+	List<FollowingDto> followingToFollowingDto(List<Follower> followings);
+	List<FollowerDto> followerToFollowerDto(List<Follower> followers);
 }

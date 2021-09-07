@@ -20,11 +20,11 @@
                         <div id="profile-name">{{ user.nom }} {{ user.prenom }}</div>
                         <div id="profile-username">@{{ user.username }}</div>
                         <div *ngIf="!isMyPage" class="sub-buttons">
-                            <button mat-raised-button *ngIf="!user.followed" color="accent" (click)="follow()">
-                                S'abonner
+                            <button mat-raised-button class="subBtn" [ngClass]="{'button--loading': isBtnOverlayed}" *ngIf="!user.followed" color="accent" (click)="follow()">
+                                <span class="button__text">S'abonner</span>
                             </button>
-                            <button mat-raised-button *ngIf="user.followed" color="warn" (click)="unfollow()">
-                                Se désabonner
+                            <button mat-raised-button class="subBtn" [ngClass]="{'button--loading': isBtnOverlayed}" *ngIf="user.followed" color="warn" (click)="unfollow()">
+                                <span class="button__text">Se désabonner</span>
                             </button>
                         </div>
                     </div>
@@ -43,10 +43,10 @@
                 </div>
                 <ul fxLayout="row" id="data">
                     <li id="numberPub" fxLayout="column">
-                        <span class="count">{{ user.postCount }}</span> publications
+                        <span class="count" (click)="scroll(userposts.postsEl)">{{ user.postCount }}</span> publications
                     </li>
                     <li id="numberSubs" fxLayout="column">
-                        <span class="count">{{ user.followerCount }}</span> abonnés
+                        <span class="count" (click)="open_subscribers_dialog()">{{ user.followerCount }}</span> abonnés
                     </li>
                     <li id="numberSubbed" fxLayout="column">
                         <span class="count" (click)="open_subscriptions_dialog()">{{
@@ -57,7 +57,7 @@
                 </ul>
             </div>
             <mat-tab-group class="tab-group" (selectedTabChange)="on_tab_change($event)" [selectedIndex]="selectedIndex"
-                mat-stretched-tabs animationDuration="0ms" mat-align-tabs="center" color="accent">
+                mat-stretched-tabs animationDuration="700ms" mat-align-tabs="center" color="accent">
                 <mat-tab id="first-tab" mat-tab-link>
                     <ng-template mat-tab-label>
                         <mat-icon class="example-tab-icon">photo_library</mat-icon>

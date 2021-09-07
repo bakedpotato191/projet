@@ -21,7 +21,7 @@
             </mat-card-content>
             <div fxLayout="column wrap">
                 <button id="uploadBtn" *ngIf="!isSending" mat-stroked-button color="accent" type="submit">Upload</button>
-                <button id="closeBtn" *ngIf="!isSending" mat-stroked-button (click)="close_dialog()">Close</button>
+                <button id="closeBtn" *ngIf="!isSending" mat-stroked-button (click)="close_dialog()">Fermer</button>
                 <mat-spinner *ngIf="isSending" [diameter]="70" color="accent" aria-label="upload in progress">
                 </mat-spinner>
             </div>

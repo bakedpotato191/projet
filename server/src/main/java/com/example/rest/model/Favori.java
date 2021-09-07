@@ -13,10 +13,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 @Entity
 @Table(name="postlikes", uniqueConstraints= @UniqueConstraint(columnNames={"user_id", "post_id"}))
 public class Favori implements Serializable {
@@ -29,13 +25,10 @@ public class Favori implements Serializable {
 	
 	@ManyToOne(fetch = FetchType.LAZY) // default = EAGER
 	@JoinColumn(name = "user_id")
-	@JsonIgnore
 	private User utilisateur;
 	
 	@ManyToOne(optional=false)
 	@JoinColumn(name = "post_id")
-	@JsonManagedReference
-	@JsonIgnoreProperties("comments")
 	private Publication post;
 	
 	private Timestamp date;

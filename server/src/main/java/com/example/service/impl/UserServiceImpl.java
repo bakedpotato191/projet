@@ -20,6 +20,8 @@ import com.example.rest.model.Follower;
 import com.example.rest.model.User;
 import com.example.service.UserService;
 import com.example.web.dto.response.AvatarResponse;
+import com.example.web.dto.response.FollowerDto;
+import com.example.web.dto.response.FollowingDto;
 import com.example.web.dto.response.UserDto;
 import com.example.web.exception.EntityNotFoundException;
 import com.example.web.mappers.MapstructMapper;
@@ -118,15 +120,29 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public List<Follower> getSubscriptions(String username, int pageNo, int pageSize) {
+	public List<FollowingDto> getSubscriptions(String username, int pageNo, int pageSize) {
 		Pageable paging = PageRequest.of(pageNo, pageSize);
-		Slice<Follower> slicedResult = followerRepository.findAllUtilisateur2ByUtilisateur1Username(username, paging);
+		Slice<Follower> slicedResult = followerRepository.findAllToByFromUsername(username, paging);
 		
 		if (slicedResult.hasContent()) {
-			slicedResult.forEach(entity -> 
-			entity.getUtilisateur2().setFollowed(followerRepository.isFollowed(getUserFromSession(), entity.getUtilisateur2())));
-				
-			return slicedResult.getContent();
+			slicedResult.forEach(entity ->
+			entity.getTo().setFollowed(followerRepository.isFollowed(getUserFromSession(), entity.getTo())));
+			return mapper.followingToFollowingDto(slicedResult.getContent());
+		}
+		else {
+			return new ArrayList<>();
+		}
+	}
+	
+	@Override
+	public List<FollowerDto> getSubscribers(String username, int pageNo, int pageSize) {
+		Pageable paging = PageRequest.of(pageNo, pageSize);
+		Slice<Follower> slicedResult = followerRepository.findAllFromByToUsername(username, paging);
+		
+		if (slicedResult.hasContent()) {
+			slicedResult.forEach(entity ->
+			entity.getFrom().setFollowed(followerRepository.isFollowed(getUserFromSession(), entity.getFrom())));
+			return mapper.followerToFollowerDto(slicedResult.getContent());
 		}
 		else {
 			return new ArrayList<>();

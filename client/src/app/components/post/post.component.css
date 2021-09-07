@@ -101,7 +101,8 @@ h5 {
 #likeBtn,
 #dislikeBtn,
 #shareBtn,
-#deleteBtn {
+#deleteBtn,
+#fullscrnBtn {
   margin: 8px;
 }
 
@@ -119,7 +120,8 @@ h5 {
   flex-direction: column;
   color: white;
   text-align: center;
-  font-size: 2em;
+  font-size: 1.5em;
+  width: 100%;
 }
   
 #error {

@@ -20,17 +20,15 @@ import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { PostComponent } from './components/post/post.component';
 import { UploadComponent } from './components/upload/upload.component';
-import { ConfirmationDialogComponent } from './components/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { FavoritesComponent } from './components/favorites/favorites.component';
 import { UserpostsComponent } from './components/userposts/userposts.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { CommentsComponent } from './components/comments/comments.component';
 import { RestoreComponent } from './components/restore/restore.component';
-import { FollowingComponent } from './components/dialogs/following/following.component';
-import { AvatarComponent } from './components/dialogs/avatar/avatar.component';
 import { ExploreComponent } from './components/explore/explore.component';
 import { HomepageComponent } from './components/homepage/homepage.component';
 import { UserPageComponent } from './components/userpage/userpage.component';
+import { SharedModule } from './components/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -43,7 +41,8 @@ import { UserPageComponent } from './components/userpage/userpage.component';
     FlexLayoutModule,
     MaterialModule,
     TimeSinceModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    SharedModule
   ],
   declarations: [
     AppComponent,
@@ -53,13 +52,10 @@ import { UserPageComponent } from './components/userpage/userpage.component';
     UserPageComponent,
     PostComponent,
     UploadComponent,
-    ConfirmationDialogComponent,
     FavoritesComponent,
     UserpostsComponent,
     CommentsComponent,
     RestoreComponent,
-    FollowingComponent,
-    AvatarComponent,
     ExploreComponent,
     HomepageComponent
   ],

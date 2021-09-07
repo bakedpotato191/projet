@@ -1,5 +1,5 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Post } from 'src/app/interfaces/post';
 import { UserService } from 'src/app/services/user.service';
@@ -20,6 +20,8 @@ import { UserPageComponent } from '../userpage/userpage.component';
     ]
 })
 export class UserpostsComponent implements OnInit {
+    @ViewChild("list") postsEl!: ElementRef;
+
     posts: Post[] = [];
 
     private page: number = 0;
@@ -58,6 +60,7 @@ export class UserpostsComponent implements OnInit {
             .subscribe(
                 (data) => {
                     if (data.length !== 0) {
+                        console.log(data);
                         this.posts = this.posts.concat(data);
                         this.page++;
                         this.canLoad = true;
@@ -87,4 +90,5 @@ export class UserpostsComponent implements OnInit {
             }, 1000);
         }
     }
+
 }

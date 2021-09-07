@@ -36,11 +36,6 @@ ul {
 
 }
 
-.dialog-window-style {
-  background-color:rgba(36,36,36,255);
-  border: 1px solid #3d3d3d;
-}
-  
 .custom-style .mat-simple-snackbar-action  {
   color: #cf7f79;
 }

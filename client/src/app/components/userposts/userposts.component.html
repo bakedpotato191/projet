@@ -1,6 +1,6 @@
 <div class="content" infinite-scroll [infiniteScrollDistance]="3" [immediateCheck]="false"
     (scrolled)="handle_scroll_down()">
-    <mat-card-list *ngIf="posts.length > 0; else elseBlock" fxLayout="row wrap" fxLayoutAlign="center center"
+    <mat-card-list #list *ngIf="posts.length > 0; else elseBlock" fxLayout="row wrap" fxLayoutAlign="center center"
         fxLayoutGap="grid">
         <mat-card [@inAnimation]="'in'" matRipple [matRippleCentered]="true" fxFlex="25%" fxFlex.xs="100%"
             fxFlex.sm="33%" class="grid-card mat-elevation-z4" *ngFor="let post of posts"

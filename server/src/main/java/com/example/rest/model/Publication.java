@@ -19,8 +19,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 @Table(name= "post")
@@ -41,22 +41,20 @@ public class Publication implements Serializable {
 	
 	@ManyToOne(optional=false) // @ManyToOne default fetch = EAGER
 	@JoinColumn(name = "user_id")
-	@JsonIgnoreProperties("posts")
 	private User utilisateur;
 	
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-	@JsonBackReference
 	private List<Comment> comments = new ArrayList<>();
 	
+	@LazyCollection(LazyCollectionOption.EXTRA)
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-	@JsonBackReference
 	private List<Favori> likes = new ArrayList<>();
 	
 	@Transient
 	private boolean isLiked;
 	
 	@Transient
-	private Long countLike;
+	private int countLike;
 
 	public Publication() {}
 
@@ -125,12 +123,20 @@ public class Publication implements Serializable {
 		this.isLiked = isLiked;
 	}
 
-	public Long getCountLike() {
+	public int getCountLike() {
 		return countLike;
 	}
 
-	public void setCountLike(Long countLike) {
+	public void setCountLike(int countLike) {
 		this.countLike = countLike;
+	}
+	
+	public List<Favori> getLikes() {
+		return likes;
+	}
+
+	public void setLikes(List<Favori> likes) {
+		this.likes = likes;
 	}
 
 	@Override

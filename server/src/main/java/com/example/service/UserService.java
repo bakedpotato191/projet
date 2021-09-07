@@ -2,9 +2,10 @@ package com.example.service;
 
 import java.util.List;
 
-import com.example.rest.model.Follower;
 import com.example.rest.model.User;
 import com.example.web.dto.response.AvatarResponse;
+import com.example.web.dto.response.FollowerDto;
+import com.example.web.dto.response.FollowingDto;
 import com.example.web.dto.response.UserDto;
 
 public interface UserService {
@@ -19,10 +20,11 @@ public interface UserService {
 
 	AvatarResponse setProfilePicture(String path);
 	
-	List<Follower> getSubscriptions(String username, int pageNo, int pageSize);
+	List<FollowingDto> getSubscriptions(String username, int pageNo, int pageSize);
 
 	AvatarResponse resetProfilePicture();
 
 	AvatarResponse getProfilePicture();
 
+	List<FollowerDto> getSubscribers(String username, int pageNo, int pageSize);
 }

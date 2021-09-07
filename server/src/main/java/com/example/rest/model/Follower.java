@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name="follower", uniqueConstraints= @UniqueConstraint(columnNames={"utilisateur1_id", "utilisateur2_id"}))
+@Table(name="follower", uniqueConstraints= @UniqueConstraint(columnNames={"from_id", "to_id"}))
 public class Follower implements Serializable {
 	
 	@Id
@@ -21,44 +21,43 @@ public class Follower implements Serializable {
 	
 	@ManyToOne(optional=false)
 	@JoinColumn
-    private User utilisateur1;
+    private User from;
 
     @ManyToOne(optional=false)
     @JoinColumn
-    private User utilisateur2;
+    private User to;
     
     public Follower() {
     	super();
     }
-
-	public Follower(User utilisateur1, User utilisateur2) {
+    
+	public Follower(User from, User to) {
 		super();
-		this.utilisateur1 = utilisateur1;
-		this.utilisateur2 = utilisateur2;
+		this.from = from;
+		this.to = to;
 	}
 
-	public User getUtilisateur1() {
-		return utilisateur1;
+	public User getFrom() {
+		return from;
 	}
 
-	public void setUtilisateur1(User utilisateur1) {
-		this.utilisateur1 = utilisateur1;
+	public void setFrom(User from) {
+		this.from = from;
 	}
 
-	public User getUtilisateur2() {
-		return utilisateur2;
+	public User getTo() {
+		return to;
 	}
 
-	public void setUtilisateur2(User utilisateur2) {
-		this.utilisateur2 = utilisateur2;
+	public void setTo(User to) {
+		this.to = to;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		var prime = 31;
 		var result = 1;
-		result = prime * result + ((utilisateur1 == null) ? 0 : utilisateur1.hashCode());
-		result = prime * result + ((utilisateur2 == null) ? 0 : utilisateur2.hashCode());
+		result = prime * result + (int) (id ^ (id >>> 32));
 		return result;
 	}
 
@@ -71,17 +70,7 @@ public class Follower implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Follower other = (Follower) obj;
-		if (utilisateur1 == null) {
-			if (other.utilisateur1 != null)
-				return false;
-		} else if (!utilisateur1.equals(other.utilisateur1))
-			return false;
-		if (utilisateur2 == null) {
-			if (other.utilisateur2 != null)
-				return false;
-		} else if (!utilisateur2.equals(other.utilisateur2))
-			return false;
-		return true;
+		return id == other.id;
 	}
 
 	private static final long serialVersionUID = -7105547295149553264L;

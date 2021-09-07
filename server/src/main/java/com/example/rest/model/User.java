@@ -53,7 +53,7 @@ public class User implements Serializable, UserDetails {
 	@Column(length = 60)
 	private String password;
     
-    @Column(columnDefinition="varchar(255) default 'http://localhost:8081/api/user/profile_picture/default.jpg'")
+    @Column(columnDefinition="varchar(255) default 'http://localhost:8081/api/user/profile_picture/default.jpg'", nullable=false)
     private String avatar;
     
     @Column(columnDefinition="boolean default false")
@@ -85,7 +85,6 @@ public class User implements Serializable, UserDetails {
     private Collection<Role> roles;
     
     @OneToMany(mappedBy="utilisateur", cascade = CascadeType.ALL, orphanRemoval=true) // @OneToMany default fetch = LAZY
-	@JsonIgnore
     private List<Publication> posts = new ArrayList<>();
        
     @OneToMany(mappedBy="utilisateur", cascade = CascadeType.ALL, orphanRemoval=true)
@@ -97,10 +96,10 @@ public class User implements Serializable, UserDetails {
     @OneToOne(fetch=FetchType.LAZY, mappedBy="user", cascade = CascadeType.ALL, orphanRemoval=true)  // @OneToOne default fetch = EAGER	
     private VerificationToken token;
     
-    @OneToMany(mappedBy="utilisateur2", cascade = CascadeType.ALL, orphanRemoval=true)
+    @OneToMany(mappedBy="to", cascade = CascadeType.ALL, orphanRemoval=true)
     private List<Follower> followers;
     
-    @OneToMany(mappedBy="utilisateur1", cascade = CascadeType.ALL, orphanRemoval=true)
+    @OneToMany(mappedBy="from", cascade = CascadeType.ALL, orphanRemoval=true)
     private List<Follower> following;
 
     //

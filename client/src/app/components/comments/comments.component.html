@@ -1,7 +1,6 @@
-<div *ngIf="comments then list else elseBlock"></div>
+<div *ngIf="comments.length>0 then list else elseBlock"></div>
 <ng-template #list>
-  <mat-list class="comments" infinite-scroll [infiniteScrollDistance]="1" [immediateCheck]="false"
-(scrolled)="handle_scroll_down()">
+  <mat-list class="comments" infinite-scroll [infiniteScrollDistance]="1" [scrollWindow]="false" [immediateCheck]="true" (scrolled)="handle_scroll_down()">
     <mat-list-item class="comment" *ngFor="let comment of comments">
       <div matLine fxLayout="row">
         <img matListAvatar src="{{ comment.utilisateur.avatar }}" />
@@ -40,7 +39,6 @@
     <div class="nocomments">Soyez le premier à laisser un commentaire</div>
   </ng-template>
   <form class="form" name="form" [formGroup]="commentForm" (ngSubmit)="submit()" novalidate>
-    <input type="hidden" name="post_id" required />
     <mat-form-field class="form-field" color="accent">
       <mat-label>Comment</mat-label>
       <textarea matInput name="comment" formControlName="comment" #textarea class="form-control" type="text"></textarea>
