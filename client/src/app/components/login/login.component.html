@@ -19,7 +19,7 @@
                         [type]="isHiden ? 'password' : 'text'">
                     <button mat-icon-button type="button" matSuffix (click)="isHiden = !isHiden"
                         [attr.aria-label]="'Hide password'" [attr.aria-pressed]="isHiden">
-                        <mat-icon>{{isHiden ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        <mat-icon aria-hidden="true" fontSet="material-icons">{{isHiden ? 'visibility_off' : 'visibility'}}</mat-icon>
                     </button>
                     <mat-error>
                         Mot de passe doit contenir de 8 au 32 caracteres

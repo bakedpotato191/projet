@@ -31,12 +31,12 @@
                     <ul id="buttons">
                         <li id="upload-button">
                             <button mat-stroked-button *ngIf="isMyPage" color="accent" (click)="open_upload_dialog()">
-                                <mat-icon aria-hidden="false" aria-label="Upload icon">add_a_photo</mat-icon>
+                                <mat-icon aria-hidden="false" aria-label="Upload icon" fontSet="material-icons">add_a_photo</mat-icon>
                             </button>
                         </li>
                         <li id="settings-button">
                             <a id="settings" mat-stroked-button *ngIf="isMyPage" routerLink="/accounts/edit">
-                                <mat-icon aria-hidden="false" aria-label="Settigns icon">settings</mat-icon>
+                                <mat-icon aria-hidden="false" aria-label="Settigns icon" fontSet="material-icons">settings</mat-icon>
                             </a>
                         </li>
                     </ul>
@@ -68,7 +68,7 @@
 
                 <mat-tab *ngIf="isMyPage" mat-tab-link>
                     <ng-template mat-tab-label>
-                        <mat-icon class="example-tab-icon">star</mat-icon>
+                        <mat-icon class="example-tab-icon" fontSet="material-icons">star</mat-icon>
                         <span>Enregistrements</span>
                     </ng-template>
                     <app-favorites></app-favorites>

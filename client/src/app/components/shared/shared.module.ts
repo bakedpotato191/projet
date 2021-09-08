@@ -6,7 +6,6 @@ import { MaterialModule } from 'src/app/material.module';
 import { FollowingComponent } from './dialogs/following/following.component';
 import { FollowerComponent } from './dialogs/follower/follower.component';
 
-
 @NgModule({
   declarations: [
     FollowingComponent,

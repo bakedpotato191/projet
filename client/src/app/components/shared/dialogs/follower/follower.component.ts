@@ -7,7 +7,7 @@ import { UserService } from 'src/app/services/user.service';
 @Component({
   selector: 'app-follower',
   templateUrl: './follower.component.html',
-  styleUrls: ['./follower.component.css']
+  styleUrls: ['../css/styles.css']
 })
 export class FollowerComponent implements OnInit {
 

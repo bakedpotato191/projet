@@ -36,17 +36,16 @@
       <mat-divider></mat-divider>
       <mat-card-actions class="card-actions">
         <button mat-button id="dislikeBtn" *ngIf="post.liked" (click)="dislike()">
-          <mat-icon aria-hidden="false" aria-label="like icon" color="warn">favorite</mat-icon>
+          <mat-icon aria-hidden="true" fontSet="material-icons" aria-label="like icon" color="warn">favorite</mat-icon>
         </button>
         <button mat-button id="likeBtn" *ngIf="!post.liked" (click)="like()">
-          <mat-icon aria-hidden="false" aria-label="like icon">favorite</mat-icon>
+          <mat-icon aria-hidden="true" fontSet="material-icons" aria-label="like icon">favorite</mat-icon>
         </button>
-        <button mat-button id="shareBtn"><mat-icon aria-hidden="false" aria-label="like icon">share</mat-icon></button>
-        <button mat-button id="fullscrnBtn" (click)="open_image(post.photo)"><mat-icon aria-hidden="true">fullscreen</mat-icon></button>
+        <button mat-button id="shareBtn"><mat-icon aria-hidden="true" fontSet="material-icons" aria-label="like icon">share</mat-icon></button>
+        <button mat-button id="fullscrnBtn" (click)="open_image(post.photo)"><mat-icon aria-hidden="true" fontSet="material-icons">fullscreen</mat-icon></button>
         <button *ngIf="isMyPost" mat-button id="deleteBtn" (click)="open_delete_post_dialog(post.id)">
-          <mat-icon aria-hidden="false" aria-label="like icon">delete</mat-icon>
+          <mat-icon aria-hidden="true" fontSet="material-icons" aria-label="like icon">delete</mat-icon>
         </button>
-        <mat-divider></mat-divider>
       </mat-card-actions>
     </mat-card>
     <app-comments></app-comments>

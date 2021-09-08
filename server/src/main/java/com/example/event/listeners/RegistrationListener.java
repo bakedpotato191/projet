@@ -6,11 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
+import org.springframework.context.event.EventListener;
 import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import com.example.event.OnRegistrationCompleteEvent;
@@ -18,7 +19,7 @@ import com.example.rest.model.User;
 import com.example.service.AuthService;
 
 @Component
-public class RegistrationListener implements ApplicationListener<OnRegistrationCompleteEvent> {
+public class RegistrationListener {
 
 	private static final Logger logger = LoggerFactory.getLogger(RegistrationListener.class);
 	
@@ -34,7 +35,8 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
 	@Value("${support.email}")
 	private String supportEmail;
 	
-	@Override
+	@Async
+	@EventListener
 	public void onApplicationEvent(final OnRegistrationCompleteEvent event) {
 		this.confirmRegistration(event);	
 	}
@@ -45,12 +47,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
         authService.createVerificationTokenForUser(user, token);
 
         final SimpleMailMessage email = constructEmailMessage(event, user, token);
-        try {
         mailSender.send(email);
-        }
-        catch (MailAuthenticationException ex) {
-        	logger.error(ex.getMessage());
-        }
     }
 
     //

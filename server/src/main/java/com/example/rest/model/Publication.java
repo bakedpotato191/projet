@@ -39,7 +39,7 @@ public class Publication implements Serializable {
 	@Column
 	private String photo;
 	
-	@ManyToOne(optional=false) // @ManyToOne default fetch = EAGER
+	@ManyToOne(optional=false)
 	@JoinColumn(name = "user_id")
 	private User utilisateur;
 	
@@ -50,12 +50,6 @@ public class Publication implements Serializable {
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Favori> likes = new ArrayList<>();
 	
-	@Transient
-	private boolean isLiked;
-	
-	@Transient
-	private int countLike;
-
 	public Publication() {}
 
 	public Publication(Long id, String description, Timestamp date, String photo, User utilisateur) {
@@ -66,6 +60,16 @@ public class Publication implements Serializable {
 		this.photo = photo;
 		this.utilisateur = utilisateur;
 	}
+	
+	
+	
+	@Transient
+	private boolean isLiked;
+	
+	@Transient
+	private int countLike;
+
+
 
 	public Long getId() {
 		return id;

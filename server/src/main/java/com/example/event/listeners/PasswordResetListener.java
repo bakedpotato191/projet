@@ -4,11 +4,11 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
 import org.springframework.context.event.EventListener;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import com.example.event.OnPasswordResetRequestedEvent;
@@ -16,7 +16,7 @@ import com.example.rest.model.User;
 import com.example.service.AuthService;
 
 @Component
-public class PasswordResetListener implements ApplicationListener<OnPasswordResetRequestedEvent> {
+public class PasswordResetListener {
 
 	@Autowired
     private AuthService authService;
@@ -30,7 +30,7 @@ public class PasswordResetListener implements ApplicationListener<OnPasswordRese
 	@Value("${support.email}")
 	private String supportEmail;
 
-	@Override
+	@Async
 	@EventListener
 	public void onApplicationEvent(final OnPasswordResetRequestedEvent event) {
 		this.confirmReset(event);

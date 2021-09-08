@@ -7,7 +7,7 @@ import { UserService } from 'src/app/services/user.service';
 @Component({
   selector: 'shared-following',
   templateUrl: './following.component.html',
-  styleUrls: ['./following.component.css'],
+  styleUrls: ['../css/styles.css']
 })
 export class FollowingComponent implements OnInit {
   private page: number = 0;
