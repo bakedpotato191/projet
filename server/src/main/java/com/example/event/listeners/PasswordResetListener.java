@@ -40,22 +40,26 @@ public class PasswordResetListener {
         var user = event.getUser();
         var token = UUID.randomUUID().toString();
         authService.createPasswordResetTokenForUser(user, token);
+        
         final SimpleMailMessage email = constructEmailMessage(event, user, token);
         mailSender.send(email);
     }
 
-    //
-
     private SimpleMailMessage constructEmailMessage(final OnPasswordResetRequestedEvent event, final User user, final String token) {
         var recipientAddress = user.getEmail();
-        var subject = "Password Reset";
+        var subject = "Reinitialisation de mot de passe";
         var confirmationUrl = "http://localhost:4200" + "/password_reset/" + token;
-        var message = messages.getMessage("message.regSuccLink", null, "To update your password please click on the link below", event.getLocale());
+        var message = messages.getMessage("message.regSuccLink", null, 
+        		"Il semble que vous ayez demandé à réinitialiser votre mot de passe. "
+        		+ "Si c'était vous, veuillez cliquer sur le lien ci-dessous, dans le cas contraire, "
+        		+ "ignorez cet e-mail.", event.getLocale());
         var email = new SimpleMailMessage();
+        
         email.setTo(recipientAddress);
         email.setSubject(subject);
         email.setText(message + " \r\n" + confirmationUrl);
         email.setFrom(supportEmail);
+        
         return email;
     }
 }

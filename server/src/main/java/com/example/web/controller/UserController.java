@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.service.FileStorageService;
-import com.example.service.PostService;
+import com.example.service.PublicationService;
 import com.example.service.UserService;
 import com.example.web.dto.response.AvatarResponse;
 import com.example.web.dto.response.FavoriDto;
@@ -43,7 +43,7 @@ public class UserController {
 	private UserService userService;
 	
 	@Autowired
-	private PostService postService;
+	private PublicationService postService;
 	
 	@Autowired
 	private FileStorageService storageService;
@@ -78,7 +78,7 @@ public class UserController {
 												@RequestParam Integer page, 
 									            @RequestParam Integer size,
 									            @RequestParam String sort) {
-		return postService.getUserPosts(username, page, size, sort);
+		return postService.getUserPublications(username, page, size, sort);
 	}
 	
 	@GetMapping(value = "/subscriptions/{username}")

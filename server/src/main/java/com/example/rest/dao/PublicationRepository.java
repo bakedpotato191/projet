@@ -23,7 +23,7 @@ public interface PublicationRepository extends JpaRepository<Publication, Long> 
 	
 	Long countByUtilisateur(User user);
 	
-	@Query("SELECT COUNT(p)>0 from Publication p WHERE p.photo like %:name")
+	@Query("SELECT COUNT(p)>0 from Publication p WHERE p.photo like (%:name)")
 	boolean existsByFilepath(@Param("name") String filename);
 	
 	@Modifying

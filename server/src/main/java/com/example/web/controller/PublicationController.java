@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.service.FileStorageService;
-import com.example.service.PostService;
+import com.example.service.PublicationService;
 import com.example.web.dto.response.PublicationDto;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -35,12 +35,17 @@ public class PublicationController {
 	private FileStorageService storageService;
 	
 	@Autowired
-	private PostService postService;
+	private PublicationService publicationService;
 
-	@PostMapping("/create")
-	public ResponseEntity<HttpStatus> createPost(@RequestPart("photo") MultipartFile file, @RequestPart(name="description", required=false) String description) throws IllegalFormatException, IOException {
-		storageService.save(file, description);
-		return new ResponseEntity<>(HttpStatus.CREATED);
+	@GetMapping("/{id}")
+    public PublicationDto getById(@PathVariable("id") Long id) {
+		return publicationService.getPublicationByID(id);
+    }
+	
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<HttpStatus> deletePost(@PathVariable("id") Long id) {
+		publicationService.deletePublication(id);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@GetMapping("/view/{filename:.+}")
@@ -52,26 +57,23 @@ public class PublicationController {
 				.body(file);
 	}
 	
-	@GetMapping("/{id}")
-    public PublicationDto userPage(@PathVariable("id") Long id) {
-		return postService.getPostByID(id);
-    }
-	
 	@PostMapping("/like")
 	public ResponseEntity<HttpStatus> likePost(@RequestBody @Valid final Long id) {
-		postService.like(id);
+		publicationService.like(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	@PostMapping("/dislike")
 	public ResponseEntity<HttpStatus> dislikePost(@RequestBody @Valid final Long id) {
-		postService.dislike(id);
+		publicationService.dislike(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<HttpStatus> deletePost(@PathVariable("id") Long id) {
-			postService.deletePost(id);
-			return new ResponseEntity<>(HttpStatus.OK);
+	@PostMapping("/create")
+	public ResponseEntity<HttpStatus> createPost(@RequestPart("photo") MultipartFile file, @RequestPart(name="description", required=false) String description) throws IllegalFormatException, IOException {
+		storageService.save(file, description);
+		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
+	
+
 }

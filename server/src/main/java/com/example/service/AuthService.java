@@ -46,5 +46,4 @@ public interface AuthService {
 	void updatePassword(NewPasswordDto dto);
 
 	void createPasswordResetTokenForUser(User user, String token);
-
 }

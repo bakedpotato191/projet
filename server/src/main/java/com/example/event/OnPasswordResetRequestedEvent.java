@@ -6,10 +6,9 @@ import com.example.rest.model.User;
 
 public class OnPasswordResetRequestedEvent extends Event {
 
-	private static final long serialVersionUID = 1L;
-
 	public OnPasswordResetRequestedEvent(User user, Locale locale) {
 		super(user, locale);
 	}
 
+	private static final long serialVersionUID = 1L;
 }

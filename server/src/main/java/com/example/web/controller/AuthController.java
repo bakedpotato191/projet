@@ -40,19 +40,19 @@ public class AuthController {
     }
     
 	@PostMapping("/signup")
-	public ResponseEntity<HttpStatus> registerUser(@RequestBody @Valid final SignupDto signUpRequest, final HttpServletRequest request) {
+	public ResponseEntity<String> registerUser(@RequestBody @Valid final SignupDto signUpRequest, final HttpServletRequest request) {
 		var registered = authService.registerUser(signUpRequest);
 		eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, request.getLocale()));
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("Le lien de confirmation a été envoyé à votre e-mail", HttpStatus.OK);
 	}
 	
 	@PostMapping("/restore")
-	public ResponseEntity<HttpStatus> restorePassword(@RequestBody @Valid final PasswordResetDto dto, final HttpServletRequest request) {
+	public ResponseEntity<String> restorePassword(@RequestBody @Valid final PasswordResetDto dto, final HttpServletRequest request) {
 		var user = authService.findUserByEmail(dto.getEmail());
 		if (user.isPresent()) {
 			eventPublisher.publishEvent(new OnPasswordResetRequestedEvent(user.get(), request.getLocale()));
 		}
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>("Le lien de restauration a été envoyé à votre email", HttpStatus.OK);
 	}
 	
 	@PostMapping("/verify_token")

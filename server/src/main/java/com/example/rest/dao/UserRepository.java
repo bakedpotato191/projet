@@ -20,13 +20,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	Optional<User> findByUsername(String username);
 	
-	@Transactional
 	@Modifying
+	@Transactional
 	@Query("UPDATE User u SET u.avatar=:path, u.has_avatar = 1 WHERE u=:user")
     int setProfilePicture(User user, String path);
 	
-	@Transactional
 	@Modifying
+	@Transactional
 	@Query("UPDATE User u SET u.avatar=DEFAULT, u.has_avatar = 0 WHERE u=:user")
 	void resetProfilePicture(User user);
 	

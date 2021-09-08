@@ -18,7 +18,7 @@ import com.example.rest.dao.FavoriRepository;
 import com.example.rest.dao.PublicationRepository;
 import com.example.rest.model.Favori;
 import com.example.rest.model.Publication;
-import com.example.service.PostService;
+import com.example.service.PublicationService;
 import com.example.service.UserService;
 import com.example.web.dto.response.FavoriDto;
 import com.example.web.dto.response.PublicationDto;
@@ -28,7 +28,7 @@ import com.example.web.mappers.MapstructMapper;
 
 @Service
 @Transactional
-public class PostServiceImpl implements PostService {
+public class PublicationServiceImpl implements PublicationService {
 
 	@Autowired
 	private PublicationRepository publicationRepository;
@@ -42,7 +42,32 @@ public class PostServiceImpl implements PostService {
 	@Autowired
 	private MapstructMapper mapper;
 
-	//
+	@Override
+	public List<PublicationDto> getUserPublications(String username, Integer pageNo, Integer pageSize, String sortBy) {
+		
+		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
+		Slice<Publication> slicedResult = publicationRepository.findAllByUtilisateurUsername(username, paging);
+		
+		if (slicedResult.hasContent()) {
+			slicedResult.forEach(post -> 
+			post.setCountLike(likeRepository.countByPost(post)));
+			return mapper.listPubToListPubDto(slicedResult.getContent());
+		}
+		else {
+			return new ArrayList<>();
+		}
+
+	}
+
+	@Override
+	public void deletePublication(Long id) {
+		
+		var user = userService.getUserFromSession();
+		
+		if (publicationRepository.deleteByIdAndUtilisateur(id, user) == 0) {
+			throw new HttpUnauthorizedException("La ressource n'existe pas ou vous n'avez pas la permission de la modifier");
+		}	
+	}
 
 	@Override
 	public Publication createPost(String generatedName, String description) {
@@ -53,19 +78,9 @@ public class PostServiceImpl implements PostService {
 		post.setUtilisateur(userService.getUserFromSession());
 		return publicationRepository.save(post);
 	}
-
+	
 	@Override
-	public void deletePost(Long id) {
-		
-		var user = userService.getUserFromSession();
-		
-		if (publicationRepository.deleteByIdAndUtilisateur(id, user) == 0) {
-			throw new HttpUnauthorizedException("Resource doesn't exist/You do not have the permission to modify it");
-		}	
-	}
-
-	@Override
-	public PublicationDto getPostByID(Long id) {
+	public PublicationDto getPublicationByID(Long id) {
 		var found = publicationRepository.findById(id);
 
 		if (found.isPresent()) {
@@ -86,6 +101,8 @@ public class PostServiceImpl implements PostService {
 			throw new EntityNotFoundException(Publication.class, "id", id.toString());
 		}
 	}
+	
+	
 
 	@Override
 	public void like(Long id) {
@@ -114,23 +131,6 @@ public class PostServiceImpl implements PostService {
 			if (likeRepository.dislike(currentUser, id) == 0) {
 				throw new EntityNotFoundException(Publication.class, "id", id.toString());
 			}
-	}
-	
-	@Override
-	public List<PublicationDto> getUserPosts(String username, Integer pageNo, Integer pageSize, String sortBy) {
-		
-		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
-		Slice<Publication> slicedResult = publicationRepository.findAllByUtilisateurUsername(username, paging);
-		
-		if (slicedResult.hasContent()) {
-			slicedResult.forEach(post -> 
-			post.setCountLike(likeRepository.countByPost(post)));
-			return mapper.listPubToListPubDto(slicedResult.getContent());
-		}
-		else {
-			return new ArrayList<>();
-		}
-
 	}
 	
 	@Override

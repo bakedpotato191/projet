@@ -6,13 +6,13 @@ import com.example.rest.model.Publication;
 import com.example.web.dto.response.FavoriDto;
 import com.example.web.dto.response.PublicationDto;
 
-public interface PostService {
+public interface PublicationService {
 	
 	Publication createPost(String name, String desc);
 	
-	void deletePost(Long id);
+	void deletePublication(Long id);
 	
-	PublicationDto getPostByID(Long id);
+	PublicationDto getPublicationByID(Long id);
 
 	void like(Long id);
 
@@ -20,5 +20,6 @@ public interface PostService {
 
 	List<FavoriDto> getFavorites(Integer pageNo, Integer pageSize, String sortBy);
 
-	List<PublicationDto> getUserPosts(String username, Integer pageNo, Integer pageSize, String sortBy);
+	List<PublicationDto> getUserPublications(String username, Integer pageNo, Integer pageSize, String sortBy);
+
 }

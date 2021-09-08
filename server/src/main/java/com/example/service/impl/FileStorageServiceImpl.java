@@ -23,7 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.rest.model.Publication;
 import com.example.service.FileStorageService;
-import com.example.service.PostService;
+import com.example.service.PublicationService;
 import com.example.service.UserService;
 import com.example.web.dto.response.AvatarResponse;
 import com.example.web.exception.IncorrectFileExtensionException;
@@ -37,7 +37,7 @@ public class FileStorageServiceImpl implements FileStorageService {
 	private static final List<String> contentTypes = Arrays.asList("image/png", "image/jpeg", "image/webp", "image/bmp", "image/jpg");
 
 	@Autowired
-	private PostService postService;
+	private PublicationService postService;
 	
 	@Autowired
 	private UserService userService;

@@ -29,7 +29,7 @@ public class FileRemovalTask {
 	@Autowired
 	FileStorageService storageService;
 
-	@Scheduled(cron = "${purge.photos.cron.expression}")
+	@Scheduled(cron = "${purge.photos.cron.expression}", zone="Europe/Paris")
 	public void purgeUnusedPhotos() throws IOException {
 		log.info("started purging unused photo files");
 		Set<String> photos = storageService.listUploadedPhotos();
@@ -44,7 +44,7 @@ public class FileRemovalTask {
 		});
 	}
 
-	@Scheduled(cron = "${purge.avatars.cron.expression}")
+	@Scheduled(cron = "${purge.avatars.cron.expression}", zone="Europe/Paris")
 	public void purgeUnusedAvatars() throws IOException {
 		log.info("started purging unused avatar files");
 		Set<String> avatars = storageService.listUploadedAvatars();

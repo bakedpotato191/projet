@@ -64,7 +64,7 @@ public class AuthServiceImpl implements AuthService {
     
     @Autowired
     private SessionRegistry sessionRegistry;
-	
+
 	@Override
     public User registerUser(final SignupDto signupDto) {
 		
@@ -84,7 +84,7 @@ public class AuthServiceImpl implements AuthService {
 		user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
         return userRepository.save(user);
     }
-	
+
 	@Override
 	public JwtResponse authenticateUser(LoginDto request) {
 
