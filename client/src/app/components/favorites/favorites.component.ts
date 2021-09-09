@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Favorite } from 'src/app/interfaces/favorite';
 import { Post } from 'src/app/interfaces/post';
 
 import { UserService } from 'src/app/services/user.service';
@@ -11,7 +10,7 @@ import { UserService } from 'src/app/services/user.service';
     styleUrls: ['./favorites.component.css']
 })
 export class FavoritesComponent implements OnInit {
-    favorites: Favorite[] = [];
+    favorites: Post[] = [];
     post!: Post;
     canLoad: boolean = false;
     isLoading: boolean = false;

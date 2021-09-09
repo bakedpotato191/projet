@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Favorite } from '../interfaces/favorite';
 import { Post } from '../interfaces/post';
 import { User } from '../interfaces/user';
 
@@ -27,8 +26,8 @@ export class UserService {
     return this.http.post(this.API + '/unfollow', username);
   }
 
-  public getFavoritePosts(page: number, size:number, sort: string): Observable<Favorite[]> {
-    return this.http.get<Favorite[]>(`${this.API}/favorites?page=${page}&size=${size}&sort=${sort}`);
+  public getFavoritePosts(page: number, size:number, sort: string): Observable<Post[]> {
+    return this.http.get<Post[]>(`${this.API}/favorites?page=${page}&size=${size}&sort=${sort}`);
   }
 
   public getUserPosts(username: string, page: number, size: number, sort: string): Observable<Post[]>{
@@ -47,11 +46,11 @@ export class UserService {
     return this.http.delete(this.API + '/reset_profile_picture');
   }
 
-  public getSubscriptions(username: string, page: number, size: number, sort: string): Observable<any> {
-    return this.http.get(`${this.API}/subscriptions/${username}?page=${page}&size=${size}&sort=${sort}`);
+  public getSubscriptions(username: string, page: number, size: number, sort: string): Observable<User[]> {
+    return this.http.get<User[]>(`${this.API}/subscriptions/${username}?page=${page}&size=${size}&sort=${sort}`);
   }
 
-  public getSubscribers(username: string, page: number, size: number, sort: string): Observable<any> {
-    return this.http.get(`${this.API}/subscribers/${username}?page=${page}&size=${size}&sort=${sort}`);
+  public getSubscribers(username: string, page: number, size: number, sort: string): Observable<User[]> {
+    return this.http.get<User[]>(`${this.API}/subscribers/${username}?page=${page}&size=${size}&sort=${sort}`);
   }
 }

@@ -19,7 +19,6 @@ import com.example.rest.model.Favori;
 import com.example.rest.model.Publication;
 import com.example.service.PublicationService;
 import com.example.service.UserService;
-import com.example.web.dto.response.FavoriDto;
 import com.example.web.dto.response.PublicationDto;
 import com.example.web.exception.EntityNotFoundException;
 import com.example.web.exception.HttpUnauthorizedException;
@@ -141,14 +140,25 @@ public class PublicationServiceImpl implements PublicationService {
 	}
 	
 	@Override
-	public List<FavoriDto> getFavorites(Integer pageNo, Integer pageSize, String sortBy) {
+	public List<PublicationDto> getFavorites(Integer pageNo, Integer pageSize, String sortBy) {
 		
 		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
 		Slice<Favori> slicedResult = likeRepository.findAllByUtilisateur(userService.getUserFromSession(), paging);
 		
 		if (slicedResult.hasContent()) {
-			return mapper.listFavToListFavDto(slicedResult.getContent());
+		
+		List<PublicationDto> list = new ArrayList<>();
+		Iterator<Favori> it = slicedResult.iterator();
+		
+		while(it.hasNext()) {
+			Publication p = it.next().getPost();
+			var result = mapper.pubToPubDto(p);
+			result.setCountLike(p.getLikes().size());
+			result.setCommentsCount(p.getComments().size());
+			list.add(result);
 		}
+		return list;
+	}
 		else {
 			return new ArrayList<>();
 		}

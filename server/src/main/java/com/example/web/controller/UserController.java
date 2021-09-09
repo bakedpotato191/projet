@@ -27,7 +27,6 @@ import com.example.service.FileStorageService;
 import com.example.service.PublicationService;
 import com.example.service.UserService;
 import com.example.web.dto.response.AvatarResponse;
-import com.example.web.dto.response.FavoriDto;
 import com.example.web.dto.response.PublicationDto;
 import com.example.web.dto.response.UserDto;
 import com.example.web.exception.IncorrectFileExtensionException;
@@ -65,7 +64,7 @@ public class UserController {
     }
 	
 	@GetMapping(value = "/favorites")
-	public List<FavoriDto> getFavorites(	@RequestParam Integer page, 
+	public List<PublicationDto> getFavorites(	@RequestParam Integer page, 
 						            @RequestParam Integer size,
 						            @RequestParam String sort) {
 		return postService.getFavorites(page, size, sort);
