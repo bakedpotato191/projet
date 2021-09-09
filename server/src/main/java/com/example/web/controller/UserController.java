@@ -28,8 +28,6 @@ import com.example.service.PublicationService;
 import com.example.service.UserService;
 import com.example.web.dto.response.AvatarResponse;
 import com.example.web.dto.response.FavoriDto;
-import com.example.web.dto.response.FollowerDto;
-import com.example.web.dto.response.FollowingDto;
 import com.example.web.dto.response.PublicationDto;
 import com.example.web.dto.response.UserDto;
 import com.example.web.exception.IncorrectFileExtensionException;
@@ -82,14 +80,14 @@ public class UserController {
 	}
 	
 	@GetMapping(value = "/subscriptions/{username}")
-	public List<FollowingDto> getSubscriptions( @PathVariable("username") String username,
+	public List<UserDto> getSubscriptions( @PathVariable("username") String username,
 												@RequestParam Integer page, 
 									            @RequestParam Integer size) {
 		return userService.getSubscriptions(username, page, size);
 	}
 	
 	@GetMapping(value = "/subscribers/{username}")
-	public List<FollowerDto> getSubscribers( @PathVariable("username") String username,
+	public List<UserDto> getSubscribers( @PathVariable("username") String username,
 												@RequestParam Integer page, 
 									            @RequestParam Integer size) {
 		return userService.getSubscribers(username, page, size);
@@ -105,7 +103,6 @@ public class UserController {
 		return storageService.saveAvatar(file);
 
     }
-	
 	
 	@DeleteMapping(value= "/reset_profile_picture")
     public AvatarResponse resetProfilePicture() {

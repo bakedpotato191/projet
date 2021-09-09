@@ -21,16 +21,16 @@ export class PostService {
     return this.http.get(`${this.API}/${id}`);
   }
 
-  public submitComment(comment: Commentaire): Observable<any>{
-    return this.http.post(this.API + '/addcomment', comment);
-  }
-
   public likePost(id: number): Observable<any> {
     return this.http.post(this.API + '/like', id);
   }
 
   public dislikePost(id: number): Observable<any>{
     return this.http.post(this.API + '/dislike', id);
+  }
+
+  public submitComment(comment: Commentaire): Observable<any>{
+    return this.http.post(this.API + '/addcomment', comment);
   }
 
   public removePost(id: number): Observable<any>{

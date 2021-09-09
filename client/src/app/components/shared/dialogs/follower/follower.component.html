@@ -10,15 +10,15 @@
                 <li *ngFor="let follower of followers">
                     <mat-card id="card">
                         <mat-card-header id="header">
-                            <div mat-card-avatar class="example-header-image" [style.background-image]="'url('+follower.from.avatar+')'"></div>
-                            <mat-card-title class="title">{{follower.from.nom}} {{follower.from.prenom}}</mat-card-title>
-                            <mat-card-subtitle>@{{follower.from.username}}</mat-card-subtitle>
+                            <div mat-card-avatar class="example-header-image" [style.background-image]="'url('+follower.avatar+')'"></div>
+                            <mat-card-title class="title">{{follower.nom}} {{follower.prenom}}</mat-card-title>
+                            <mat-card-subtitle>@{{follower.username}}</mat-card-subtitle>
                         </mat-card-header>
                         <div>
-                            <button class="options" [ngClass]="{'button--loading': isOverlayed}" mat-raised-button *ngIf="!follower.from.followed" color="accent" (click)="follow(follower)">
+                            <button class="options" [ngClass]="{'button--loading': isOverlayed}" mat-raised-button *ngIf="!follower.followed" color="accent" (click)="follow(follower)">
                                 <span class="button__text">S'abonner</span>
                             </button>
-                            <button class="options" [ngClass]="{'button--loading': isOverlayed}" mat-raised-button *ngIf="follower.from.followed" color="warn" (click)="unfollow(follower)">
+                            <button class="options" [ngClass]="{'button--loading': isOverlayed}" mat-raised-button *ngIf="follower.followed" color="warn" (click)="unfollow(follower)">
                                 <span class="button__text">Se désabonner</span>
                             </button>
                         </div>

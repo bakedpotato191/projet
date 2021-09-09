@@ -2,6 +2,7 @@ package com.example.service.impl;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,9 +48,18 @@ public class PublicationServiceImpl implements PublicationService {
 		Slice<Publication> slicedResult = publicationRepository.findAllByUtilisateurUsername(username, paging);
 		
 		if (slicedResult.hasContent()) {
-			slicedResult.forEach(post -> 
-			post.setCountLike(likeRepository.countByPost(post)));
-			return mapper.listPubToListPubDto(slicedResult.getContent());
+			
+			List<PublicationDto> list = new ArrayList<>();
+			Iterator<Publication> it = slicedResult.iterator();
+			
+			while(it.hasNext()) {
+				Publication p = it.next();
+				var result = mapper.pubToPubDto(p);
+				result.setCountLike(p.getLikes().size());
+				result.setCommentsCount(p.getComments().size());
+				list.add(result);
+			}
+			return list;
 		}
 		else {
 			return new ArrayList<>();
@@ -84,26 +92,25 @@ public class PublicationServiceImpl implements PublicationService {
 		var found = publicationRepository.findById(id);
 
 		if (found.isPresent()) {
-			var post = found.get();
-			post.setCountLike(post.getLikes().size());
-			
-			if (SecurityContextHolder.getContext().getAuthentication() 
-			          instanceof AnonymousAuthenticationToken) {
+			var post = mapper.pubToPubDto(found.get());
+
+			if (userService.isAnonymous()) {
 				post.setLiked(false);
 			}
 			else {
 				post.setLiked(likeRepository.isLiked(userService.getUserFromSession(), found.get()));
 			}
 			
-			return mapper.pubToPubDto(post);
+			post.setCountLike(found.get().getLikes().size());
+			post.setCommentsCount(found.get().getComments().size());
+			
+			return post;
 		} 
 		else {
 			throw new EntityNotFoundException(Publication.class, "id", id.toString());
 		}
 	}
 	
-	
-
 	@Override
 	public void like(Long id) {
 		

@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { LoginComponent } from 'src/app/components/login/login.component';
+import { User } from 'src/app/interfaces/user';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -18,7 +19,7 @@ export class FollowerComponent implements OnInit {
   isLoading: boolean = false;
   isOverlayed: boolean = false;
   
-  followers: any[] = [];
+  followers: User[] = [];
   follower!: any;
 
   loginRef!: MatDialogRef<LoginComponent>;

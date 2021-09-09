@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
         });
     }
 
-    submit(): void {
+    submit() {
         if (this.loginForm.invalid) {
             return;
         }
@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
                 this.isLoading = false;
                 if (error.status === 401) {
                     this.sharedService.showSnackbar(
-                        'Invalid email or password',
+                        'Email et/ou mot de passe incorrect(s)',
                         'Dismiss',
                         7000
                     );

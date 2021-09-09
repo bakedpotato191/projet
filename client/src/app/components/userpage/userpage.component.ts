@@ -74,9 +74,12 @@ export class UserPageComponent implements OnInit {
     this.userService.getUser(username).subscribe(
       (data) => {
         this.user = data;
-        this.isContent = true;
       },
-      (_error) => {
+      (error) => {
+        console.log(error);
+      }
+    ).add(
+      () => {
         this.isContent = true;
       }
     );

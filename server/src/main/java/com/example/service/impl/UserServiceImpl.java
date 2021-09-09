@@ -1,6 +1,7 @@
 package com.example.service.impl;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +15,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.rest.dao.FollowerRepository;
-import com.example.rest.dao.PublicationRepository;
 import com.example.rest.dao.UserRepository;
 import com.example.rest.model.Follower;
 import com.example.rest.model.User;
 import com.example.service.UserService;
 import com.example.web.dto.response.AvatarResponse;
-import com.example.web.dto.response.FollowerDto;
-import com.example.web.dto.response.FollowingDto;
 import com.example.web.dto.response.UserDto;
 import com.example.web.exception.EntityNotFoundException;
 import com.example.web.mappers.MapstructMapper;
@@ -34,9 +32,6 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
     private UserRepository userRepository;
-	
-	@Autowired
-	private PublicationRepository publicationRepository;
 
     @Autowired
     private FollowerRepository followerRepository;
@@ -47,24 +42,24 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDto getUserData(String username){
 		
-		var user = userRepository.findByUsername(username);
+		var optional = userRepository.findByUsername(username);
 		
-		if(user.isPresent())
+		if(optional.isPresent())
 		{	
-			var result = user.get();
-			result.setPostCount(publicationRepository.countByUtilisateur(user.get()));
+			var user = optional.get();
+			var result = mapper.userToUserDto(user);
+			result.setPostCount(user.getPosts().size());
 			
-			if (SecurityContextHolder.getContext().getAuthentication() 
-			          instanceof AnonymousAuthenticationToken) {
+			if (isAnonymous()) {
 				result.setFollowed(false);
 			}
 			else {
-				result.setFollowed(followerRepository.isFollowed(getUserFromSession(), result));
+				result.setFollowed(followerRepository.isFollowed(getUserFromSession(), user));
 			}
 			
-			result.setFollowerCount(followerRepository.countFollowers(username));
-			result.setFollowingCount(followerRepository.countFollowing(username));
-			return mapper.userToUserDto(result);
+			result.setFollowerCount(user.getFollowers().size());
+			result.setFollowingCount(user.getFollowing().size());
+			return result;
         }
 		else {
 			throw new EntityNotFoundException(User.class, USERNAME, username);
@@ -120,14 +115,23 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public List<FollowingDto> getSubscriptions(String username, int pageNo, int pageSize) {
+	public List<UserDto> getSubscriptions(String username, int pageNo, int pageSize) {
 		Pageable paging = PageRequest.of(pageNo, pageSize);
 		Slice<Follower> slicedResult = followerRepository.findAllToByFromUsername(username, paging);
 		
 		if (slicedResult.hasContent()) {
-			slicedResult.forEach(entity ->
-			entity.getTo().setFollowed(followerRepository.isFollowed(getUserFromSession(), entity.getTo())));
-			return mapper.followingToFollowingDto(slicedResult.getContent());
+			
+			List<UserDto> list = new ArrayList<>();
+			Iterator<Follower> it = slicedResult.iterator();
+			
+			while(it.hasNext()) {
+				Follower f = it.next();
+				var result = mapper.userToUserDto(f.getTo());
+				result.setFollowed(followerRepository.isFollowed(getUserFromSession(), f.getTo()));
+				list.add(result);
+			}
+			
+			return list;
 		}
 		else {
 			return new ArrayList<>();
@@ -135,14 +139,23 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public List<FollowerDto> getSubscribers(String username, int pageNo, int pageSize) {
+	public List<UserDto> getSubscribers(String username, int pageNo, int pageSize) {
 		Pageable paging = PageRequest.of(pageNo, pageSize);
 		Slice<Follower> slicedResult = followerRepository.findAllFromByToUsername(username, paging);
 		
 		if (slicedResult.hasContent()) {
-			slicedResult.forEach(entity ->
-			entity.getFrom().setFollowed(followerRepository.isFollowed(getUserFromSession(), entity.getFrom())));
-			return mapper.followerToFollowerDto(slicedResult.getContent());
+			
+			List<UserDto> list = new ArrayList<>();
+			Iterator<Follower> it = slicedResult.iterator();
+			
+			while(it.hasNext()) {
+				Follower f = it.next();
+				var result = mapper.userToUserDto(f.getFrom());
+				result.setFollowed(followerRepository.isFollowed(getUserFromSession(), f.getFrom()));
+				list.add(result);
+			}
+			
+			return list;
 		}
 		else {
 			return new ArrayList<>();
@@ -153,4 +166,9 @@ public class UserServiceImpl implements UserService {
 	public User getUserFromSession() {
 		return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	}
+	
+	@Override
+	public boolean isAnonymous() {
+		return SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken;
+	}	
 }

@@ -19,11 +19,11 @@ public class UserDto {
     
     private boolean enabled;
     
-	private Long postCount;
+	private int postCount;
 	
-	private Long followerCount;
+	private int followerCount;
 	
-	private Long followingCount;
+	private int followingCount;
 	
 	private boolean followed;
 	
@@ -77,27 +77,27 @@ public class UserDto {
 		this.enabled = enabled;
 	}
 
-	public Long getPostCount() {
+	public int getPostCount() {
 		return postCount;
 	}
 
-	public void setPostCount(Long postCount) {
+	public void setPostCount(int postCount) {
 		this.postCount = postCount;
 	}
 
-	public Long getFollowerCount() {
+	public int getFollowerCount() {
 		return followerCount;
 	}
 
-	public void setFollowerCount(Long followerCount) {
+	public void setFollowerCount(int followerCount) {
 		this.followerCount = followerCount;
 	}
 
-	public Long getFollowingCount() {
+	public int getFollowingCount() {
 		return followingCount;
 	}
 
-	public void setFollowingCount(Long followingCount) {
+	public void setFollowingCount(int followingCount) {
 		this.followingCount = followingCount;
 	}
 

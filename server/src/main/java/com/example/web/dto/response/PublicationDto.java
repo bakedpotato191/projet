@@ -16,7 +16,9 @@ public class PublicationDto {
 	
 	private boolean isLiked;
 	
-	private Long countLike;
+	private int countLike;
+	
+	private int commentsCount;
 
 	public Long getId() {
 		return id;
@@ -66,11 +68,19 @@ public class PublicationDto {
 		this.isLiked = isLiked;
 	}
 
-	public Long getCountLike() {
+	public int getCountLike() {
 		return countLike;
 	}
 
-	public void setCountLike(Long countLike) {
-		this.countLike = countLike;
+	public void setCountLike(int count) {
+		this.countLike = count;
+	}
+
+	public int getCommentsCount() {
+		return commentsCount;
+	}
+
+	public void setCommentsCount(int commentsCount) {
+		this.commentsCount = commentsCount;
 	}
 }

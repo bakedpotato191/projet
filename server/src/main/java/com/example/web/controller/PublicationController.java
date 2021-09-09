@@ -48,15 +48,6 @@ public class PublicationController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
-	@GetMapping("/view/{filename:.+}")
-	public ResponseEntity<Resource> getFile(@PathVariable String filename) throws IOException {
-		Resource file = storageService.load(filename);
-		return ResponseEntity.ok()
-				.header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + file.getFilename() + "\"")
-				.contentType(MediaType.IMAGE_JPEG)
-				.body(file);
-	}
-	
 	@PostMapping("/like")
 	public ResponseEntity<HttpStatus> likePost(@RequestBody @Valid final Long id) {
 		publicationService.like(id);
@@ -69,8 +60,19 @@ public class PublicationController {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
+	@GetMapping("/view/{filename:.+}")
+	public ResponseEntity<Resource> getFile(@PathVariable String filename) throws IOException {
+		Resource file = storageService.load(filename);
+		return ResponseEntity.ok()
+				.header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + file.getFilename() + "\"")
+				.contentType(MediaType.IMAGE_JPEG)
+				.body(file);
+	}
+
 	@PostMapping("/create")
-	public ResponseEntity<HttpStatus> createPost(@RequestPart("photo") MultipartFile file, @RequestPart(name="description", required=false) String description) throws IllegalFormatException, IOException {
+	public ResponseEntity<HttpStatus> createPost(
+				@RequestPart("photo") MultipartFile file, 
+				@RequestPart(name="description", required=false) String description) throws IllegalFormatException, IOException {
 		storageService.save(file, description);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}

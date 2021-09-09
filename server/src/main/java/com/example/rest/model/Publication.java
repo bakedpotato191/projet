@@ -17,7 +17,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -43,6 +42,7 @@ public class Publication implements Serializable {
 	@JoinColumn(name = "user_id")
 	private User utilisateur;
 	
+	@LazyCollection(LazyCollectionOption.EXTRA)
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<Comment> comments = new ArrayList<>();
 	
@@ -60,16 +60,6 @@ public class Publication implements Serializable {
 		this.photo = photo;
 		this.utilisateur = utilisateur;
 	}
-	
-	
-	
-	@Transient
-	private boolean isLiked;
-	
-	@Transient
-	private int countLike;
-
-
 
 	public Long getId() {
 		return id;
@@ -118,23 +108,7 @@ public class Publication implements Serializable {
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
 	}
-	
-	public boolean isLiked() {
-		return isLiked;
-	}
 
-	public void setLiked(boolean isLiked) {
-		this.isLiked = isLiked;
-	}
-
-	public int getCountLike() {
-		return countLike;
-	}
-
-	public void setCountLike(int countLike) {
-		this.countLike = countLike;
-	}
-	
 	public List<Favori> getLikes() {
 		return likes;
 	}

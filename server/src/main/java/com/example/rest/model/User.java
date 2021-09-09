@@ -21,8 +21,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -61,20 +62,8 @@ public class User implements Serializable, UserDetails {
 	
 	@Column(columnDefinition="boolean default false")
     private boolean enabled;
-	
-	@Transient
-	private Long postCount;
-	
-	@Transient
-	private Long followerCount;
-	
-	@Transient
-	private Long followingCount;
-	
-	@Transient
-	private boolean followed;
-	
-    @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER) // @ManyToMany default fetch = LAZY
+
+    @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "utilisateur_roles", 
     			joinColumns = @JoinColumn(
     					name = "role_id",
@@ -84,21 +73,24 @@ public class User implements Serializable, UserDetails {
     					referencedColumnName = "id"))
     private Collection<Role> roles;
     
-    @OneToMany(mappedBy="utilisateur", cascade = CascadeType.ALL, orphanRemoval=true) // @OneToMany default fetch = LAZY
+	@LazyCollection(LazyCollectionOption.EXTRA)
+    @OneToMany(mappedBy="utilisateur", cascade = CascadeType.ALL, orphanRemoval=true)
     private List<Publication> posts = new ArrayList<>();
-       
+
     @OneToMany(mappedBy="utilisateur", cascade = CascadeType.ALL, orphanRemoval=true)
     private List<Comment> comments = new ArrayList<>();
     
     @OneToMany(mappedBy="utilisateur", cascade = CascadeType.ALL)
     private Set<Favori> likes = new HashSet<>();
     
-    @OneToOne(fetch=FetchType.LAZY, mappedBy="user", cascade = CascadeType.ALL, orphanRemoval=true)  // @OneToOne default fetch = EAGER	
+    @OneToOne(fetch=FetchType.LAZY, mappedBy="user", cascade = CascadeType.ALL, orphanRemoval=true)
     private VerificationToken token;
     
+	@LazyCollection(LazyCollectionOption.EXTRA)
     @OneToMany(mappedBy="to", cascade = CascadeType.ALL, orphanRemoval=true)
     private List<Follower> followers;
     
+	@LazyCollection(LazyCollectionOption.EXTRA)
     @OneToMany(mappedBy="from", cascade = CascadeType.ALL, orphanRemoval=true)
     private List<Follower> following;
 
@@ -183,14 +175,6 @@ public class User implements Serializable, UserDetails {
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
 	}
-	
-	public Long getPostCount() {
-		return postCount;
-	}
-
-	public void setPostCount(Long postCount) {
-		this.postCount = postCount;
-	}
 
 	public List<Comment> getComments() {
 		return comments;
@@ -242,30 +226,6 @@ public class User implements Serializable, UserDetails {
 	
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
-	}
-	
-	public boolean isFollowed() {
-		return followed;
-	}
-
-	public void setFollowed(boolean followed) {
-		this.followed = followed;
-	}
-	
-	public Long getFollowerCount() {
-		return followerCount;
-	}
-
-	public void setFollowerCount(Long followerCount) {
-		this.followerCount = followerCount;
-	}
-	
-	public Long getFollowingCount() {
-		return followingCount;
-	}
-
-	public void setFollowingCount(Long followingCount) {
-		this.followingCount = followingCount;
 	}
 
 	@Override

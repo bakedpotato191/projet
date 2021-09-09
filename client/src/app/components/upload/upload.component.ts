@@ -48,10 +48,6 @@ export class UploadComponent {
         }
     }
 
-    close_dialog() {
-        this.dialogRef.close(this.isSent);
-    }
-
     submit() {
         if (this.uploadForm.invalid) {
             return;
@@ -77,4 +73,10 @@ export class UploadComponent {
             }
         );
     }
+
+    close_dialog() {
+        this.dialogRef.close(this.isSent);
+    }
+
+
 }
