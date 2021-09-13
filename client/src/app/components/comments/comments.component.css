@@ -5,6 +5,7 @@
     background: rgba(36, 36, 36, 255);
     border: 1px solid rgb(58, 58, 58);
     border-radius: 0;
+    margin-left: 10px;
 }
 
 .comments {
@@ -37,6 +38,12 @@
 
 ::ng-deep .mat-list-item-content {
   padding: 8px 0!important;
+}
+
+::ng-deep .mat-form-field-wrapper {
+  padding-top: 2px;
+  padding-left: 2px;
+  padding-right: 2px;
 }
 
 .comment-avatar {
@@ -93,25 +100,26 @@
 }
 
 .form {
-    display: flex;
-    flex-direction: column;
     width: 100%;
     margin-top: auto;
   }
 
-  
-  .form > button {
+  .form .form-field {
     width: 100%;
   }
-  
+
+  ::ng-deep .mat-form-field-infix {
+    display: flex!important;
+    flex-direction: row!important;
+  }
+
   .form textarea {
     resize: none;
-    height: 100px;
-    color: white;
+    height: 30px;
   }
-  
-  .form-field {
-    width:100%!important;
+
+  .form .input {
+    color: white;
   }
 
   ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-infix {
@@ -132,10 +140,11 @@
     caret-color: white;
   }
 
-  @media only screen and (max-width: 975px) {
+  @media only screen and (max-width: 959px) {
     :host {
-      max-width: 700px;
       width: 100%;
-      margin: 0 auto;
+      margin-left: 0;
+      flex-basis: unset;
+      flex-direction: column-reverse;
     }
   }

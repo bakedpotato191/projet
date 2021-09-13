@@ -13,7 +13,7 @@
 </mat-card-list>
 <mat-progress-bar id="progress" mode="query" *ngIf="isLoading" color="accent"></mat-progress-bar>
 <ng-template #elseBlock>
-    <div class="noposts">
+    <div class="noposts" fxLayout="column">
         <mat-icon class="icon" aria-hidden="true" fontSet="material-icons">sentiment_neutral</mat-icon>
         <span>No favorite posts found.</span>
     </div>

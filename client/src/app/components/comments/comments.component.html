@@ -38,14 +38,13 @@
   <ng-template #elseBlock>
     <div class="nocomments">Soyez le premier à laisser un commentaire</div>
   </ng-template>
-  <form class="form" name="form" [formGroup]="commentForm" (ngSubmit)="submit()" novalidate>
-    <mat-form-field class="form-field" color="accent">
-      <mat-label>Comment</mat-label>
-      <textarea matInput name="comment" formControlName="comment" #textarea class="form-control" type="text"></textarea>
+  <form class="form" fxLayout="row" name="form" [formGroup]="commentForm" (ngSubmit)="submit()" novalidate>
+    <mat-form-field class="form-field" color="accent" appearance="fill" [hideRequiredMarker]="hideRequiredControl.value"
+    [floatLabel]="floatLabelControl.value">
+      <textarea matInput name="comment" formControlName="comment" #textarea class="input" type="text" placeholder="Commentaire"></textarea>
+      <button mat-stroked-button *ngIf="!isLoading" color="accent" class="btn-block">
+        <mat-icon aria-hidden="true" fontSet="material-icons" aria-label="send-icon">send</mat-icon>
+      </button>
     </mat-form-field>
-    <button mat-stroked-button *ngIf="!isLoading" color="accent" class="btn-block">
-      Laisser un commentaire
-    </button>
-    <mat-spinner *ngIf="isLoading" color="accent" [diameter]="25" aria-label="submitting the comment">
-    </mat-spinner>
+    <mat-spinner *ngIf="isLoading" color="accent" [diameter]="25" aria-label="submitting the comment"></mat-spinner>
   </form>

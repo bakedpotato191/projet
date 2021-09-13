@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -88,55 +89,46 @@ public class PublicationServiceImpl implements PublicationService {
 	
 	@Override
 	public PublicationDto getPublicationByID(Long id) {
-		var found = publicationRepository.findById(id);
+		var optional = publicationRepository.findById(id);
 
-		if (found.isPresent()) {
-			var post = mapper.pubToPubDto(found.get());
+		if (optional.isPresent()) {
+			var publication = optional.get();
+			var result = mapper.pubToPubDto(publication);
 
 			if (userService.isAnonymous()) {
-				post.setLiked(false);
+				result.setLiked(false);
 			}
 			else {
-				post.setLiked(likeRepository.isLiked(userService.getUserFromSession(), found.get()));
+				result.setLiked(likeRepository.isLiked(userService.getUserFromSession(), publication));
 			}
 			
-			post.setCountLike(found.get().getLikes().size());
-			post.setCommentsCount(found.get().getComments().size());
+			result.setCountLike(publication.getLikes().size());
+			result.setCommentsCount(publication.getComments().size());
 			
-			return post;
+			return result;
 		} 
 		else {
 			throw new EntityNotFoundException(Publication.class, "id", id.toString());
 		}
 	}
 	
+	
+	@Async
 	@Override
 	public void like(Long id) {
-		
 		var post = new Publication();
 		post.setId(id);		
-
-		var like = new Favori();
-		like.setPost(post);
-		like.setUtilisateur(userService.getUserFromSession());
-		
-		try {
-			likeRepository.save(like);
-		}
-		catch (IllegalArgumentException ex) {
-			throw new EntityNotFoundException(Publication.class, "id", id.toString());
-		}
-
+		var favori = new Favori();
+		favori.setPost(post);
+		favori.setUtilisateur(userService.getUserFromSession());
+		likeRepository.save(favori);
 	}
 
+	@Async
 	@Override
 	public void dislike(Long id) {
-		
 			var currentUser = userService.getUserFromSession();
-			
-			if (likeRepository.dislike(currentUser, id) == 0) {
-				throw new EntityNotFoundException(Publication.class, "id", id.toString());
-			}
+			likeRepository.dislike(currentUser, id);
 	}
 	
 	@Override

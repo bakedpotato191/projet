@@ -6,7 +6,7 @@ import { SharedService } from 'src/app/services/shared.service';
 import { PostComponent } from '../post/post.component';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { LoginComponent } from '../login/login.component';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmationDialogComponent } from '../shared/dialogs/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
@@ -16,6 +16,10 @@ import { ConfirmationDialogComponent } from '../shared/dialogs/confirmation-dial
 })
 export class CommentsComponent implements OnInit {
     @ViewChild('textarea') inputName!: ElementRef;
+
+    options: FormGroup;
+    hideRequiredControl = new FormControl(false);
+    floatLabelControl = new FormControl('auto');
 
     commentForm!: FormGroup;
     comments: Commentaire[] = [];
@@ -35,7 +39,12 @@ export class CommentsComponent implements OnInit {
         public dialog: MatDialog,
         private readonly parent: PostComponent,
         private fb: FormBuilder
-    ) {}
+    ) {
+        this.options = fb.group({
+            hideRequired: this.hideRequiredControl,
+            floatLabel: this.floatLabelControl,
+          });
+    }
 
     ngOnInit(): void {
         this.get_all_comments();

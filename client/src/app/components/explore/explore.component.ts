@@ -1,12 +1,25 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
-    selector: 'app-explore',
-    templateUrl: './explore.component.html',
-    styleUrls: ['./explore.component.css']
+  selector: 'app-explore',
+  templateUrl: './explore.component.html',
+  styleUrls: ['./explore.component.css'],
 })
 export class ExploreComponent implements OnInit {
-    constructor() {}
+  
+  isLoading: boolean = false;
+  
+  options: FormGroup;
+  hideRequiredControl = new FormControl(false);
+  floatLabelControl = new FormControl('auto');
 
-    ngOnInit(): void {}
+  constructor(fb: FormBuilder) {
+    this.options = fb.group({
+      hideRequired: this.hideRequiredControl,
+      floatLabel: this.floatLabelControl,
+    });
+  }
+
+  ngOnInit(): void {}
 }

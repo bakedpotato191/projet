@@ -31,6 +31,8 @@ import com.example.web.dto.response.PublicationDto;
 @RequestMapping("/api/publication")
 public class PublicationController {
 
+	private static final String SUCCESS_MESSAGE="{\"success\": true}";
+	
 	@Autowired
 	private FileStorageService storageService;
 	
@@ -49,15 +51,15 @@ public class PublicationController {
 	}
 	
 	@PostMapping("/like")
-	public ResponseEntity<HttpStatus> likePost(@RequestBody @Valid final Long id) {
+	public ResponseEntity<String> likePost(@RequestBody @Valid final Long id) {
 		publicationService.like(id);
-		return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(SUCCESS_MESSAGE, HttpStatus.OK);
 	}
 	
 	@PostMapping("/dislike")
-	public ResponseEntity<HttpStatus> dislikePost(@RequestBody @Valid final Long id) {
+	public ResponseEntity<String> dislikePost(@RequestBody @Valid final Long id) {
 		publicationService.dislike(id);
-		return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(SUCCESS_MESSAGE, HttpStatus.OK);
 	}
 	
 	@GetMapping("/view/{filename:.+}")
@@ -70,11 +72,11 @@ public class PublicationController {
 	}
 
 	@PostMapping("/create")
-	public ResponseEntity<HttpStatus> createPost(
+	public ResponseEntity<String> createPost(
 				@RequestPart("photo") MultipartFile file, 
 				@RequestPart(name="description", required=false) String description) throws IllegalFormatException, IOException {
 		storageService.save(file, description);
-		return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(SUCCESS_MESSAGE, HttpStatus.CREATED);
 	}
 	
 

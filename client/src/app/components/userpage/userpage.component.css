@@ -1,6 +1,4 @@
 .container {
-  display: flex;
-  flex-direction: column;
   width: 100%;
   max-width: 975px;
   margin: 0 auto;
@@ -16,8 +14,6 @@
 }
 
 #profile {
-  display: flex;
-  flex-direction: row;
   padding: 10px;
 }
 
@@ -99,8 +95,6 @@
 }
 
 #data {
-    display: flex;
-    flex-direction: row;
     color: white;
     padding: 12px 0;
     margin: 0;
@@ -135,22 +129,6 @@
   color: white;
 }
 
-.noposts {
-  display: flex;
-  flex-direction: column;
-  margin-top: 120px;
-  align-items: center;
-  color: #d9d9d9;
-  text-align: center;
-  font-weight: 500;
-}
-
-::ng-deep.noposts mat-icon {
-  height: 60px;
-  width: 60px;
-  font-size: 60px;
-}
-
 .sub-buttons {
   margin-top: 10px;
 }
@@ -170,8 +148,6 @@
 /* 404 */
 
 #notfound {
-  display: flex;
-  flex-direction: column;
   color: white;
   text-align: center;
   font-size: 1em;

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { LoginComponent } from 'src/app/components/login/login.component';
 import { User } from 'src/app/interfaces/user';
@@ -11,13 +11,13 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['../css/styles.css']
 })
 export class FollowingComponent implements OnInit {
+
   private page: number = 0;
   private readonly size: number = 9;
   private readonly sort: string = 'date';
   canLoad: boolean = false;
   isLoading: boolean = false;
-  isOverlayed: boolean = false;
-  
+
   followings: User[] = [];
   following!: any;
 
@@ -27,6 +27,7 @@ export class FollowingComponent implements OnInit {
     private readonly userService: UserService,
     private readonly tokenService: TokenStorageService,
     public dialog: MatDialog,
+    private renderer:Renderer2,
     public followingRef: MatDialogRef<FollowingComponent>,
     @Inject(MAT_DIALOG_DATA) public username: string
   ) {}
@@ -57,49 +58,49 @@ export class FollowingComponent implements OnInit {
         });
   }
 
-  follow(following: any) {
+
+  follow(following: User, e: Event) {
     if (this.tokenService.getToken() == null) {
       return this.dialog.open(LoginComponent);
     }
-    this.isOverlayed = true;
-    console.log(following.to.username);
+    this.renderer.addClass(e.currentTarget,"button--loading");
     setTimeout(() => {
-        return this.userService.follow(following.to.username).subscribe(
+        return this.userService.follow(following.username).subscribe(
             (_data) => {
-              following.to.followed = true;
+              following.followed = true;
             },
             (error) => {
               console.log(error);
             }
           ).add(
               () => {
-                this.isOverlayed = false;
+                this.renderer.removeClass(e.currentTarget,"button--loading");
               }
           );
-      }, 1000);
+      }, 500);
       return;
   }
 
-  unfollow(following: any) {
+  unfollow(following: any, e: Event) {
     if (this.tokenService.getToken() == null) {
       return this.dialog.open(LoginComponent);
     }
-    console.log(following.to.username);
-    this.isOverlayed = true;
+    this.renderer.addClass(e.currentTarget,"button--loading");
+
     setTimeout(() => {
-        return this.userService.unfollow(following.to.username).subscribe(
+        return this.userService.unfollow(following.username).subscribe(
             (_data) => {
-              following.to.followed = false;
+              following.followed = false;
             },
             (error) => {
               console.log(error);
             }
           ).add(
           () => {
-            this.isOverlayed = false;
+            this.renderer.removeClass(e.currentTarget,"button--loading");
           }
           );
-      }, 1000);
+      }, 500);
       return;
   }
 }

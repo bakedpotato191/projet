@@ -1,5 +1,5 @@
 <div *ngIf="isContent" class="wrapper">
-  <div class="container">
+  <div class="container" fxLayout="row" fxLayout.lt-md="column">
   <div *ngIf="post; then card; else error"></div>
   <ng-template #card>
     <mat-card class="card">
@@ -27,7 +27,7 @@
         </ng-container>
       </mat-card-header>
       <mat-divider></mat-divider>
-      <mat-card-image class="card-image">
+      <mat-card-image class="card-image" fxLayout="row">
         <img class="image" mat-card-image src="{{ post.photo }}" alt="image" />
       </mat-card-image>
       <mat-card-content class="card-content">
@@ -35,24 +35,26 @@
       </mat-card-content>
       <mat-divider></mat-divider>
       <mat-card-actions class="card-actions">
-        <button mat-button id="dislikeBtn" *ngIf="post.liked" (click)="dislike()">
-          <mat-icon aria-hidden="true" fontSet="material-icons" aria-label="like icon" color="warn">favorite</mat-icon>
-        </button>
-        <button mat-button id="likeBtn" *ngIf="!post.liked" (click)="like()">
-          <mat-icon aria-hidden="true" fontSet="material-icons" aria-label="like icon">favorite</mat-icon>
-        </button>
-        <button mat-button id="shareBtn"><mat-icon aria-hidden="true" fontSet="material-icons" aria-label="like icon">share</mat-icon></button>
-        <button mat-button id="fullscrnBtn" (click)="open_image(post.photo)"><mat-icon aria-hidden="true" fontSet="material-icons">fullscreen</mat-icon></button>
-        <button *ngIf="isMyPost" mat-button id="deleteBtn" (click)="open_delete_post_dialog(post.id)">
-          <mat-icon aria-hidden="true" fontSet="material-icons" aria-label="like icon">delete</mat-icon>
-        </button>
+        <div fxLayout="row" fxLayoutAlign="space-evenly center" class="holder">
+          <button mat-button id="dislikeBtn" *ngIf="post.liked" (click)="dislike()">
+            <mat-icon aria-hidden="true" fontSet="material-icons" aria-label="like icon" color="warn">favorite</mat-icon>
+          </button>
+          <button mat-button id="likeBtn" *ngIf="!post.liked" (click)="like()">
+            <mat-icon aria-hidden="true" fontSet="material-icons" aria-label="like icon">favorite</mat-icon>
+          </button>
+          <button mat-button id="shareBtn"><mat-icon aria-hidden="true" fontSet="material-icons" aria-label="like icon">share</mat-icon></button>
+          <button mat-button id="fullscrnBtn" (click)="open_image(post.photo)"><mat-icon aria-hidden="true" fontSet="material-icons">fullscreen</mat-icon></button>
+          <button *ngIf="isMyPost" mat-button id="deleteBtn" (click)="open_delete_post_dialog(post.id)">
+            <mat-icon aria-hidden="true" fontSet="material-icons" aria-label="like icon">delete</mat-icon>
+          </button>
+        </div>
       </mat-card-actions>
     </mat-card>
     <app-comments></app-comments>
   </ng-template>
 
   <ng-template #error>
-    <div id="notfound">
+    <div id="notfound" fxLayout="column">
       <span id="error">404</span>
       <span>Post n'a pas ététrouvé ou a été supprimé par son auteur.</span>
     </div>

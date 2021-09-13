@@ -127,7 +127,14 @@ public class UserServiceImpl implements UserService {
 			while(it.hasNext()) {
 				Follower f = it.next();
 				var result = mapper.userToUserDto(f.getTo());
-				result.setFollowed(followerRepository.isFollowed(getUserFromSession(), f.getTo()));
+			
+				if (isAnonymous()) {
+					result.setFollowed(false);
+				}
+				else {
+					result.setFollowed(followerRepository.isFollowed(getUserFromSession(), f.getTo()));
+				}
+	
 				list.add(result);
 			}
 			
@@ -151,7 +158,14 @@ public class UserServiceImpl implements UserService {
 			while(it.hasNext()) {
 				Follower f = it.next();
 				var result = mapper.userToUserDto(f.getFrom());
-				result.setFollowed(followerRepository.isFollowed(getUserFromSession(), f.getFrom()));
+				
+				if (isAnonymous()) {
+					result.setFollowed(false);
+				}
+				else {
+					result.setFollowed(followerRepository.isFollowed(getUserFromSession(), f.getFrom()));
+				}
+				
 				list.add(result);
 			}
 			

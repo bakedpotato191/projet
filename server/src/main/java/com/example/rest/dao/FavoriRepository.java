@@ -17,13 +17,13 @@ import com.example.rest.model.User;
 @Transactional(readOnly = true)
 public interface FavoriRepository extends JpaRepository<Favori, Long> {
 
-	@Query("SELECT COUNT(f)>0 from Favori f WHERE f.utilisateur = :user AND post = :post")
+	@Query("SELECT COUNT(f)>0 from Favori f WHERE f.utilisateur = (:user) AND post = (:post)")
 	boolean isLiked(@Param ("user") User user, @Param("post") Publication post);
 	
 	@Modifying
 	@Transactional
-	@Query("DELETE from Favori f WHERE f.utilisateur=:user AND f.post.id=:id")
-	int dislike(@Param("user") User user, @Param("id") Long id);
+	@Query("DELETE from Favori f WHERE f.utilisateur=(:user) AND f.post.id=(:id)")
+	void dislike(@Param("user") User user, @Param("id") Long id);
 	
 	Slice<Favori> findAllByUtilisateur(User user, Pageable paging);
 	

@@ -17,7 +17,7 @@
     </mat-card-list>
     <mat-progress-bar id="progress" mode="query" *ngIf="isLoading" color="accent"></mat-progress-bar>
     <ng-template #elseBlock>
-        <div class="noposts">
+        <div class="noposts" fxLayout="column">
             <mat-icon class="icon" aria-hidden="false">sentiment_neutral</mat-icon>
             <span>No posts found.</span>
         </div>

@@ -6,9 +6,9 @@
     <div *ngIf="user; then container; else error"></div>
 
     <ng-template #container>
-        <div class="container">
+        <div class="container" fxLayout="column">
             <div id="profile-container">
-                <div id="profile">
+                <div id="profile" fxLayout="row">
                     <div id="profile-picture" [style.cursor]="isMyPage ? 'pointer' : 'default'"
                         (click)="on_avatar_click()">
                         <div [style.display]="isOverlayed ? 'block' : 'none'" class="overlay">
@@ -41,7 +41,7 @@
                         </li>
                     </ul>
                 </div>
-                <ul fxLayout="row" id="data">
+                <ul fxLayout="row" id="data" fxLayout="row">
                     <li id="numberPub" fxLayout="column">
                         <span class="count" (click)="scroll(userposts.postsEl)">{{ user.postCount }}</span> publications
                     </li>
@@ -78,7 +78,7 @@
     </ng-template>
 
     <ng-template #error>
-        <div id="notfound">
+        <div id="notfound" fxLayout="column">
             <span id="error">404</span>
             <span id="first">Cette page n’est malheureusement pas disponible.</span>
             <span id="second">Le lien que vous avez suivi est peut-être rompu, ou la page a été

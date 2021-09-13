@@ -14,10 +14,10 @@ public class AsyncExceptionHandler implements AsyncUncaughtExceptionHandler {
     public void handleUncaughtException(
       Throwable throwable, Method method, Object... obj) {
  
-		logger.error("Exception message - '{}' ", throwable.getMessage());
-        logger.debug("Method name - '{}' ", method.getName());
+		logger.error("Exception message - '{}'", throwable.getMessage());
+        logger.error("Method name - '{}' ", method.getName());
         for (Object param : obj) {
-            logger.debug("Parameter value - '{}' ", param);
+            logger.error("Parameter value - '{}' ", param);
         }
     }
 }

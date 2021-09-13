@@ -7,7 +7,7 @@
     <ng-template #card>
         <div mat-dialog-content id="content">
             <ul id="subs">
-                <li *ngFor="let following of followings">
+                <li *ngFor="let following of followings; let i=index">
                     <mat-card id="card">
                         <mat-card-header id="header">
                             <div mat-card-avatar class="example-header-image" [style.background-image]="'url('+following.avatar+')'"></div>
@@ -15,10 +15,10 @@
                             <mat-card-subtitle>@{{following.username}}</mat-card-subtitle>
                         </mat-card-header>
                         <div>
-                            <button class="options" [ngClass]="{'button--loading': isOverlayed}" mat-raised-button *ngIf="!following.followed" color="accent" (click)="follow(following)">
+                            <button class="options" mat-raised-button *ngIf="!following.followed" color="accent" (click)="follow(following, $event)">
                                 <span class="button__text">S'abonner</span>
                             </button>
-                            <button class="options" [ngClass]="{'button--loading': isOverlayed}" mat-raised-button *ngIf="following.followed" color="warn" (click)="unfollow(following)">
+                            <button class="options" mat-raised-button *ngIf="following.followed" color="warn" (click)="unfollow(following, $event)">
                                 <span class="button__text">Se désabonner</span>
                             </button>
                         </div>
