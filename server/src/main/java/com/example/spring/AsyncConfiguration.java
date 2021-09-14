@@ -3,6 +3,7 @@ package com.example.spring;
 import java.util.concurrent.Executor;
 
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -13,24 +14,27 @@ import com.example.web.exception.AsyncExceptionHandler;
 
 @Configuration
 @EnableAsync
-public class SpringAsyncConfig implements AsyncConfigurer {
-	
+public class AsyncConfiguration implements AsyncConfigurer {
+
+
 	@Override
-    public Executor getAsyncExecutor() {
-        var executor =  new ThreadPoolTaskExecutor();
-        executor.initialize();
-        executor.setCorePoolSize(8);
-        executor.setMaxPoolSize(80);
-        executor.setQueueCapacity(40);
-        executor.setAllowCoreThreadTimeOut(true);
-        executor.setKeepAliveSeconds(120);
-        executor.setWaitForTasksToCompleteOnShutdown(true);
-        executor.setThreadNamePrefix("Async-");
-        return new DelegatingSecurityContextAsyncTaskExecutor(executor);
-    }
+	@Bean	
+	public Executor getAsyncExecutor() {
+		var executor = new ThreadPoolTaskExecutor();
+		executor.setCorePoolSize(8);
+		executor.setMaxPoolSize(80);
+		executor.setQueueCapacity(5000);
+		executor.setThreadNamePrefix("Async-");
+		executor.setBeanName("asyncExecutor");
+		executor.setWaitForTasksToCompleteOnShutdown(true);
+		executor.initialize();
+		
+		return new DelegatingSecurityContextAsyncTaskExecutor(executor);
+	}
 	
 	@Override
 	public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-	    return new AsyncExceptionHandler();
+
+		return new AsyncExceptionHandler();
 	}
 }
