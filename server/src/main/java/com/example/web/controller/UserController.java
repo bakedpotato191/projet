@@ -3,6 +3,7 @@ package com.example.web.controller;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import javax.validation.Valid;
 
@@ -50,7 +51,7 @@ public class UserController {
 	private PublicationService publicationService;
 
 	@GetMapping(value= "/info/{username}")
-    public UserDto getUser(@PathVariable("username") String username) {
+    public CompletableFuture<UserDto> getUser(@PathVariable("username") String username) throws InterruptedException, ExecutionException {
 		return userService.getUserData(username);
     }
 
@@ -95,25 +96,25 @@ public class UserController {
 	}
 	
 	@GetMapping(value = "/subscribers/{username}")
-	public List<UserDto> getSubscribers( @PathVariable("username") String username,
+	public CompletableFuture<List<UserDto>> getSubscribers( @PathVariable("username") String username,
 												@RequestParam Integer page, 
 									            @RequestParam Integer size) {
 		return userService.getSubscribers(username, page, size);
 	}
 	
 	@GetMapping(value="/profile_picture")
-	public AvatarResponse getProfilePicture() {
+	public CompletableFuture<AvatarResponse> getProfilePicture() {
 		return userService.getProfilePicture();
 	}
 	
 	@PostMapping(value= "/profile_picture")
-    public AvatarResponse setProfilePicture(@RequestPart("avatar") MultipartFile file) throws IncorrectFileExtensionException, IOException {
+    public CompletableFuture<AvatarResponse> setProfilePicture(@RequestPart("avatar") MultipartFile file) throws IncorrectFileExtensionException, IOException {
 		return storageService.saveAvatar(file);
 
     }
 	
 	@DeleteMapping(value= "/reset_profile_picture")
-    public AvatarResponse resetProfilePicture() {
+    public CompletableFuture<AvatarResponse> resetProfilePicture() {
 		return userService.resetProfilePicture();
     }
 	

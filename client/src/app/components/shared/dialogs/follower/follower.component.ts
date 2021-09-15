@@ -35,28 +35,29 @@ export class FollowerComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public username: string
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.canLoad = true;
-    this.get_subscribers();
+    await this.get_subscribers();
   }
 
   close_dialog(): void {
     this.followingRef.close();
   }
 
-  get_subscribers(): void {
+  async get_subscribers() {
     this.isLoading = true;
-    this.userService
-      .getSubscribers(this.username, this.page, this.size, this.sort)
-      .subscribe(
-        (data) => {
-          this.followers = data;
+    (await this.userService
+      .getSubscribers(this.username, this.page, this.size, this.sort))
+      .toPromise()
+      .then(
+        (response) => {
+          this.followers = response;
         },
         (error) => {
           console.log(error);
         }
       )
-      .add(() => {
+      .finally(() => {
         this.isLoading = false;
       });
   }

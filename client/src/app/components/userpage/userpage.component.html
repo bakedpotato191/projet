@@ -43,7 +43,7 @@
                 </div>
                 <ul fxLayout="row" id="data" fxLayout="row">
                     <li id="numberPub" fxLayout="column">
-                        <span class="count" (click)="scroll(userposts.postsEl)">{{ user.postCount }}</span> publications
+                        <span class="count" (click)="scroll_till_publications(userposts.postsEl)">{{ user.postCount }}</span> publications
                     </li>
                     <li id="numberSubs" fxLayout="column">
                         <span class="count" (click)="open_subscribers_dialog()">{{ user.followerCount }}</span> abonnés
@@ -60,7 +60,7 @@
                 mat-stretched-tabs animationDuration="700ms" mat-align-tabs="center" color="accent">
                 <mat-tab id="first-tab" mat-tab-link>
                     <ng-template mat-tab-label>
-                        <mat-icon class="example-tab-icon">photo_library</mat-icon>
+                        <mat-icon class="example-tab-icon" fontSet="material-icons">photo_library</mat-icon>
                         <span>Publications</span>
                     </ng-template>
                     <app-userposts #userposts></app-userposts>

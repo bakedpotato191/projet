@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -44,12 +42,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private MapstructMapper mapper;
     
-    @Autowired
-    @Qualifier("taskExecutor") 
-    private Executor existingThreadPool;  
-
 	@Override
-	public UserDto getUserData(String username){
+	@Async
+	public CompletableFuture<UserDto> getUserData(String username){
 		
 		var optional = userRepository.findByUsername(username);
 		
@@ -61,13 +56,14 @@ public class UserServiceImpl implements UserService {
 			result.setFollowed(isAnonymous() ? false : followerRepository.isFollowed(getAuthenticatedUser(), user));
 			result.setFollowerCount(user.getFollowers().size());
 			result.setFollowingCount(user.getFollowing().size());
-			return result;
+			return CompletableFuture.completedFuture(result);
         }
 		else {
 			throw new EntityNotFoundException(User.class, USERNAME, username);
 		}
 	}
 	
+
 	@Override
 	@Async
 	public void follow(String username) {
@@ -93,36 +89,40 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 	
+
 	@Override
-	public AvatarResponse setProfilePicture(String path) {
+	@Async
+	public CompletableFuture<AvatarResponse> setProfilePicture(String path) {
 		path = "http://localhost:8081/api/user/profile_picture/" + path;
 		userRepository.setProfilePicture(getAuthenticatedUser(), path);
-		return new AvatarResponse(true, path, HttpStatus.OK);
+		return CompletableFuture.completedFuture(new AvatarResponse(true, path, HttpStatus.OK));
 	}
 	
+
 	@Override
-	public AvatarResponse getProfilePicture() {
+	@Async
+	public CompletableFuture<AvatarResponse> getProfilePicture() {
 		var records = userRepository.getProfilePicture(getAuthenticatedUser());
 	    Object[] userDetails = records.get(0);
 	    var avatar = String.valueOf(userDetails[0]);
 	    var has_avatar = Boolean.valueOf(String.valueOf(userDetails[1]));
-		return new AvatarResponse(has_avatar, avatar, HttpStatus.OK);
+		return CompletableFuture.completedFuture(new AvatarResponse(has_avatar, avatar, HttpStatus.OK));
 	}
 	
 
 	@Override
-	public AvatarResponse resetProfilePicture() {
+	@Async
+	public CompletableFuture<AvatarResponse> resetProfilePicture() {
 		userRepository.resetProfilePicture(getAuthenticatedUser());
 		return getProfilePicture();
 	}
 
+
 	@Override
 	@Async
 	public CompletableFuture<List<UserDto>> getSubscriptions(String username, int pageNo, int pageSize) throws InterruptedException {
-		return CompletableFuture.supplyAsync(() -> {
-		
 		Pageable paging = PageRequest.of(pageNo, pageSize);
-		Slice<Follower> slicedResult = followerRepository.findAllToByFromUsername(username, paging);
+		var slicedResult = followerRepository.findAllToByFromUsername(username, paging);
 		
 		if (slicedResult.hasContent()) {
 			
@@ -136,16 +136,16 @@ public class UserServiceImpl implements UserService {
 
 				list.add(result);
 			}
-			return list;
+			return CompletableFuture.completedFuture(list);
 		}
 		else {
-			return new ArrayList<>();
+			return CompletableFuture.completedFuture(new ArrayList<>());
 		}
-		  }, existingThreadPool);
 	}
 	
 	@Override
-	public List<UserDto> getSubscribers(String username, int pageNo, int pageSize) {
+	@Async
+	public CompletableFuture<List<UserDto>> getSubscribers(String username, int pageNo, int pageSize) {
 		
 		Pageable paging = PageRequest.of(pageNo, pageSize);
 		Slice<Follower> slicedResult = followerRepository.findAllFromByToUsername(username, paging);
@@ -163,10 +163,10 @@ public class UserServiceImpl implements UserService {
 				list.add(result);
 			}
 			
-			return list;
+			return CompletableFuture.completedFuture(list);
 		}
 		else {
-			return new ArrayList<>();
+			return CompletableFuture.completedFuture(new ArrayList<>());
 		}
 	}
 	

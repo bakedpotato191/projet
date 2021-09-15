@@ -11,7 +11,7 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  login(formData: FormData): Observable<any> {
+  public async login(formData: FormData) {
     return this.http.post(this.AUTH_API + 'signin', formData);
   }
 

@@ -48,15 +48,17 @@ export class LoginComponent implements OnInit {
         });
     }
 
-    submit() {
+    async submit() {
         if (this.loginForm.invalid) {
             return;
         }
         this.isLoading = true;
-        this.authService.login(this.loginForm.value).subscribe(
-            (data) => {
-                this.tokenStorage.saveToken(data.accessToken);
-                this.tokenStorage.saveUser(data);
+        (await this.authService.login(this.loginForm.value))
+        .toPromise()
+        .then(
+            (response: any) => {
+                this.tokenStorage.saveToken(response.accessToken);
+                this.tokenStorage.saveUser(response);
 
                 this.isLoginFailed = false;
                 this.isLoggedIn = true;

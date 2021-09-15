@@ -70,15 +70,16 @@ export class UserPageComponent implements OnInit {
     public dialog: MatDialog
   ) {}
 
-  get_user_data(username: string): void {
-    this.userService.getUser(username).subscribe(
-      (data) => {
-        this.user = data;
+  async get_user_data(username: string): Promise<void> {
+    (await this.userService.getUser(username)).toPromise()
+    .then(
+      (response) => {
+        this.user = response;
       },
       (error) => {
         console.log(error);
       }
-    ).add(
+    ).finally(
       () => {
         this.isContent = true;
       }
@@ -164,21 +165,20 @@ export class UserPageComponent implements OnInit {
     if (this.avatarRef !== undefined) {
       this.avatarRef.close();
     }
-
     this.submit_avatar();
   }
 
-  submit_avatar() {
+  async submit_avatar() {
     var formData: any = new FormData();
     formData.append('avatar', this.fileData);
     this.isOverlayed = true;
-    setTimeout(() => {
-      this.userService
-        .setProfilePicture(formData)
-        .subscribe(
-          (data) => {
-            this.user.avatar = data.avatar;
-            this.user.has_avatar = data.has_avatar;
+      (await this.userService
+        .setProfilePicture(formData))
+        .toPromise()
+        .then(
+          (response: any) => {
+            this.user.avatar = response.avatar;
+            this.user.has_avatar = response.has_avatar;
           },
           (error) => {
             this.sharedService.showSnackbar(
@@ -188,10 +188,9 @@ export class UserPageComponent implements OnInit {
             );
           }
         )
-        .add(() => {
+        .finally(() => {
           this.isOverlayed = false;
         });
-    }, 1000);
   }
 
   open_subscriptions_dialog(): void {
@@ -214,42 +213,16 @@ export class UserPageComponent implements OnInit {
     });
   }
 
-  on_avatar_click(): void {
+  async on_avatar_click(): Promise<void> {
     if (!this.isMyPage) {
       return;
     }
 
     if (this.user.has_avatar) {
-      this.avatarRef = this.dialog.open(AvatarComponent, {
-        width: '400px',
-        panelClass: ['dialog-window-style'],
-        data: this.input,
-        autoFocus: false,
-      });
-      this.avatarRef.afterClosed().subscribe((result) => {
+      this.avatarRef = this.open_avatar_component();
+      this.avatarRef.afterClosed().subscribe(async (result) => {
         if (result === 'delete') {
-          this.isOverlayed = true;
-          setTimeout(() => {
-            this.userService
-              .deleteProfilePicture()
-              .subscribe(
-                (data) => {
-                  this.user.has_avatar = data.has_avatar;
-                  this.user.avatar = data.avatar;
-                },
-                (error) => {
-                  this.sharedService.showSnackbar(
-                    'La requete DELETE a échoué avec le code statut' +
-                      error.status,
-                    'Dismiss',
-                    7000
-                  );
-                }
-              )
-              .add(() => {
-                this.isOverlayed = false;
-              });
-          }, 1000);
+          this.delete_profile_picture();
         }
       });
     } else {
@@ -257,7 +230,40 @@ export class UserPageComponent implements OnInit {
     }
   }
 
-  scroll(elRef: ElementRef) {
+  async delete_profile_picture(): Promise<void>{
+    this.isOverlayed = true;
+    (await this.userService
+      .deleteProfilePicture())
+      .toPromise()
+      .then(
+        (response) => {
+          this.user.has_avatar = response.has_avatar;
+          this.user.avatar = response.avatar;
+        },
+        (error) => {
+          this.sharedService.showSnackbar(
+            'La requete DELETE a échoué avec le code statut' +
+              error.status,
+            'Dismiss',
+            7000
+          );
+        }
+      )
+      .finally(() => {
+        this.isOverlayed = false;
+      });
+  }
+
+  open_avatar_component() {
+    return this.dialog.open(AvatarComponent, {
+      width: '400px',
+      panelClass: ['dialog-window-style'],
+      data: this.input,
+      autoFocus: false,
+    })
+  }
+
+  scroll_till_publications(elRef: ElementRef) {
     elRef.nativeElement.scrollIntoView({behavior: 'smooth'});
   }
 }

@@ -11,12 +11,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -73,7 +75,8 @@ public class FileStorageServiceImpl implements FileStorageService {
 	}
 	
 	@Override
-	public AvatarResponse saveAvatar(MultipartFile file) throws IncorrectFileExtensionException, IOException {
+	@Async
+	public CompletableFuture<AvatarResponse> saveAvatar(MultipartFile file) throws IncorrectFileExtensionException, IOException {
 
 		String fileContentType = file.getContentType();
 

@@ -7,9 +7,12 @@
             (click)="open_post_page(post.id)">
             <img src="{{ post.photo }}" />
             <div class="overlay">
-                <div class="text">
+                <div class="text" fxLayout="row" fxLayoutAlign="space-evenly center">
                     <span>
-                        <mat-icon class="icon" aria-hidden="true">favorite</mat-icon>{{ post.countLike }}
+                        <mat-icon class="icon" aria-hidden="true" fontSet="material-icons">favorite</mat-icon>{{ post.countLike }}
+                    </span>
+                    <span>
+                        <mat-icon class="icon" aria-hidden="true" fontSet="material-icons">comments</mat-icon>{{ post.commentsCount }}
                     </span>
                 </div>
             </div>

@@ -14,7 +14,7 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  public getUser(username: string): Observable<User>{
+  public async getUser(username: string) {
     return this.http.get<User>(`${this.API}/info/${username}`);
   }
 
@@ -35,22 +35,22 @@ export class UserService {
   }
 
   public getProfilePicture(): Observable<any> {
-    return this.http.get(`${this.API}/profile_picture`);
+    return this.http.get<any>(`${this.API}/profile_picture`);
   }
 
-  public setProfilePicture(form: FormData): Observable<any>{
-    return this.http.post(this.API + '/profile_picture', form);
+  public async setProfilePicture(form: FormData) {
+    return this.http.post<any>(this.API + '/profile_picture', form);
   }
 
-  public deleteProfilePicture(): Observable<any> {
-    return this.http.delete(this.API + '/reset_profile_picture');
+  public async deleteProfilePicture() {
+    return this.http.delete<any>(this.API + '/reset_profile_picture');
   }
 
   public async getSubscriptions(username: string, page: number, size: number, sort: string) {
     return this.http.get<User[]>(`${this.API}/subscriptions/${username}?page=${page}&size=${size}&sort=${sort}`);
   }
 
-  public getSubscribers(username: string, page: number, size: number, sort: string): Observable<User[]> {
+   public async getSubscribers(username: string, page: number, size: number, sort: string) {
     return this.http.get<User[]>(`${this.API}/subscribers/${username}?page=${page}&size=${size}&sort=${sort}`);
   }
 
