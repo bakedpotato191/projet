@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -40,6 +43,10 @@ public class UserServiceImpl implements UserService {
     
     @Autowired
     private MapstructMapper mapper;
+    
+    @Autowired
+    @Qualifier("taskExecutor") 
+    private Executor existingThreadPool;  
 
 	@Override
 	public UserDto getUserData(String username){
@@ -108,10 +115,12 @@ public class UserServiceImpl implements UserService {
 		userRepository.resetProfilePicture(getAuthenticatedUser());
 		return getProfilePicture();
 	}
-	
+
 	@Override
 	@Async
 	public CompletableFuture<List<UserDto>> getSubscriptions(String username, int pageNo, int pageSize) throws InterruptedException {
+		return CompletableFuture.supplyAsync(() -> {
+		
 		Pageable paging = PageRequest.of(pageNo, pageSize);
 		Slice<Follower> slicedResult = followerRepository.findAllToByFromUsername(username, paging);
 		
@@ -127,16 +136,17 @@ public class UserServiceImpl implements UserService {
 
 				list.add(result);
 			}
-			
-			return CompletableFuture.completedFuture(list);
+			return list;
 		}
 		else {
-			return CompletableFuture.completedFuture(new ArrayList<>());
+			return new ArrayList<>();
 		}
+		  }, existingThreadPool);
 	}
 	
 	@Override
 	public List<UserDto> getSubscribers(String username, int pageNo, int pageSize) {
+		
 		Pageable paging = PageRequest.of(pageNo, pageSize);
 		Slice<Follower> slicedResult = followerRepository.findAllFromByToUsername(username, paging);
 		

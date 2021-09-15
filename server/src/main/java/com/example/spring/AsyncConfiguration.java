@@ -1,19 +1,31 @@
 package com.example.spring;
 
 import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.AsyncConfigurerSupport;
-import org.springframework.security.concurrent.DelegatingSecurityContextExecutorService;
+import org.springframework.scheduling.annotation.AsyncConfigurer;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 @Configuration
-public class AsyncConfiguration extends AsyncConfigurerSupport {
+@EnableAsync
+public class AsyncConfiguration implements AsyncConfigurer {
 
 	@Override
-	  public Executor getAsyncExecutor() {
-	    return new DelegatingSecurityContextExecutorService(Executors.newFixedThreadPool(5));
-	  }
+	@Bean("taskExecutor")
+	public Executor getAsyncExecutor() {
+		return threadPoolTaskExecutor();
+	}
 
-
+	private ThreadPoolTaskExecutor threadPoolTaskExecutor() {
+		var executor = new ThreadPoolTaskExecutor();
+		executor.setCorePoolSize(10);
+		executor.setMaxPoolSize(100);
+		executor.setQueueCapacity(50);
+		executor.setThreadNamePrefix("async-");
+		executor.setTaskDecorator(new SecurityContextCopyingDecorator());
+		executor.initialize();
+		return executor;
+	}
 }
