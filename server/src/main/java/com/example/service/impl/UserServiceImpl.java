@@ -3,12 +3,14 @@ package com.example.service.impl;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -49,14 +51,7 @@ public class UserServiceImpl implements UserService {
 			var user = optional.get();
 			var result = mapper.userToUserDto(user);
 			result.setPostCount(user.getPosts().size());
-			
-			if (isAnonymous()) {
-				result.setFollowed(false);
-			}
-			else {
-				result.setFollowed(followerRepository.isFollowed(getUserFromSession(), user));
-			}
-			
+			result.setFollowed(isAnonymous() ? false : followerRepository.isFollowed(getAuthenticatedUser(), user));
 			result.setFollowerCount(user.getFollowers().size());
 			result.setFollowingCount(user.getFollowing().size());
 			return result;
@@ -67,14 +62,13 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
+	@Async
 	public void follow(String username) {
 		
 		var user = userRepository.findByUsername(username);
 		
 		if (user.isPresent()) {
-			var currentUser = getUserFromSession();
-			var following = user.get();
-			followerRepository.save(new Follower(currentUser, following));
+			followerRepository.save(new Follower(getAuthenticatedUser(), user.get()));
 		}
 		else {
 			throw new EntityNotFoundException(User.class, USERNAME, username);
@@ -82,9 +76,10 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
+	@Async
 	public void unfollow(String username) {
 		
-		int row = followerRepository.unfollow(getUserFromSession(), username);
+		int row = followerRepository.unfollow(getAuthenticatedUser(), username);
 		
 		if (row == 0) {
 			throw new EntityNotFoundException(User.class, USERNAME, username);
@@ -94,13 +89,13 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public AvatarResponse setProfilePicture(String path) {
 		path = "http://localhost:8081/api/user/profile_picture/" + path;
-		userRepository.setProfilePicture(getUserFromSession(), path);
+		userRepository.setProfilePicture(getAuthenticatedUser(), path);
 		return new AvatarResponse(true, path, HttpStatus.OK);
 	}
 	
 	@Override
 	public AvatarResponse getProfilePicture() {
-		var records = userRepository.getProfilePicture(getUserFromSession());
+		var records = userRepository.getProfilePicture(getAuthenticatedUser());
 	    Object[] userDetails = records.get(0);
 	    var avatar = String.valueOf(userDetails[0]);
 	    var has_avatar = Boolean.valueOf(String.valueOf(userDetails[1]));
@@ -110,12 +105,13 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public AvatarResponse resetProfilePicture() {
-		userRepository.resetProfilePicture(getUserFromSession());
+		userRepository.resetProfilePicture(getAuthenticatedUser());
 		return getProfilePicture();
 	}
 	
 	@Override
-	public List<UserDto> getSubscriptions(String username, int pageNo, int pageSize) {
+	@Async
+	public CompletableFuture<List<UserDto>> getSubscriptions(String username, int pageNo, int pageSize) throws InterruptedException {
 		Pageable paging = PageRequest.of(pageNo, pageSize);
 		Slice<Follower> slicedResult = followerRepository.findAllToByFromUsername(username, paging);
 		
@@ -127,21 +123,15 @@ public class UserServiceImpl implements UserService {
 			while(it.hasNext()) {
 				Follower f = it.next();
 				var result = mapper.userToUserDto(f.getTo());
-			
-				if (isAnonymous()) {
-					result.setFollowed(false);
-				}
-				else {
-					result.setFollowed(followerRepository.isFollowed(getUserFromSession(), f.getTo()));
-				}
-	
+				result.setFollowed(isAnonymous() ? false : followerRepository.isFollowed(getAuthenticatedUser(), f.getTo()));
+
 				list.add(result);
 			}
 			
-			return list;
+			return CompletableFuture.completedFuture(list);
 		}
 		else {
-			return new ArrayList<>();
+			return CompletableFuture.completedFuture(new ArrayList<>());
 		}
 	}
 	
@@ -158,14 +148,8 @@ public class UserServiceImpl implements UserService {
 			while(it.hasNext()) {
 				Follower f = it.next();
 				var result = mapper.userToUserDto(f.getFrom());
-				
-				if (isAnonymous()) {
-					result.setFollowed(false);
-				}
-				else {
-					result.setFollowed(followerRepository.isFollowed(getUserFromSession(), f.getFrom()));
-				}
-				
+				result.setFollowed(isAnonymous() ? false : followerRepository.isFollowed(getAuthenticatedUser(), f.getFrom()));
+
 				list.add(result);
 			}
 			
@@ -177,7 +161,7 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public User getUserFromSession() {
+	public User getAuthenticatedUser() {
 		return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	}
 	

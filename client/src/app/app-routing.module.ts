@@ -9,14 +9,15 @@ import { RestoreComponent } from './components/restore/restore.component';
 import { LoggedInAuthGuard } from './guards/loggedinauthguard.guard';
 import { HomepageComponent } from './components/homepage/homepage.component';
 import { ExploreComponent } from './components/explore/explore.component';
+import { AuthGuard } from './guards/AuthGuard.guard';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', component:HomepageComponent, canActivate:[LoggedInAuthGuard] },
   { path: 'signup', component: RegisterComponent, canActivate:[LoggedInAuthGuard] },
   { path: 'login', component: LoginComponent, canActivate:[LoggedInAuthGuard] },
-  { path: 'explore', component: ExploreComponent },
-  { path: 'password_reset', redirectTo: 'password_reset/', pathMatch: 'full'},
-  { path: 'password_reset/:token', component: RestoreComponent },
+  { path: 'explore', component: ExploreComponent, canActivate: [AuthGuard] },
+  { path: 'password_reset', redirectTo: 'password_reset/', pathMatch: 'full' },
+  { path: 'password_reset/:token', component: RestoreComponent, canActivate:[LoggedInAuthGuard] },
   { path: 'profile', redirectTo:'/login', pathMatch:'full' },
   { path: 'profile/:username', component: UserPageComponent,
   children: [

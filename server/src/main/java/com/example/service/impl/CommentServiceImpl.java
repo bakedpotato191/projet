@@ -64,7 +64,7 @@ public class CommentServiceImpl implements CommentService {
 		if (post.isPresent()) {
 			
 			var comm = new Comment();
-			comm.setUtilisateur(userService.getUserFromSession());
+			comm.setUtilisateur(userService.getAuthenticatedUser());
 			comm.setText(comment.getComment());
 			comm.setDate(new Timestamp(System.currentTimeMillis()));
 			comm.setPost(post.get());
@@ -78,7 +78,7 @@ public class CommentServiceImpl implements CommentService {
 	
 	@Override
 	public void deleteComment(Long id) {
-		var username = userService.getUserFromSession().getUsername();	
+		var username = userService.getAuthenticatedUser().getUsername();	
 				if (commentRepository.delete(id, username) == 0) {
 				throw new HttpUnauthorizedException("The comment does not exist or you do not have the permission to access it");
 		}

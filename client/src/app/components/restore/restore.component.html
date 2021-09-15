@@ -5,7 +5,7 @@
             <mat-card-title *ngIf="isRequest" class="card-title">Modifier votre mot de passe</mat-card-title>
         </mat-card-header>
         <mat-card-content class="card-content">
-            <form class="form" name="restoreForm" *ngIf="!isUpdated && !isRequest && restoreForm" [formGroup]="restoreForm"
+            <form class="form" name="restoreForm" *ngIf="!isUpdated && !isRequest && restoreForm && !isSent" [formGroup]="restoreForm"
                 (ngSubmit)="submit_email()">
                 <mat-form-field class="form-field" color="accent" appearance="outline">
                     <mat-label>Adresse courriel</mat-label>

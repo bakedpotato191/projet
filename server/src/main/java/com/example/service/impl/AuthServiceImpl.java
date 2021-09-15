@@ -207,7 +207,7 @@ public class AuthServiceImpl implements AuthService {
 	}
 	
 	@Override
-	public Optional<PasswordResetToken> validatePasswordResetToken(String token) {
+	public PasswordResetToken validatePasswordResetToken(String token) {
 		var verificationToken = passwordResetRepository.findByToken(token);
         
 		if (verificationToken.isEmpty()) {
@@ -222,12 +222,12 @@ public class AuthServiceImpl implements AuthService {
             passwordResetRepository.delete(tk);
             throw new HttpUnauthorizedException("token is expired");
         }
-        return verificationToken;
+        return tk;
 	}
 	
 	@Override
 	public void updatePassword(NewPasswordDto dto) {
-		var token = validatePasswordResetToken(dto.getToken()).get();
+		var token = validatePasswordResetToken(dto.getToken());
 	
 		var user = token.getUser();
 		user.setPassword(passwordEncoder.encode(dto.getPasswordRepeat()));

@@ -7,7 +7,7 @@ import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { LoginComponent } from '../login/login.component';
 import { Commentaire } from 'src/app/interfaces/commentaire';
-import { Post } from 'src/app/interfaces/post';
+import { Publication } from 'src/app/interfaces/publication';
 import { ConfirmationDialogComponent } from '../shared/dialogs/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
@@ -18,7 +18,7 @@ import { ConfirmationDialogComponent } from '../shared/dialogs/confirmation-dial
 export class PostComponent implements OnInit {
 
   id!: number;
-  post!: Post;
+  post!: Publication;
   comment!: Commentaire;
   isLoading = false;
   isMyPost!: boolean;

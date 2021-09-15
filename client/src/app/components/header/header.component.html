@@ -7,11 +7,16 @@
             </a>
         </div>
         <nav class="flex">
-            <div>
+            <div>   
                 <div *ngIf="isLoggedIn; then online else anon"></div>
                 <ng-template #online>
                     <ul *ngIf="isLoggedIn" fxLayout="row">
-                        <li class="flex">
+                        <li>
+                            <button id="feed" (click)="open_feed_page()" mat-menu-item>
+                                <mat-icon aria-hidden="true" fontSet="material-icons" aria-label="my account icon">home</mat-icon>
+                            </button>
+                        </li>
+                        <li id="account">
                             <div id="border">
                                 <img mat-button [src]="avatar" [matMenuTriggerFor]="menu" matTooltip="Mon Profil" [matTooltipPosition]="position.value"
                                 matTooltipHideDelay="100"/>

@@ -32,7 +32,7 @@ export class RestoreComponent implements OnInit {
     ngOnInit(): void {
         this.uuid = this.route.snapshot.paramMap.get('token');
 
-        if (this.uuid !== null) {
+        if (this.uuid !== null && this.uuid !== '') {
             const json = { token: this.uuid };
             this.authService.verifyToken(json).subscribe(
                 (_data) => {
@@ -43,8 +43,8 @@ export class RestoreComponent implements OnInit {
                     this.isInvalid = true;
                     this.init_login_form();
                     this.sharedService.showSnackbar(
-                        'It looks like you clicked on an invalid password reset link. Please try again.',
-                        'Dismiss',
+                        'Il semble que vous ayez cliqué sur un lien de réinitialisation de mot de passe invalide. Veuillez réessayer.',
+                        'Fermer',
                         0
                     );
                 }
@@ -87,12 +87,13 @@ export class RestoreComponent implements OnInit {
         this.authService.restore(this.restoreForm.value).subscribe(
             (_data) => {
                 this.isSent = true;
-                this.isLoading = false;
             },
             (error) => {
                 this.sharedService.showSnackbar(error.error, 'Dismiss', 0);
             }
-        );
+        ).add(() => {
+            this.isLoading = false;
+        });
     }
 
     submit_new_password() {

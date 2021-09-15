@@ -52,7 +52,8 @@ public class RegistrationListener {
         var recipientAddress = user.getEmail();
         var subject = "Registration Confirmation";
         var confirmationUrl = url + "/confirmation/" + token;
-        var message = messages.getMessage("message.regSuccLink", null, "Votre compte a été enregistré avec succès. Pour confirmer votre email, veuillez cliquer sur le lien ci-dessous.", event.getLocale());
+        var message = messages.getMessage("message.regSuccLink", null, "Votre compte a été enregistré avec succès. "
+        		+ "Pour confirmer votre email, veuillez cliquer sur le lien ci-dessous.", event.getLocale());
         var email = new SimpleMailMessage();
         
         email.setTo(recipientAddress);

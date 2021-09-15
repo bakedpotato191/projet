@@ -21,6 +21,12 @@ public interface PublicationRepository extends JpaRepository<Publication, Long> 
 	@Query("SELECT p FROM Publication p JOIN FETCH p.comments WHERE p.id = (:id)")
     Publication findByIdAndFetchCommentsEagerly(@Param("id") Long id);
 	
+	@Query(value = "SELECT * from post p "
+			+ "INNER JOIN follower f on p.user_id=f.to_id "
+			+ "INNER JOIN utilisateur u on f.from_id=u.id "
+			+ "WHERE u.username=:username", nativeQuery=true)
+    Slice<Publication> findNewPublications(@Param("username") String username, Pageable page);
+	
 	Long countByUtilisateur(User user);
 	
 	@Query("SELECT COUNT(p)>0 from Publication p WHERE p.photo like (%:name)")

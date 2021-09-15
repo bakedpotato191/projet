@@ -63,7 +63,7 @@ nav img {
 }
 
 button .mat-icon {
-    margin-right: 5px;
+    margin-right: 0;
 }
 
 img {
@@ -92,6 +92,16 @@ img {
     -webkit-box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.38); 
     box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.38);
     background-color: rgba(36,36,36,255);
+}
+
+#account {
+    align-self: center;
+}
+
+#profile .mat-icon, 
+#favorites .mat-icon, 
+#settings .mat-icon {
+    margin-right: 5px!important;
 }
 
 @media only screen and (max-width: 600px) {

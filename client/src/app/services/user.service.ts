@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Post } from '../interfaces/post';
+import { Publication } from '../interfaces/publication';
 import { User } from '../interfaces/user';
 
 
@@ -18,20 +18,20 @@ export class UserService {
     return this.http.get<User>(`${this.API}/info/${username}`);
   }
 
-  public follow(username: string): Observable<any>{
+  public async follow(username: string) {
     return this.http.post(this.API + '/follow', username);
   }
 
-  public unfollow(username: string): Observable<any>{
+  public async unfollow(username: string) {
     return this.http.post(this.API + '/unfollow', username);
   }
 
-  public getFavoritePosts(page: number, size:number, sort: string): Observable<Post[]> {
-    return this.http.get<Post[]>(`${this.API}/favorites?page=${page}&size=${size}&sort=${sort}`);
+  public getFavoritePosts(page: number, size:number, sort: string): Observable<Publication[]> {
+    return this.http.get<Publication[]>(`${this.API}/favorites?page=${page}&size=${size}&sort=${sort}`);
   }
 
-  public getUserPosts(username: string, page: number, size: number, sort: string): Observable<Post[]>{
-    return this.http.get<Post[]>(`${this.API}/posts/${username}?page=${page}&size=${size}&sort=${sort}`);
+  public getUserPosts(username: string, page: number, size: number, sort: string): Observable<Publication[]>{
+    return this.http.get<Publication[]>(`${this.API}/posts/${username}?page=${page}&size=${size}&sort=${sort}`);
   }
 
   public getProfilePicture(): Observable<any> {
@@ -46,11 +46,15 @@ export class UserService {
     return this.http.delete(this.API + '/reset_profile_picture');
   }
 
-  public getSubscriptions(username: string, page: number, size: number, sort: string): Observable<User[]> {
+  public async getSubscriptions(username: string, page: number, size: number, sort: string) {
     return this.http.get<User[]>(`${this.API}/subscriptions/${username}?page=${page}&size=${size}&sort=${sort}`);
   }
 
   public getSubscribers(username: string, page: number, size: number, sort: string): Observable<User[]> {
     return this.http.get<User[]>(`${this.API}/subscribers/${username}?page=${page}&size=${size}&sort=${sort}`);
+  }
+
+  public getNewPublications(page: number, size: number): Observable<Publication[]>{
+    return this.http.get<Publication[]>(`${this.API}/new?page=${page}&size=${size}`);
   }
 }

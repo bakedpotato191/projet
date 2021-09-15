@@ -21,4 +21,6 @@ public interface PublicationService {
 
 	List<PublicationDto> getUserPublications(String username, Integer pageNo, Integer pageSize, String sortBy);
 
+	List<PublicationDto> getNewPublications(Integer pageNo, Integer pageSize);
+
 }

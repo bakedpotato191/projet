@@ -7,7 +7,7 @@
             <mat-card-header class="card-header">
                 <mat-card-title class="card-title">Créez votre compte</mat-card-title>
             </mat-card-header>
-    
+
             <form class="form" name="form" [formGroup]="registrationForm" (ngSubmit)="submit()">
                 <mat-card-content class="card-content">
                     <mat-form-field class="form-field" color="accent" appearance="outline">
@@ -16,7 +16,7 @@
                             maxlength="16" placeholder="Doe" required />
                         <mat-error>Le nom doit comporter au moins 2 caractères</mat-error>
                     </mat-form-field>
-    
+
                     <mat-form-field class="form-field" color="accent" appearance="outline">
                         <mat-label>Prenom</mat-label>
                         <input matInput class="form-control" formControlName="prenom" type="text" name="prenom" required
@@ -25,23 +25,23 @@
                             Le prénom doit comporter au moins 2 caractères
                         </mat-error>
                     </mat-form-field>
-    
+
                     <mat-form-field class="form-field" color="accent" appearance="outline">
                         <mat-label>Nom d'utilisateur</mat-label>
                         <input matInput class="form-control" formControlName="username" type="text" name="username"
-                            minLength="4" maxlength="20" placeholder="johndoe" required/>
+                            minLength="4" maxlength="20" placeholder="johndoe" required />
                         <mat-error>
                             Le nom d'utilisateur doit comporter de 4 à 20 caractères au plus
                         </mat-error>
                     </mat-form-field>
-    
+
                     <mat-form-field class="form-field" color="accent" appearance="outline">
                         <mat-label>Adresse courriel</mat-label>
                         <input matInput class="form-control" formControlName="email" type="email" name="email" required
                             maxlength="128" placeholder="johndoe@example.org" />
                         <mat-error> L'adresse email doit être valide </mat-error>
                     </mat-form-field>
-    
+
                     <mat-form-field class="form-field" color="accent" appearance="outline">
                         <mat-label>Mot de passe</mat-label>
                         <input matInput class="form-control" formControlName="password" name="password" required
@@ -69,9 +69,10 @@
 
         <ng-template #elseBlock>
             <mat-card-content class="alert alert-success">
-                Vous allez maintenant recevoir un E-mail de confirmation. Cliquez sur le lien dans l'email pour activer votre compte.
+                Vous allez maintenant recevoir un E-mail de confirmation. Cliquez sur le lien dans l'email pour activer
+                votre compte.
             </mat-card-content>
         </ng-template>
-        
+
     </mat-card>
 </div>

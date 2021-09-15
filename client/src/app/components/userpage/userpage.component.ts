@@ -13,7 +13,7 @@ import { FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { UserpostsComponent } from '../userposts/userposts.component';
 import { User } from 'src/app/interfaces/user';
-import { Post } from 'src/app/interfaces/post';
+import { Publication} from 'src/app/interfaces/publication';
 import { AvatarComponent } from '../shared/dialogs/avatar/avatar.component';
 import { FollowingComponent } from '../shared/dialogs/following/following.component';
 import { FollowerComponent } from '../shared/dialogs/follower/follower.component';
@@ -31,7 +31,7 @@ export class UserPageComponent implements OnInit {
   username!: string;
   isContent: boolean = false;
   user!: User;
-  posts!: Post[];
+  posts!: Publication[];
 
   uploadRef!: MatDialogRef<UploadComponent>;
   loginRef!: MatDialogRef<LoginComponent>;
@@ -99,48 +99,46 @@ export class UserPageComponent implements OnInit {
     });
   }
 
-  follow() {
+  async follow() {
     if (this.tokenService.getToken() == null) {
       this.dialog.open(LoginComponent);
       return;
     }
     this.isBtnOverlayed = true;
-    return setTimeout(() => {
-      this.userService.follow(this.user.username).subscribe(
+      (await this.userService.follow(this.user.username))
+      .toPromise()
+      .then(
         (_data) => {
           this.user.followed = true;
         },
         (error) => {
           console.log(error);
         }
-      ).add(
-        () => {
+      ).finally(() => {
           this.isBtnOverlayed = false;
         }
       );
-    }, 1000);
   }
 
-  unfollow() {
+  async unfollow() {
     if (this.tokenService.getToken() == null) {
       this.dialog.open(LoginComponent);
       return;
     }
     this.isBtnOverlayed = true;
-    return setTimeout(() => {
-      this.userService.unfollow(this.user.username).subscribe(
-        (_data) => {
+      (await this.userService.unfollow(this.user.username))
+      .toPromise()
+      .then(
+        (_response) => {
           this.user.followed = false;
         },
         (error) => {
           console.log(error);
         }
-      ).add(
-        () => {
+      ).finally(() => {
           this.isBtnOverlayed = false;
         }
       );
-    }, 1000);
   }
 
   on_tab_change(event: MatTabChangeEvent): void {

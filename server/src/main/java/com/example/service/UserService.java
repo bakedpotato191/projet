@@ -1,6 +1,7 @@
 package com.example.service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import com.example.rest.model.User;
 import com.example.web.dto.response.AvatarResponse;
@@ -16,7 +17,7 @@ public interface UserService {
 
 	AvatarResponse setProfilePicture(String path);
 	
-	List<UserDto> getSubscriptions(String username, int pageNo, int pageSize);
+	CompletableFuture<List<UserDto>> getSubscriptions(String username, int pageNo, int pageSize) throws InterruptedException;
 
 	AvatarResponse resetProfilePicture();
 
@@ -24,7 +25,7 @@ public interface UserService {
 
 	List<UserDto> getSubscribers(String username, int pageNo, int pageSize);
 
-	User getUserFromSession();
-
 	boolean isAnonymous();
+
+	User getAuthenticatedUser();
 }

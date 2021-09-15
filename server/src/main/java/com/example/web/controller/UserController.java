@@ -2,6 +2,7 @@ package com.example.web.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import javax.validation.Valid;
 
@@ -44,12 +45,15 @@ public class UserController {
 	
 	@Autowired
 	private FileStorageService storageService;
+	
+	@Autowired
+	private PublicationService publicationService;
 
 	@GetMapping(value= "/info/{username}")
     public UserDto getUser(@PathVariable("username") String username) {
 		return userService.getUserData(username);
     }
-	
+
 	@PostMapping(value= "/follow")
     public ResponseEntity<HttpStatus> follow(@RequestBody @Valid final String username) {
 		userService.follow(username);
@@ -70,6 +74,11 @@ public class UserController {
 		return postService.getFavorites(page, size, sort);
 	}
 	
+	@GetMapping(value = "/new")
+	public List<PublicationDto> getNewPublications(@RequestParam Integer page, @RequestParam Integer size) {
+		return publicationService.getNewPublications(page, size);
+	}
+	
 	@GetMapping(value = "/posts/{username}")
 	public List<PublicationDto> getPosts( @PathVariable("username") String username,
 												@RequestParam Integer page, 
@@ -79,9 +88,9 @@ public class UserController {
 	}
 	
 	@GetMapping(value = "/subscriptions/{username}")
-	public List<UserDto> getSubscriptions( @PathVariable("username") String username,
+	public CompletableFuture<List<UserDto>> getSubscriptions( @PathVariable("username") String username,
 												@RequestParam Integer page, 
-									            @RequestParam Integer size) {
+									            @RequestParam Integer size) throws InterruptedException {
 		return userService.getSubscriptions(username, page, size);
 	}
 	

@@ -2,7 +2,7 @@ import { Commentaire } from "./commentaire";
 import { User } from "./user";
 
 
-export interface Post {
+export interface Publication {
     id: number;
     photo: string;
     description: string;
@@ -11,4 +11,5 @@ export interface Post {
     comments: Commentaire[];
     liked: boolean;
     countLike: number;
+    commentsCount: number;
 }

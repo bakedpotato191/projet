@@ -1,10 +1,10 @@
-import { Post } from "./post";
+import { Publication } from "./publication";
 
 export interface User {
     nom: string;
     prenom: string;
     username: string;
-    posts: Post[];
+    posts: Publication[];
     avatar: string;
     has_avatar: boolean;
     postCount: number;

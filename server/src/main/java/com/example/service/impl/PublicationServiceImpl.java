@@ -66,13 +66,36 @@ public class PublicationServiceImpl implements PublicationService {
 		}
 
 	}
+	
+	@Override
+	public List<PublicationDto> getNewPublications(Integer pageNo, Integer pageSize) {
+		
+		Pageable paging = PageRequest.of(pageNo, pageSize);
+		Slice<Publication> slicedResult = publicationRepository.findNewPublications(userService.getAuthenticatedUser().getUsername(), paging);
+		
+		if (slicedResult.hasContent()) {
+			List<PublicationDto> list = new ArrayList<>();
+			Iterator<Publication> it = slicedResult.iterator();
+			
+			while(it.hasNext()) {
+				Publication p = it.next();
+				var result = mapper.pubToPubDto(p);
+				result.setLiked(likeRepository.isLiked(userService.getAuthenticatedUser(), p));
+				result.setCountLike(p.getLikes().size());
+				result.setCommentsCount(p.getComments().size());
+				list.add(result);
+			}
+			return list;
+		}
+		else {
+			return new ArrayList<>();
+		}
+	}
 
 	@Override
 	public void deletePublication(Long id) {
 		
-		var user = userService.getUserFromSession();
-		
-		if (publicationRepository.deleteByIdAndUtilisateur(id, user) == 0) {
+		if (publicationRepository.deleteByIdAndUtilisateur(id, userService.getAuthenticatedUser()) == 0) {
 			throw new HttpUnauthorizedException("La ressource n'existe pas ou vous n'avez pas la permission de la modifier");
 		}	
 	}
@@ -83,7 +106,7 @@ public class PublicationServiceImpl implements PublicationService {
 		post.setPhoto("http://localhost:8081/api/publication/view/" + generatedName);
 		post.setDate(new Timestamp(System.currentTimeMillis()));
 		post.setDescription(description);
-		post.setUtilisateur(userService.getUserFromSession());
+		post.setUtilisateur(userService.getAuthenticatedUser());
 		return publicationRepository.save(post);
 	}
 	
@@ -94,14 +117,7 @@ public class PublicationServiceImpl implements PublicationService {
 		if (optional.isPresent()) {
 			var publication = optional.get();
 			var result = mapper.pubToPubDto(publication);
-
-			if (userService.isAnonymous()) {
-				result.setLiked(false);
-			}
-			else {
-				result.setLiked(likeRepository.isLiked(userService.getUserFromSession(), publication));
-			}
-			
+			result.setLiked(userService.isAnonymous() ? false : likeRepository.isLiked(userService.getAuthenticatedUser(), publication));
 			result.setCountLike(publication.getLikes().size());
 			result.setCommentsCount(publication.getComments().size());
 			
@@ -120,14 +136,14 @@ public class PublicationServiceImpl implements PublicationService {
 		post.setId(id);		
 		var favori = new Favori();
 		favori.setPost(post);
-		favori.setUtilisateur(userService.getUserFromSession());
+		favori.setUtilisateur(userService.getAuthenticatedUser());
 		likeRepository.save(favori);
 	}
 
 	@Async
 	@Override
 	public void dislike(Long id) {
-			var currentUser = userService.getUserFromSession();
+			var currentUser = userService.getAuthenticatedUser();
 			likeRepository.dislike(currentUser, id);
 	}
 	
@@ -135,7 +151,7 @@ public class PublicationServiceImpl implements PublicationService {
 	public List<PublicationDto> getFavorites(Integer pageNo, Integer pageSize, String sortBy) {
 		
 		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
-		Slice<Favori> slicedResult = likeRepository.findAllByUtilisateur(userService.getUserFromSession(), paging);
+		Slice<Favori> slicedResult = likeRepository.findAllByUtilisateur(userService.getAuthenticatedUser(), paging);
 		
 		if (slicedResult.hasContent()) {
 		

@@ -39,7 +39,7 @@ public interface AuthService {
 
 	void invalidatePasswordResetTokensForUser(User user);
 
-	Optional<PasswordResetToken> validatePasswordResetToken(String token);
+	PasswordResetToken validatePasswordResetToken(String token);
 
 	User getUserFromVerificationToken(String verificationToken);
 

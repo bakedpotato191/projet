@@ -3,9 +3,9 @@
         <h1 mat-dialog-title id="title">Abonnements</h1>
     </div>
 
-    <div *ngIf="followings.length>0; then card else elseBlock"></div>
-    <ng-template #card>
-        <div mat-dialog-content id="content">
+        <div mat-dialog-content id="content" *ngIf="isContent">
+            <div *ngIf="followings.length>0; then card else elseBlock"></div>
+            <ng-template #card>
             <ul id="subs">
                 <li *ngFor="let following of followings; let i=index">
                     <mat-card id="card">
@@ -25,11 +25,12 @@
                     </mat-card>
                 </li>
             </ul>
+        </ng-template>
         </div>
-    </ng-template>
+
     <mat-spinner *ngIf="isLoading" id="spinner" color="accent" diameter="50"></mat-spinner>
     <ng-template #elseBlock>
-        <span class="notfound">Vous n'avez encore souscrit à personne</span>
+        <span class="notfound">Vous n'avez abonné à personne</span>
     </ng-template>
 
 
