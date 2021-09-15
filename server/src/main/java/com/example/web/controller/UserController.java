@@ -56,32 +56,29 @@ public class UserController {
     }
 
 	@PostMapping(value= "/follow")
-    public ResponseEntity<HttpStatus> follow(@RequestBody @Valid final String username) {
-		userService.follow(username);
-		return new ResponseEntity<>(HttpStatus.OK);
-		
+    public void follow(@RequestBody @Valid final String username) {
+		userService.follow(username);	
     }
 	
 	@PostMapping(value= "/unfollow")
-    public ResponseEntity<HttpStatus> unfollow(@RequestBody @Valid final String username) {
+    public void unfollow(@RequestBody @Valid final String username) {
 		userService.unfollow(username);
-		return new ResponseEntity<>(HttpStatus.OK);
     }
 	
 	@GetMapping(value = "/favorites")
-	public List<PublicationDto> getFavorites(	@RequestParam Integer page, 
+	public CompletableFuture<List<PublicationDto>> getFavorites(	@RequestParam Integer page, 
 						            @RequestParam Integer size,
 						            @RequestParam String sort) {
 		return postService.getFavorites(page, size, sort);
 	}
 	
 	@GetMapping(value = "/new")
-	public List<PublicationDto> getNewPublications(@RequestParam Integer page, @RequestParam Integer size) {
+	public  CompletableFuture<List<PublicationDto>> getNewPublications(@RequestParam Integer page, @RequestParam Integer size) {
 		return publicationService.getNewPublications(page, size);
 	}
 	
 	@GetMapping(value = "/posts/{username}")
-	public List<PublicationDto> getPosts( @PathVariable("username") String username,
+	public CompletableFuture<List<PublicationDto>> getPosts( @PathVariable("username") String username,
 												@RequestParam Integer page, 
 									            @RequestParam Integer size,
 									            @RequestParam String sort) {

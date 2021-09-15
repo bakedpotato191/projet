@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { lastValueFrom } from 'rxjs';
 import { Publication } from 'src/app/interfaces/publication';
 import { PostService } from 'src/app/services/post.service';
 import { UserService } from 'src/app/services/user.service';
@@ -33,12 +34,13 @@ export class ExploreComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.get_new_publications();
+  async ngOnInit(): Promise<void> {
+    await this.get_new_publications();
   }
 
-  get_new_publications ():void {
-    this.userService.getNewPublications(this.page, this.size).subscribe(
+  async get_new_publications ():Promise<void> {
+    lastValueFrom(await this.userService.getNewPublications(this.page, this.size))
+    .then(
       (data) => {
         if (data.length !== 0) {
           this.posts = this.posts.concat(data);
@@ -60,16 +62,30 @@ export class ExploreComponent implements OnInit {
     );
   }
 
-  like(post: Publication): void {
-    post.liked = true;
-    post.countLike += 1;
-    this.postService.likePost(post.id).subscribe();
+  async like(post: Publication): Promise<void> {
+
+    lastValueFrom(await this.postService.likePost(post.id)).then(
+      (_data) => {
+        post.liked = true;
+        post.countLike += 1;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
-  dislike(post: Publication): void {
-    post.liked = false;
-    post.countLike -= 1;
-    this.postService.dislikePost(post.id).subscribe();
+  async dislike(post: Publication): Promise<void> {
+
+    lastValueFrom(await this.postService.dislikePost(post.id)).then(
+      (_data) => {
+        post.liked = false;
+        post.countLike -= 1;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 
   open_post_page(id: number) {

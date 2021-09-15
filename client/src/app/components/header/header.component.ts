@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { lastValueFrom } from 'rxjs';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -23,15 +24,16 @@ export class HeaderComponent implements OnInit {
     private readonly userService: UserService
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.isLoggedIn = !!this.tokenStorageService.getToken();
 
     if (this.isLoggedIn) {
       const user = this.tokenStorageService.getUser();
       this.username = user.username;
-      this.userService.getProfilePicture().subscribe(
-        (data) => {
-          this.avatar = data.avatar;
+      lastValueFrom(await this.userService.getProfilePicture())
+      .then(
+        (response) => {
+          this.avatar = response.avatar;
         },
         (error) => {
           console.log(error);

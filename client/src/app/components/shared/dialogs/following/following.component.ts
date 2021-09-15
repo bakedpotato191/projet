@@ -4,6 +4,7 @@ import {
   MatDialogRef,
   MAT_DIALOG_DATA,
 } from '@angular/material/dialog';
+import { firstValueFrom, lastValueFrom } from 'rxjs';
 import { LoginComponent } from 'src/app/components/login/login.component';
 import { User } from 'src/app/interfaces/user';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
@@ -47,8 +48,7 @@ export class FollowingComponent implements OnInit {
 
   async get_subscriptions(): Promise<void> {
     this.isLoading = true;
-    (await this.userService.getSubscriptions(this.username, this.page, this.size, this.sort))
-      .toPromise()
+    firstValueFrom(await this.userService.getSubscriptions(this.username, this.page, this.size, this.sort))
       .then(
         (response) => {
           this.followings = this.followings.concat(response);
@@ -68,9 +68,8 @@ export class FollowingComponent implements OnInit {
       return;
     }
     this.renderer.addClass(e.currentTarget, 'button--loading');
-      (await this.userService
+      lastValueFrom(await this.userService
         .follow(following.username))
-        .toPromise()
         .then(
           (_response) => {
             following.followed = true;
@@ -90,8 +89,7 @@ export class FollowingComponent implements OnInit {
       return;
     }
     this.renderer.addClass(e.currentTarget, 'button--loading');
-      (await this.userService.unfollow(following.username))
-        .toPromise()
+    lastValueFrom(await this.userService.unfollow(following.username))
         .then(
           (_response) => {
             following.followed = false;

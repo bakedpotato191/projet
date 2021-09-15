@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { lastValueFrom } from 'rxjs';
 import { Publication } from 'src/app/interfaces/publication';
 
 import { UserService } from 'src/app/services/user.service';
@@ -35,22 +36,26 @@ export class FavoritesComponent implements OnInit {
         this.router.navigate(['p', id]);
     }
 
-    get_favorites(): void {
-        this.userService
-            .getFavoritePosts(this.page, this.size, this.sort)
-            .subscribe((data) => {
-                if (data.length) {
-                    this.favorites = this.favorites.concat(data);
+    async get_favorites(): Promise<void> {
+        lastValueFrom(await this.userService
+            .getFavoritePosts(this.page, this.size, this.sort))
+            .then(
+                (response) => {
+                if (response.length) {
+                    this.favorites = this.favorites.concat(response);
                     this.page++;
                     this.canLoad = true;
 
-                    if (data.length < this.size) {
+                    if (response.length < this.size) {
                         this.canLoad = false;
                     }
                 } else {
                     this.canLoad = false;
                 }
                 this.isLoading = false;
+            },
+            (error) => {
+                console.log(error);
             });
     }
 

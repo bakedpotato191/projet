@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -42,7 +43,8 @@ public class PublicationServiceImpl implements PublicationService {
 	private MapstructMapper mapper;
 
 	@Override
-	public List<PublicationDto> getUserPublications(String username, Integer pageNo, Integer pageSize, String sortBy) {
+	@Async
+	public CompletableFuture<List<PublicationDto>> getUserPublications(String username, Integer pageNo, Integer pageSize, String sortBy) {
 		
 		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
 		Slice<Publication> slicedResult = publicationRepository.findAllByUtilisateurUsername(username, paging);
@@ -59,16 +61,17 @@ public class PublicationServiceImpl implements PublicationService {
 				result.setCommentsCount(p.getComments().size());
 				list.add(result);
 			}
-			return list;
+			return CompletableFuture.completedFuture(list);
 		}
 		else {
-			return new ArrayList<>();
+			return CompletableFuture.completedFuture(new ArrayList<>());
 		}
 
 	}
 	
 	@Override
-	public List<PublicationDto> getNewPublications(Integer pageNo, Integer pageSize) {
+	@Async
+	public CompletableFuture<List<PublicationDto>> getNewPublications(Integer pageNo, Integer pageSize) {
 		
 		Pageable paging = PageRequest.of(pageNo, pageSize);
 		Slice<Publication> slicedResult = publicationRepository.findNewPublications(userService.getAuthenticatedUser().getUsername(), paging);
@@ -85,10 +88,10 @@ public class PublicationServiceImpl implements PublicationService {
 				result.setCommentsCount(p.getComments().size());
 				list.add(result);
 			}
-			return list;
+			return CompletableFuture.completedFuture(list);
 		}
 		else {
-			return new ArrayList<>();
+			return CompletableFuture.completedFuture(new ArrayList<>());
 		}
 	}
 
@@ -111,7 +114,8 @@ public class PublicationServiceImpl implements PublicationService {
 	}
 	
 	@Override
-	public PublicationDto getPublicationByID(Long id) {
+	@Async
+	public CompletableFuture<PublicationDto> getPublicationByID(Long id) {
 		var optional = publicationRepository.findById(id);
 
 		if (optional.isPresent()) {
@@ -121,16 +125,15 @@ public class PublicationServiceImpl implements PublicationService {
 			result.setCountLike(publication.getLikes().size());
 			result.setCommentsCount(publication.getComments().size());
 			
-			return result;
+			return CompletableFuture.completedFuture(result);
 		} 
 		else {
 			throw new EntityNotFoundException(Publication.class, "id", id.toString());
 		}
 	}
 	
-	
-	@Async
 	@Override
+	@Async
 	public void like(Long id) {
 		var post = new Publication();
 		post.setId(id);		
@@ -140,15 +143,16 @@ public class PublicationServiceImpl implements PublicationService {
 		likeRepository.save(favori);
 	}
 
-	@Async
 	@Override
+	@Async
 	public void dislike(Long id) {
 			var currentUser = userService.getAuthenticatedUser();
 			likeRepository.dislike(currentUser, id);
 	}
 	
 	@Override
-	public List<PublicationDto> getFavorites(Integer pageNo, Integer pageSize, String sortBy) {
+	@Async
+	public CompletableFuture<List<PublicationDto>> getFavorites(Integer pageNo, Integer pageSize, String sortBy) {
 		
 		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
 		Slice<Favori> slicedResult = likeRepository.findAllByUtilisateur(userService.getAuthenticatedUser(), paging);
@@ -165,10 +169,10 @@ public class PublicationServiceImpl implements PublicationService {
 			result.setCommentsCount(p.getComments().size());
 			list.add(result);
 		}
-		return list;
+		return CompletableFuture.completedFuture(list);
 	}
 		else {
-			return new ArrayList<>();
+			return CompletableFuture.completedFuture(new ArrayList<>());
 		}
 	}
 }

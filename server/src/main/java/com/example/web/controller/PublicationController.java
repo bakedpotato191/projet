@@ -2,6 +2,7 @@ package com.example.web.controller;
 
 import java.io.IOException;
 import java.util.IllegalFormatException;
+import java.util.concurrent.CompletableFuture;
 
 import javax.validation.Valid;
 
@@ -40,7 +41,7 @@ public class PublicationController {
 	private PublicationService publicationService;
 
 	@GetMapping("/{id}")
-    public PublicationDto getById(@PathVariable("id") Long id) {
+    public CompletableFuture<PublicationDto> getById(@PathVariable("id") Long id) {
 		return publicationService.getPublicationByID(id);
     }
 	

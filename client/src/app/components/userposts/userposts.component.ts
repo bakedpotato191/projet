@@ -1,6 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { lastValueFrom } from 'rxjs';
 import { Publication } from 'src/app/interfaces/publication';
 import { UserService } from 'src/app/services/user.service';
 import { UserPageComponent } from '../userpage/userpage.component';
@@ -37,27 +38,31 @@ export class UserpostsComponent implements OnInit {
         private readonly parent: UserPageComponent
     ) {}
 
-    ngOnInit(): void {
+    async ngOnInit() {
         this.canLoad = true;
-        this.get_user_posts();
+        await this.get_user_posts();
     }
 
     open_post_page(id: number) {
         this.router.navigate(['p', id]);
     }
 
-    get_latest_post() {
-        this.userService
-            .getUserPosts(this.parent.username, 0, 1, this.sort)
-            .subscribe((data) => {
+    async get_latest_post() {
+        lastValueFrom(await this.userService
+            .getUserPosts(this.parent.username, 0, 1, this.sort))
+            .then(
+                (data) => {
                 this.posts = data.concat(this.posts);
+            },
+            (error) => {
+                console.log(error);
             });
     }
 
-    get_user_posts() {
-        this.userService
-            .getUserPosts(this.parent.username, this.page, this.size, this.sort)
-            .subscribe(
+    async get_user_posts() {
+        lastValueFrom(await this.userService
+            .getUserPosts(this.parent.username, this.page, this.size, this.sort))
+            .then(
                 (data) => {
                     if (data.length !== 0) {
                         this.posts = this.posts.concat(data);
@@ -75,7 +80,7 @@ export class UserpostsComponent implements OnInit {
                     console.log(error);
                 }
             )
-            .add(() => {
+            .finally(() => {
                 this.isLoading = false;
             });
     }

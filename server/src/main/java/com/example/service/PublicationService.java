@@ -1,6 +1,7 @@
 package com.example.service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import com.example.rest.model.Publication;
 import com.example.web.dto.response.PublicationDto;
@@ -11,16 +12,16 @@ public interface PublicationService {
 	
 	void deletePublication(Long id);
 	
-	PublicationDto getPublicationByID(Long id);
+	CompletableFuture<PublicationDto> getPublicationByID(Long id);
 
 	void like(Long id);
 
 	void dislike(Long id);
 
-	List<PublicationDto> getFavorites(Integer pageNo, Integer pageSize, String sortBy);
+	CompletableFuture<List<PublicationDto>> getFavorites(Integer pageNo, Integer pageSize, String sortBy);
 
-	List<PublicationDto> getUserPublications(String username, Integer pageNo, Integer pageSize, String sortBy);
+	CompletableFuture<List<PublicationDto>> getUserPublications(String username, Integer pageNo, Integer pageSize, String sortBy);
 
-	List<PublicationDto> getNewPublications(Integer pageNo, Integer pageSize);
+	CompletableFuture<List<PublicationDto>> getNewPublications(Integer pageNo, Integer pageSize);
 
 }

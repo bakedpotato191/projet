@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Commentaire } from '../interfaces/commentaire';
 
 
@@ -13,27 +12,27 @@ export class PostService {
 
   constructor(private http: HttpClient) { }
 
-  public postPhoto(form: FormData): Observable<any>{
+  async postPhoto(form: FormData) {
     return this.http.post(this.API+ '/create', form);
   }
 
-  public getPostById(id: number): Observable<any>{
-    return this.http.get(`${this.API}/${id}`);
+  async getPostById(id: number) {
+    return this.http.get<any>(`${this.API}/${id}`);
   }
 
-  public likePost(id: number): Observable<any> {
-    return this.http.post(this.API + '/like', id);
+  async likePost(id: number) {
+    return this.http.post<any>(this.API + '/like', id);
   }
 
-  public dislikePost(id: number): Observable<any>{
-    return this.http.post(this.API + '/dislike', id);
+  async dislikePost(id: number) {
+    return this.http.post<any>(this.API + '/dislike', id);
   }
 
-  public submitComment(comment: Commentaire): Observable<any>{
+  async submitComment(comment: Commentaire) {
     return this.http.post(this.API + '/addcomment', comment);
   }
 
-  public removePost(id: number): Observable<any>{
+  async removePost(id: number) {
     return this.http.delete(`${this.API}/delete/${id}`);
   }
 }

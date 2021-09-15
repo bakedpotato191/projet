@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { lastValueFrom } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { SharedService } from 'src/app/services/shared.service';
 
@@ -29,12 +30,13 @@ export class RestoreComponent implements OnInit {
         private fb: FormBuilder
     ) {}
 
-    ngOnInit(): void {
+    async ngOnInit(): Promise<void> {
         this.uuid = this.route.snapshot.paramMap.get('token');
 
         if (this.uuid !== null && this.uuid !== '') {
             const json = { token: this.uuid };
-            this.authService.verifyToken(json).subscribe(
+            lastValueFrom(await this.authService.verifyToken(json))
+            .then(
                 (_data) => {
                     this.isRequest = true;
                     this.init_password_form();
@@ -79,32 +81,36 @@ export class RestoreComponent implements OnInit {
         });
     }
 
-    submit_email(): void {
+    async submit_email(): Promise<void> {
         if (this.restoreForm.invalid) {
             return;
         }
         this.isLoading = true;
-        this.authService.restore(this.restoreForm.value).subscribe(
+        lastValueFrom(await this.authService.restore(this.restoreForm.value))
+        .then(
             (_data) => {
                 this.isSent = true;
             },
             (error) => {
+                console.log(error);
                 this.sharedService.showSnackbar(error.error, 'Dismiss', 0);
             }
-        ).add(() => {
+        ).finally(() => {
             this.isLoading = false;
         });
     }
 
-    submit_new_password() {
+    async submit_new_password() {
         this.passwordForm.patchValue({
             token: this.uuid
         });
-        this.authService.reset(this.passwordForm.value).subscribe(
+        lastValueFrom(await this.authService.reset(this.passwordForm.value))
+        .then(
             (_data) => {
                 this.isUpdated = true;
             },
             (error) => {
+                console.log(error);
                 this.sharedService.showSnackbar(error.error, 'Dismiss', 0);
             }
         );

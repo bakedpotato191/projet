@@ -9,7 +9,7 @@ export class SharedService {
   constructor(private matSnackBar: MatSnackBar,
               private titleService: Title) { }
 
-  public showSnackbar(content: any, action: any, duration: number): void {
+  showSnackbar(content: any, action: any, duration: number): void {
     let sb = this.matSnackBar.open(content, action, {
       duration,
       panelClass: ["custom-style"],
@@ -22,7 +22,7 @@ export class SharedService {
     });
   }
 
-  public setTitle(newTitle: string) {
+  async setTitle(newTitle: string) {
     this.titleService.setTitle(newTitle);
   }
 }

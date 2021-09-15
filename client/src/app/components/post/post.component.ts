@@ -9,6 +9,7 @@ import { LoginComponent } from '../login/login.component';
 import { Commentaire } from 'src/app/interfaces/commentaire';
 import { Publication } from 'src/app/interfaces/publication';
 import { ConfirmationDialogComponent } from '../shared/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-post',
@@ -35,46 +36,77 @@ export class PostComponent implements OnInit {
     private dialog: MatDialog
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.activatedRoute.paramMap.subscribe((paramMap) => {
       var id = paramMap.get('id');
       if (id != null) {
         this.id = parseInt(id);
       }
     });
-    this.postService.getPostById(this.id).subscribe(
-      (data) => {
-        this.post = data;
+    lastValueFrom(await this.postService.getPostById(this.id))
+    .then(
+      (response) => {
+        this.post = response;
         this.isContent = true;
         if (this.post.utilisateur.username === this.tokenService.getUser().username) {
           this.isMyPost = true;
         }
       },
-      (_error) => {
-        this.isContent = true;
+      (error) => {
+        console.log(error);
       }
-    );
+    )
+    .finally(() => {
+      this.isContent = true;
+    });
   }
 
-  like(): void {
+  async like(): Promise<void> {
     if (this.tokenService.getToken() == null) {
       this.dialog.open(LoginComponent);
     }
-    this.post.liked = true;
-    this.postService.likePost(this.id).subscribe();
+    lastValueFrom(await this.postService.likePost(this.id))
+    .then(
+      (_response) => {
+        this.post.liked = true;
+      },
+      (error) => {
+        console.log(error);
+      });
   }
 
-  dislike(): void {
-    this.post.liked = false;
-    this.postService.dislikePost(this.id).subscribe();
-  }
+  async dislike(): Promise<void> {
 
-  remove(): void {
-    this.postService.removePost(this.id).subscribe();
+    lastValueFrom(await this.postService.dislikePost(this.id)).then(
+      (_data) => {
+        this.post.liked = false;
+      },
+      (error) => {
+        console.log(error);
+      });
   }
 
   open_image(url: string) {
     window.location.href=url;
+  }
+
+  async remove_publication(id: number){
+    lastValueFrom(await this.postService.removePost(id))
+    .then(
+      (_data) => {
+        this.router.navigate([
+          `/profile/${this.tokenService.getUser().username}`,
+        ]);
+      },
+      (error) => {
+        console.log(error);
+        this.sharedService.showSnackbar(
+          'Request failed with status code ' + error.status,
+          'Dismiss',
+          5000
+        );
+      }
+    );
   }
 
   open_delete_post_dialog(id: number): void {
@@ -83,22 +115,9 @@ export class PostComponent implements OnInit {
       data: 'Êtes-vous sûr de vouloir supprimer ce post?',
       panelClass: ['dialog-style'],
     });
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe(async (result) => {
       if (result) {
-        this.postService.removePost(id).subscribe(
-          (_data) => {
-            this.router.navigate([
-              `/profile/${this.tokenService.getUser().username}`,
-            ]);
-          },
-          (error) => {
-            this.sharedService.showSnackbar(
-              'Request failed with status code ' + error.status,
-              'Dismiss',
-              5000
-            );
-          }
-        );
+        await this.remove_publication(id);
       }
     });
   }

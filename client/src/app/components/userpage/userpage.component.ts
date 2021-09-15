@@ -10,7 +10,7 @@ import { UploadComponent } from '../upload/upload.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { LoginComponent } from '../login/login.component';
 import { FormGroup } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { lastValueFrom, Subscription } from 'rxjs';
 import { UserpostsComponent } from '../userposts/userposts.component';
 import { User } from 'src/app/interfaces/user';
 import { Publication} from 'src/app/interfaces/publication';
@@ -48,11 +48,11 @@ export class UserPageComponent implements OnInit {
 
   selectedIndex!: number;
 
-  ngOnInit(): void {
-    this.activatedRoute.paramMap.subscribe((param) => {
+   async ngOnInit() {
+    this.activatedRoute.paramMap.subscribe(async (param) => {
       this.username = param.get('username')!;
       this.sharedService.setTitle('@' + this.username);
-      this.get_user_data(this.username);
+      await this.get_user_data(this.username);
       this.isMyPage = this.username == this.tokenService.getUser().username;
     });
     this.activatedRoute.firstChild?.paramMap.subscribe((params) => {
@@ -70,9 +70,8 @@ export class UserPageComponent implements OnInit {
     public dialog: MatDialog
   ) {}
 
-  async get_user_data(username: string): Promise<void> {
-    (await this.userService.getUser(username)).toPromise()
-    .then(
+  async get_user_data(username: string) {
+    lastValueFrom(await this.userService.getUser(username)).then(
       (response) => {
         this.user = response;
       },
@@ -83,7 +82,7 @@ export class UserPageComponent implements OnInit {
       () => {
         this.isContent = true;
       }
-    );
+    );   
   }
 
   open_upload_dialog(): void {
@@ -106,8 +105,7 @@ export class UserPageComponent implements OnInit {
       return;
     }
     this.isBtnOverlayed = true;
-      (await this.userService.follow(this.user.username))
-      .toPromise()
+      lastValueFrom(await this.userService.follow(this.user.username))
       .then(
         (_data) => {
           this.user.followed = true;
@@ -127,8 +125,7 @@ export class UserPageComponent implements OnInit {
       return;
     }
     this.isBtnOverlayed = true;
-      (await this.userService.unfollow(this.user.username))
-      .toPromise()
+      lastValueFrom(await this.userService.unfollow(this.user.username))
       .then(
         (_response) => {
           this.user.followed = false;
@@ -172,9 +169,8 @@ export class UserPageComponent implements OnInit {
     var formData: any = new FormData();
     formData.append('avatar', this.fileData);
     this.isOverlayed = true;
-      (await this.userService
+      lastValueFrom(await this.userService
         .setProfilePicture(formData))
-        .toPromise()
         .then(
           (response: any) => {
             this.user.avatar = response.avatar;
@@ -232,9 +228,8 @@ export class UserPageComponent implements OnInit {
 
   async delete_profile_picture(): Promise<void>{
     this.isOverlayed = true;
-    (await this.userService
+    lastValueFrom(await this.userService
       .deleteProfilePicture())
-      .toPromise()
       .then(
         (response) => {
           this.user.has_avatar = response.has_avatar;

@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { lastValueFrom } from 'rxjs';
 import { PostService } from 'src/app/services/post.service';
 import { SharedService } from 'src/app/services/shared.service';
 import { UserpostsComponent } from '../userposts/userposts.component';
@@ -48,7 +49,7 @@ export class UploadComponent {
         }
     }
 
-    submit() {
+    async submit() {
         if (this.uploadForm.invalid) {
             return;
         }
@@ -56,7 +57,8 @@ export class UploadComponent {
         formData.append('photo', this.fileData);
         formData.append('description', this.uploadForm.get('description')?.value);
         this.isSending = true;
-        this.postService.postPhoto(formData).subscribe(
+        lastValueFrom(await this.postService.postPhoto(formData))
+        .then(
             (_data) => {
                 this.isSent = true;
                 this.close_dialog();

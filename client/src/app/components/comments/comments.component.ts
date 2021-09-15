@@ -8,6 +8,7 @@ import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { LoginComponent } from '../login/login.component';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConfirmationDialogComponent } from '../shared/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
     selector: 'app-comments',
@@ -46,9 +47,9 @@ export class CommentsComponent implements OnInit {
           });
     }
 
-    ngOnInit(): void {
-        this.get_all_comments();
+    async ngOnInit(): Promise<void> {
         this.init_comment_form();
+        await this.get_all_comments();
     }
 
     init_comment_form(): void {
@@ -58,7 +59,7 @@ export class CommentsComponent implements OnInit {
         });
     }
 
-    submit() {
+    async submit() {
         if (this.tokenService.getToken() == null) {
           this.dialog.open(LoginComponent);
           return;
@@ -69,7 +70,8 @@ export class CommentsComponent implements OnInit {
         }
 
         this.isLoading = true;
-        this.commentService.submitComment(this.commentForm.value).subscribe(
+        lastValueFrom(await this.commentService.submitComment(this.commentForm.value))
+        .then(
           (_data) => {
             this.isLoading = false;
             this.inputName.nativeElement.value = '';
@@ -85,10 +87,10 @@ export class CommentsComponent implements OnInit {
         )
       }
 
-    get_all_comments(): void {
-        this.commentService
-            .getPostComments(this.parent.id, this.page, this.size, this.sort)
-            .subscribe((data) => {
+    async get_all_comments(): Promise<void> {
+        lastValueFrom(await this.commentService
+            .getPostComments(this.parent.id, this.page, this.size, this.sort))
+            .then((data) => {
                 if (data.length !== 0) {
                     this.comments = this.comments.concat(data);
                     this.page++;
@@ -120,9 +122,10 @@ export class CommentsComponent implements OnInit {
             data: 'Êtes-vous sûr de vouloir supprimer ce commentaire?',
             panelClass: ['dialog-style']
         });
-        dialogRef.afterClosed().subscribe((result) => {
+        dialogRef.afterClosed().subscribe(async (result) => {
             if (result) {
-                this.commentService.deleteComment(id).subscribe(
+                lastValueFrom(await this.commentService.deleteComment(id))
+                .then(
                     (_data) => {
                         window.location.reload();
                     },

@@ -123,10 +123,9 @@ public class UserServiceImpl implements UserService {
 	public CompletableFuture<List<UserDto>> getSubscriptions(String username, int pageNo, int pageSize) throws InterruptedException {
 		Pageable paging = PageRequest.of(pageNo, pageSize);
 		var slicedResult = followerRepository.findAllToByFromUsername(username, paging);
+		List<UserDto> list = new ArrayList<>();
 		
 		if (slicedResult.hasContent()) {
-			
-			List<UserDto> list = new ArrayList<>();
 			Iterator<Follower> it = slicedResult.iterator();
 			
 			while(it.hasNext()) {
@@ -136,23 +135,18 @@ public class UserServiceImpl implements UserService {
 
 				list.add(result);
 			}
-			return CompletableFuture.completedFuture(list);
 		}
-		else {
-			return CompletableFuture.completedFuture(new ArrayList<>());
-		}
+		return CompletableFuture.completedFuture(list);
 	}
 	
 	@Override
 	@Async
 	public CompletableFuture<List<UserDto>> getSubscribers(String username, int pageNo, int pageSize) {
-		
 		Pageable paging = PageRequest.of(pageNo, pageSize);
 		Slice<Follower> slicedResult = followerRepository.findAllFromByToUsername(username, paging);
-		
+		List<UserDto> list = new ArrayList<>();
 		if (slicedResult.hasContent()) {
 			
-			List<UserDto> list = new ArrayList<>();
 			Iterator<Follower> it = slicedResult.iterator();
 			
 			while(it.hasNext()) {
@@ -162,12 +156,8 @@ public class UserServiceImpl implements UserService {
 
 				list.add(result);
 			}
-			
-			return CompletableFuture.completedFuture(list);
 		}
-		else {
-			return CompletableFuture.completedFuture(new ArrayList<>());
-		}
+		return CompletableFuture.completedFuture(list);
 	}
 	
 	@Override

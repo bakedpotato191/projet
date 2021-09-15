@@ -1,9 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import {
-  MatDialog,
-  MatDialogRef,
-  MAT_DIALOG_DATA,
-} from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { lastValueFrom } from 'rxjs';
 import { LoginComponent } from 'src/app/components/login/login.component';
 import { User } from 'src/app/interfaces/user';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
@@ -46,9 +43,8 @@ export class FollowerComponent implements OnInit {
 
   async get_subscribers() {
     this.isLoading = true;
-    (await this.userService
+    lastValueFrom(await this.userService
       .getSubscribers(this.username, this.page, this.size, this.sort))
-      .toPromise()
       .then(
         (response) => {
           this.followers = response;
@@ -68,8 +64,7 @@ export class FollowerComponent implements OnInit {
       return;
     }
     this.isOverlayed = true;
-    (await this.userService.follow(following.username))
-      .toPromise()
+    lastValueFrom(await this.userService.follow(following.username))
       .then(
         (_response) => {
           following.followed = true;
@@ -89,8 +84,7 @@ export class FollowerComponent implements OnInit {
       return;
     }
     this.isOverlayed = true;
-    (await this.userService.unfollow(follower.username))
-      .toPromise()
+    lastValueFrom(await this.userService.unfollow(follower.username))
       .then(
         (_data) => {
           follower.followed = false;
