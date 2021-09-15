@@ -1,7 +1,6 @@
 package com.example.web.dto.response;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 public class PublicationDto {
 	
@@ -14,8 +13,6 @@ public class PublicationDto {
 	private String photo;
 	
 	private UserDto utilisateur;
-	
-	private List<CommentResDto> comments;
 	
 	private boolean isLiked;
 	
@@ -85,13 +82,5 @@ public class PublicationDto {
 
 	public void setCommentsCount(int commentsCount) {
 		this.commentsCount = commentsCount;
-	}
-
-	public List<CommentResDto> getComments() {
-		return comments;
-	}
-
-	public void setComments(List<CommentResDto> comments) {
-		this.comments = comments;
 	}
 }

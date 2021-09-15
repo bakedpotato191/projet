@@ -57,6 +57,7 @@ public class FileStorageServiceImpl implements FileStorageService {
 	}
 
 	@Override
+	@Async
 	public Publication save(MultipartFile file, String description) throws IncorrectFileExtensionException, IOException {
 
 		String fileContentType = file.getContentType();

@@ -18,9 +18,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
 @Entity
 @Table(name= "post")
 public class Publication implements Serializable {
@@ -42,12 +39,10 @@ public class Publication implements Serializable {
 	@JoinColumn(name = "user_id")
 	private User utilisateur;
 	
-	@LazyCollection(LazyCollectionOption.EXTRA)
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<Comment> comments = new ArrayList<>();
 	
-	@LazyCollection(LazyCollectionOption.EXTRA)
-	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<Favori> likes = new ArrayList<>();
 	
 	public Publication() {}

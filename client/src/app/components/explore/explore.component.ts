@@ -49,7 +49,7 @@ export class ExploreComponent implements OnInit {
 
           if (data.length < this.size) {
             this.canLoad = false;
-        }
+          }
         }
         else {
           this.canLoad = false;

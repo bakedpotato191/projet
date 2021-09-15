@@ -1,6 +1,7 @@
 package com.example.web.controller;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import javax.validation.Valid;
 
@@ -42,7 +43,7 @@ public class CommentController {
 	}
 	
 	@GetMapping(value = "/all/{postID}")
-	public List<CommentResDto> getPosts( @PathVariable("postID") Long id,
+	public CompletableFuture<List<CommentResDto>> getPosts( @PathVariable("postID") Long id,
 												@RequestParam Integer page, 
 									            @RequestParam Integer size,
 									            @RequestParam String sort) {

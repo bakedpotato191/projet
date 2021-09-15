@@ -1,11 +1,14 @@
 package com.example.rest.dao;
 
+import java.util.concurrent.CompletableFuture;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +28,8 @@ public interface FavoriRepository extends JpaRepository<Favori, Long> {
 	@Query("DELETE from Favori f WHERE f.utilisateur=(:user) AND f.post.id=(:id)")
 	void dislike(@Param("user") User user, @Param("id") Long id);
 	
-	Slice<Favori> findAllByUtilisateur(User user, Pageable paging);
+	@Async
+	CompletableFuture<Slice<Favori>> findAllByUtilisateurUsername(String username, Pageable paging);
 	
 	int countByPost(Publication post);
 }

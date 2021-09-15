@@ -51,7 +51,9 @@ export class PostComponent implements OnInit {
         if (this.post.utilisateur.username === this.tokenService.getUser().username) {
           this.isMyPost = true;
         }
-      },
+      } 
+    )
+    .catch(
       (error) => {
         console.log(error);
       }

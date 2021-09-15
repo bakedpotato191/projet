@@ -1,14 +1,16 @@
 package com.example.service.impl;
 
 import java.sql.Timestamp;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,17 +45,17 @@ public class CommentServiceImpl implements CommentService {
 	
 	
 	@Override
-	public List<CommentResDto> listComments (Long id, int pageNo, int pageSize, String sortBy) {
+	@Async
+	public CompletableFuture<List<CommentResDto>> listComments (Long id, int pageNo, int pageSize, String sortBy) {
 		
 		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
 		Slice<Comment> slicedResult = commentRepository.findAllByPostId(id, paging);
+		List<CommentResDto> list = new ArrayList<>();
 		
 		if (slicedResult.hasContent()) {
-			return mapper.commListMap(slicedResult.getContent());
+			list = mapper.commListMap(slicedResult.getContent());
 		}
-		else {
-			return Collections.emptyList();
-		}
+		return CompletableFuture.completedFuture(list);
 		
 	}
 	

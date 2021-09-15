@@ -1,6 +1,7 @@
 package com.example.service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import com.example.rest.model.Comment;
 import com.example.web.dto.request.CommentReqDto;
@@ -12,5 +13,5 @@ public interface CommentService {
 	
 	void deleteComment(Long id);
 
-	List<CommentResDto> listComments(Long id, int pageNo, int pageSize, String sortBy);
+	CompletableFuture<List<CommentResDto>> listComments(Long id, int pageNo, int pageSize, String sortBy);
 }

@@ -1,20 +1,21 @@
 package com.example.service.impl;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.rest.dao.CommentRepository;
 import com.example.rest.dao.FavoriRepository;
 import com.example.rest.dao.PublicationRepository;
 import com.example.rest.model.Favori;
@@ -22,14 +23,13 @@ import com.example.rest.model.Publication;
 import com.example.service.PublicationService;
 import com.example.service.UserService;
 import com.example.web.dto.response.PublicationDto;
-import com.example.web.exception.EntityNotFoundException;
 import com.example.web.exception.HttpUnauthorizedException;
 import com.example.web.mappers.MapstructMapper;
 
 @Service
 @Transactional
 public class PublicationServiceImpl implements PublicationService {
-
+	
 	@Autowired
 	private PublicationRepository publicationRepository;
 
@@ -41,58 +41,46 @@ public class PublicationServiceImpl implements PublicationService {
 	
 	@Autowired
 	private MapstructMapper mapper;
+	
+	@Autowired
+	private CommentRepository cRepository;
+	
+	@Autowired
+    @Qualifier("mainExecutor") 
+    private Executor existingThreadPool; 
 
 	@Override
 	@Async
 	public CompletableFuture<List<PublicationDto>> getUserPublications(String username, Integer pageNo, Integer pageSize, String sortBy) {
 		
 		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
-		Slice<Publication> slicedResult = publicationRepository.findAllByUtilisateurUsername(username, paging);
+		var publications = publicationRepository.findAllByUtilisateurUsername(username, paging);
 		
-		if (slicedResult.hasContent()) {
-			
-			List<PublicationDto> list = new ArrayList<>();
-			Iterator<Publication> it = slicedResult.iterator();
-			
-			while(it.hasNext()) {
-				Publication p = it.next();
-				var result = mapper.pubToPubDto(p);
-				result.setCountLike(p.getLikes().size());
-				result.setCommentsCount(p.getComments().size());
-				list.add(result);
-			}
-			return CompletableFuture.completedFuture(list);
-		}
-		else {
-			return CompletableFuture.completedFuture(new ArrayList<>());
-		}
-
+		return publications.thenApplyAsync(pbs -> 
+			pbs.stream().map(p -> {
+				var pub = mapper.pubToPubDto(p);
+				pub.setLiked(likeRepository.isLiked(userService.getAuthenticatedUser(), p));
+				pub.setCountLike(likeRepository.countByPost(p));
+				pub.setCommentsCount(cRepository.countByPost(p));
+				return pub;
+			}).collect(Collectors.toList()), existingThreadPool);
 	}
 	
+
 	@Override
 	@Async
 	public CompletableFuture<List<PublicationDto>> getNewPublications(Integer pageNo, Integer pageSize) {
+		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by("date").descending());
+		var publications = publicationRepository.findNewPublications(userService.getAuthenticatedUser().getUsername(), paging);
 		
-		Pageable paging = PageRequest.of(pageNo, pageSize);
-		Slice<Publication> slicedResult = publicationRepository.findNewPublications(userService.getAuthenticatedUser().getUsername(), paging);
-		
-		if (slicedResult.hasContent()) {
-			List<PublicationDto> list = new ArrayList<>();
-			Iterator<Publication> it = slicedResult.iterator();
-			
-			while(it.hasNext()) {
-				Publication p = it.next();
-				var result = mapper.pubToPubDto(p);
-				result.setLiked(likeRepository.isLiked(userService.getAuthenticatedUser(), p));
-				result.setCountLike(p.getLikes().size());
-				result.setCommentsCount(p.getComments().size());
-				list.add(result);
-			}
-			return CompletableFuture.completedFuture(list);
-		}
-		else {
-			return CompletableFuture.completedFuture(new ArrayList<>());
-		}
+		return publications.thenApplyAsync(pbs -> 
+			pbs.stream().map(p -> {
+				var pub = mapper.pubToPubDto(p);
+				pub.setLiked(likeRepository.isLiked(userService.getAuthenticatedUser(), p));
+				pub.setCountLike(likeRepository.countByPost(p));
+				pub.setCommentsCount(cRepository.countByPost(p));
+				return pub;
+			}).collect(Collectors.toList()), existingThreadPool);
 	}
 
 	@Override
@@ -113,23 +101,15 @@ public class PublicationServiceImpl implements PublicationService {
 		return publicationRepository.save(post);
 	}
 	
+
 	@Override
 	@Async
 	public CompletableFuture<PublicationDto> getPublicationByID(Long id) {
-		var optional = publicationRepository.findById(id);
-
-		if (optional.isPresent()) {
-			var publication = optional.get();
-			var result = mapper.pubToPubDto(publication);
-			result.setLiked(userService.isAnonymous() ? false : likeRepository.isLiked(userService.getAuthenticatedUser(), publication));
-			result.setCountLike(publication.getLikes().size());
-			result.setCommentsCount(publication.getComments().size());
-			
-			return CompletableFuture.completedFuture(result);
-		} 
-		else {
-			throw new EntityNotFoundException(Publication.class, "id", id.toString());
-		}
+		return publicationRepository.findOneById(id)
+				.thenApplyAsync(pub -> pub
+				.map(optionalChild -> mapper.pubToPubDto(optionalChild))
+				.filter(child-> child.getId() != null)
+				.orElseThrow(IllegalStateException::new), existingThreadPool);
 	}
 	
 	@Override
@@ -153,26 +133,16 @@ public class PublicationServiceImpl implements PublicationService {
 	@Override
 	@Async
 	public CompletableFuture<List<PublicationDto>> getFavorites(Integer pageNo, Integer pageSize, String sortBy) {
-		
 		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
-		Slice<Favori> slicedResult = likeRepository.findAllByUtilisateur(userService.getAuthenticatedUser(), paging);
+		var favorites = likeRepository.findAllByUtilisateurUsername(userService.getAuthenticatedUser().getUsername(), paging);
 		
-		if (slicedResult.hasContent()) {
-		
-		List<PublicationDto> list = new ArrayList<>();
-		Iterator<Favori> it = slicedResult.iterator();
-		
-		while(it.hasNext()) {
-			Publication p = it.next().getPost();
-			var result = mapper.pubToPubDto(p);
-			result.setCountLike(p.getLikes().size());
-			result.setCommentsCount(p.getComments().size());
-			list.add(result);
-		}
-		return CompletableFuture.completedFuture(list);
-	}
-		else {
-			return CompletableFuture.completedFuture(new ArrayList<>());
-		}
+		return favorites.thenApplyAsync(favs -> 
+			 favs.stream().map(f -> {
+				var fav = mapper.pubToPubDto(f.getPost());
+				fav.setLiked(likeRepository.isLiked(userService.getAuthenticatedUser(), f.getPost()));
+				fav.setCountLike(likeRepository.countByPost(f.getPost()));
+				fav.setCommentsCount(cRepository.countByPost(f.getPost()));
+				return fav;
+			}).collect(Collectors.toList()), existingThreadPool);
 	}
 }
