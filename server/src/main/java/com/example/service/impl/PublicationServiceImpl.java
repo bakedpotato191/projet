@@ -60,7 +60,7 @@ public class PublicationServiceImpl implements PublicationService {
 		return publications.thenApplyAsync(pbs -> 
 			pbs.stream().map(p -> {
 				var pub = mapper.pubToPubDto(p);
-				pub.setLiked(likeRepository.isLiked(userService.getAuthenticatedUser(), p));
+				pub.setLiked(userService.isAnonymous() ? false : likeRepository.isLiked(userService.getAuthenticatedUser(), p));
 				pub.setCountLike(likeRepository.countByPost(p));
 				pub.setCommentsCount(cRepository.countByPost(p));
 				return pub;
