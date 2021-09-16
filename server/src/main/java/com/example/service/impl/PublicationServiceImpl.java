@@ -23,6 +23,7 @@ import com.example.rest.model.Publication;
 import com.example.service.PublicationService;
 import com.example.service.UserService;
 import com.example.web.dto.response.PublicationDto;
+import com.example.web.exception.EntityNotFoundException;
 import com.example.web.exception.HttpUnauthorizedException;
 import com.example.web.mappers.MapstructMapper;
 
@@ -103,13 +104,21 @@ public class PublicationServiceImpl implements PublicationService {
 	
 
 	@Override
-	@Async
-	public CompletableFuture<PublicationDto> getPublicationByID(Long id) {
-		return publicationRepository.findOneById(id)
-				.thenApplyAsync(pub -> pub
-				.map(optionalChild -> mapper.pubToPubDto(optionalChild))
-				.filter(child-> child.getId() != null)
-				.orElseThrow(IllegalStateException::new), existingThreadPool);
+	public PublicationDto getPublicationByID(Long id) {
+		var optional = publicationRepository.findById(id);
+
+		if (optional.isPresent()) {
+			var publication = optional.get();
+			var result = mapper.pubToPubDto(publication);
+			result.setLiked(userService.isAnonymous() ? false : likeRepository.isLiked(userService.getAuthenticatedUser(), publication));
+			result.setCountLike(publication.getLikes().size());
+			result.setCommentsCount(publication.getComments().size());
+			
+			return result;
+		} 
+		else {
+			throw new EntityNotFoundException(Publication.class, "id", id.toString());
+		}
 	}
 	
 	@Override

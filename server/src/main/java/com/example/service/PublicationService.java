@@ -12,7 +12,7 @@ public interface PublicationService {
 	
 	void deletePublication(Long id);
 	
-	CompletableFuture<PublicationDto> getPublicationByID(Long id);
+	PublicationDto getPublicationByID(Long id);
 
 	void like(Long id);
 

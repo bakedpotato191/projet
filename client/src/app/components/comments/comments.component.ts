@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Commentaire } from 'src/app/interfaces/commentaire';
 import { CommentService } from 'src/app/services/comment.service';
@@ -16,13 +16,17 @@ import { lastValueFrom } from 'rxjs';
     styleUrls: ['./comments.component.css']
 })
 export class CommentsComponent implements OnInit {
+    @Input() param!: number;
+    @Input() id!: number;
     @ViewChild('textarea') inputName!: ElementRef;
 
+    current_id!: number;
+
     options: FormGroup;
+    commentForm!: FormGroup;
     hideRequiredControl = new FormControl(false);
     floatLabelControl = new FormControl('auto');
 
-    commentForm!: FormGroup;
     comments: Commentaire[] = [];
     comment!: Commentaire;
     loginRef!: MatDialogRef<LoginComponent>;
@@ -49,7 +53,15 @@ export class CommentsComponent implements OnInit {
 
     async ngOnInit(): Promise<void> {
         this.init_comment_form();
-        await this.get_all_comments();
+
+        if (this.id !== null) {
+            this.current_id = this.id;
+            await this.get_all_comments(this.id);
+        }
+        else if (this.param !== null){
+            this.current_id = this.param;
+            await this.get_all_comments(this.param);
+        }
     }
 
     init_comment_form(): void {
@@ -72,47 +84,45 @@ export class CommentsComponent implements OnInit {
         this.isLoading = true;
         lastValueFrom(await this.commentService.submitComment(this.commentForm.value))
         .then(
-          (_data) => {
-            this.isLoading = false;
-            this.inputName.nativeElement.value = '';
-          },
-          (_error) => {
-            this.isLoading = false;
-            this.sharedService.showSnackbar(
-              'Unknown error occured',
-              'Dismiss',
-              7000
-            );
-          }
+          (_response) => 
+            this.inputName.nativeElement.value = ''
+        )
+        .catch(
+            (e) => console.error(e)
+        )
+        .finally(
+            () => this.isLoading = false
         )
       }
 
-    async get_all_comments(): Promise<void> {
+    async get_all_comments(id: number): Promise<void> {
         lastValueFrom(await this.commentService
-            .getPostComments(this.parent.id, this.page, this.size, this.sort))
-            .then((data) => {
-                if (data.length !== 0) {
-                    this.comments = this.comments.concat(data);
-                    this.page++;
-                    this.canLoad = true;
-                    if (data.length < this.size) {
+            .getPostComments(id, this.page, this.size, this.sort))
+            .then(
+                (data) => {
+                    if (data.length !== 0) {
+                        this.comments = this.comments.concat(data);
+                        this.page++;
+                        this.canLoad = true;
+                        if (data.length < this.size) {
+                            this.canLoad = false;
+                        }
+
+                    } else {
                         this.canLoad = false;
                     }
-
-                } else {
-                    this.canLoad = false;
-                }
                 this.isLoading = false;
-            },
-            (error) => {
-                console.log(error);
-            });
+                }
+            )
+            .catch(
+                (e) => console.error(e)
+            )
     }
 
-    handle_scroll_down() {
+    async handle_scroll_down() {
         if (this.canLoad) {
             this.canLoad = false;
-            this.get_all_comments();
+            await this.get_all_comments(this.current_id);
         }
     }
 
@@ -126,17 +136,18 @@ export class CommentsComponent implements OnInit {
             if (result) {
                 lastValueFrom(await this.commentService.deleteComment(id))
                 .then(
-                    (_data) => {
-                        window.location.reload();
-                    },
-                    (error) => {
-                        return this.sharedService.showSnackbar(
-                            'La demande a échoué avec le statut http ' + error.status,
+                    (_data) => window.location.reload() 
+                )
+                .catch(
+                    (e) => {
+                        console.error(e);
+                        this.sharedService.showSnackbar(
+                            'La demande a échoué avec le statut http ' + e.status,
                             'Dismiss',
                             5000
                         );
                     }
-                );
+                )
             }
         });
     }

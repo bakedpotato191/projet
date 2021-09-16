@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Commentaire } from '../interfaces/commentaire';
+import { Publication } from '../interfaces/publication';
 
 
 @Injectable({
@@ -16,8 +18,8 @@ export class PostService {
     return this.http.post(this.API+ '/create', form);
   }
 
-  async getPostById(id: number) {
-    return this.http.get<any>(`${this.API}/${id}`);
+   getPostById(id: number): Observable<Publication> {
+    return this.http.get<Publication>(`${this.API}/${id}`);
   }
 
   async likePost(id: number) {

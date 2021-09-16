@@ -43,8 +43,8 @@ export class UserpostsComponent implements OnInit {
         await this.get_user_posts();
     }
 
-    open_post_page(id: number) {
-        this.router.navigate(['p', id]);
+    open_post_page(pub: Publication) {
+        this.router.navigate(['p', pub.id], {state: { data: pub }});
     }
 
     async get_latest_post() {
@@ -75,14 +75,14 @@ export class UserpostsComponent implements OnInit {
                     } else {
                         this.canLoad = false;
                     }
-                },
-                (error) => {
-                    console.log(error);
                 }
             )
-            .finally(() => {
-                this.isLoading = false;
-            });
+            .catch(
+                (e) => console.log(e)
+            )
+            .finally(
+                () => this.isLoading = false
+            );
     }
 
     handle_scroll_down() {

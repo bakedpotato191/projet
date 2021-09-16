@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
 import { PostService } from 'src/app/services/post.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
@@ -17,7 +16,7 @@ import { lastValueFrom } from 'rxjs';
   styleUrls: ['./post.component.css'],
 })
 export class PostComponent implements OnInit {
-
+  
   id!: number;
   post!: Publication;
   comment!: Commentaire;
@@ -31,84 +30,79 @@ export class PostComponent implements OnInit {
     private readonly postService: PostService,
     private readonly sharedService: SharedService,
     private readonly tokenService: TokenStorageService,
-    private readonly activatedRoute: ActivatedRoute,
+    private readonly route: ActivatedRoute,
     private readonly router: Router,
     private dialog: MatDialog
-  ) {}
+  ) { 
+      this.post = this.router.getCurrentNavigation()?.extras.state?.data;
+  }
 
-  async ngOnInit(): Promise<void> {
-    this.activatedRoute.paramMap.subscribe((paramMap) => {
-      var id = paramMap.get('id');
-      if (id != null) {
-        this.id = parseInt(id);
-      }
-    });
-    lastValueFrom(await this.postService.getPostById(this.id))
-    .then(
-      (response) => {
-        this.post = response;
-        this.isContent = true;
-        if (this.post.utilisateur.username === this.tokenService.getUser().username) {
-          this.isMyPost = true;
-        }
-      } 
-    )
-    .catch(
-      (error) => {
-        console.log(error);
-      }
-    )
-    .finally(() => {
+  ngOnInit() {
+    
+    if (this.post) { /* https://stackoverflow.com/a/44017547 */
       this.isContent = true;
+      return;
+    }
+
+    this.route.paramMap.subscribe((paramMap) => {
+      const param = paramMap.get('id');
+      if (param) {
+        this.id = parseInt(param);
+        this.get_post_by_id(this.id);
+      }
     });
   }
 
-  async like(): Promise<void> {
+  get_post_by_id(id: number) {
+    this.postService
+      .getPostById(id)
+      .subscribe({
+        next: (r) => {
+          this.post = r;
+
+          if (this.post.utilisateur.username === this.tokenService.getUser().username) {
+            this.isMyPost = true;
+          }
+        },
+        error: (e) => console.error(e),
+      })
+      .add(() => this.isContent = true);
+  }
+
+  async like(id: number): Promise<void> {
     if (this.tokenService.getToken() == null) {
       this.dialog.open(LoginComponent);
     }
-    lastValueFrom(await this.postService.likePost(this.id))
-    .then(
-      (_response) => {
-        this.post.liked = true;
-      },
-      (error) => {
-        console.log(error);
-      });
+    lastValueFrom(await this.postService.likePost(id))
+      .then((_response) => (this.post.liked = true))
+      .catch((e) => console.log(e));
   }
 
-  async dislike(): Promise<void> {
+  async dislike(id: number): Promise<void> {
+    lastValueFrom(await this.postService.dislikePost(id))
+      .then((_data) => this.post.liked = false)
+      .catch((e) => console.log(e));
+  }
 
-    lastValueFrom(await this.postService.dislikePost(this.id)).then(
-      (_data) => {
-        this.post.liked = false;
-      },
-      (error) => {
-        console.log(error);
+  async remove_publication(id: number) {
+    lastValueFrom(await this.postService.removePost(id))
+      .then((_data) =>
+        this.router.navigate([
+          `/profile/${this.tokenService.getUser().username}`,
+        ])
+      )
+      .catch((e) => {
+        console.log(e);
+        this.sharedService.showSnackbar(
+          'Request failed with status code ' + e.status,
+          'Dismiss',
+          5000
+        );
       });
   }
 
   open_image(url: string) {
-    window.location.href=url;
-  }
-
-  async remove_publication(id: number){
-    lastValueFrom(await this.postService.removePost(id))
-    .then(
-      (_data) => {
-        this.router.navigate([
-          `/profile/${this.tokenService.getUser().username}`,
-        ]);
-      },
-      (error) => {
-        console.log(error);
-        this.sharedService.showSnackbar(
-          'Request failed with status code ' + error.status,
-          'Dismiss',
-          5000
-        );
-      }
-    );
+    window.location.href = url;
   }
 
   open_delete_post_dialog(id: number): void {
