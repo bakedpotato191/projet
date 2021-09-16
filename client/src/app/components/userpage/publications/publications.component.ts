@@ -4,12 +4,12 @@ import { Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { Publication } from 'src/app/interfaces/publication';
 import { UserService } from 'src/app/services/user.service';
-import { UserPageComponent } from '../userpage/userpage.component';
+import { HeadComponent } from '../head/head.component';
 
 @Component({
-    selector: 'app-userposts',
-    templateUrl: './userposts.component.html',
-    styleUrls: ['./userposts.component.css'],
+    selector: 'userpage-publications',
+    templateUrl: './publications.component.html',
+    styleUrls: ['./publications.component.css'],
     animations: [
         trigger('inAnimation', [
             state('in', style({ opacity: 1 })),
@@ -20,7 +20,7 @@ import { UserPageComponent } from '../userpage/userpage.component';
         ])
     ]
 })
-export class UserpostsComponent implements OnInit {
+export class PublicationsComponent implements OnInit {
     @ViewChild("list") postsEl!: ElementRef;
 
     posts: Publication[] = [];
@@ -35,7 +35,7 @@ export class UserpostsComponent implements OnInit {
     constructor(
         private readonly router: Router,
         private readonly userService: UserService,
-        private readonly parent: UserPageComponent
+        private readonly parent: HeadComponent
     ) {}
 
     async ngOnInit() {

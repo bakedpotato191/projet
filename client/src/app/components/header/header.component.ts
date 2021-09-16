@@ -32,13 +32,11 @@ export class HeaderComponent implements OnInit {
       this.username = user.username;
       lastValueFrom(await this.userService.getProfilePicture())
       .then(
-        (response) => {
-          this.avatar = response.avatar;
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+        (response) => this.avatar = response.avatar
+      )
+      .catch(
+        (e) => console.error(e)
+      )
     }
   }
 

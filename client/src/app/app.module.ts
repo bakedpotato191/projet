@@ -1,4 +1,4 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -19,16 +19,13 @@ import { HeaderComponent } from './components/header/header.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { PostComponent } from './components/post/post.component';
-import { UploadComponent } from './components/upload/upload.component';
-import { FavoritesComponent } from './components/favorites/favorites.component';
-import { UserpostsComponent } from './components/userposts/userposts.component';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { CommentsComponent } from './components/comments/comments.component';
 import { RestoreComponent } from './components/restore/restore.component';
 import { ExploreComponent } from './components/explore/explore.component';
 import { HomepageComponent } from './components/homepage/homepage.component';
-import { UserPageComponent } from './components/userpage/userpage.component';
 import { SharedModule } from './components/shared/shared.module';
+import { UserpageModule } from './components/userpage/userpage.module';
 
 @NgModule({
   imports: [
@@ -42,25 +39,20 @@ import { SharedModule } from './components/shared/shared.module';
     MaterialModule,
     TimeSinceModule,
     InfiniteScrollModule,
-    SharedModule
+    SharedModule,
+    UserpageModule
   ],
   declarations: [
     AppComponent,
     HeaderComponent,
     RegisterComponent,
     LoginComponent,
-    UserPageComponent,
     PostComponent,
-    UploadComponent,
-    FavoritesComponent,
-    UserpostsComponent,
     CommentsComponent,
     RestoreComponent,
     ExploreComponent,
-    HomepageComponent
-  ],
-  exports: [
-    UploadComponent
+    HomepageComponent,
+    PostComponent
   ],
   providers: [
     authInterceptorProviders, 

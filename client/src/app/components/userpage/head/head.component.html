@@ -63,7 +63,7 @@
                         <mat-icon class="example-tab-icon" fontSet="material-icons">photo_library</mat-icon>
                         <span>Publications</span>
                     </ng-template>
-                    <app-userposts #userposts></app-userposts>
+                    <userpage-publications #userposts></userpage-publications>
                 </mat-tab>
 
                 <mat-tab *ngIf="isMyPage" mat-tab-link>
@@ -71,7 +71,7 @@
                         <mat-icon class="example-tab-icon" fontSet="material-icons">star</mat-icon>
                         <span>Enregistrements</span>
                     </ng-template>
-                    <app-favorites></app-favorites>
+                    <userpage-favorites></userpage-favorites>
                 </mat-tab>
             </mat-tab-group>
         </div>

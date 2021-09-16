@@ -6,7 +6,7 @@ import { Publication } from 'src/app/interfaces/publication';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
-    selector: 'app-favorites',
+    selector: 'userpage-favorites',
     templateUrl: './favorites.component.html',
     styleUrls: ['./favorites.component.css']
 })

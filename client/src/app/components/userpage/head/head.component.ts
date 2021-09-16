@@ -8,24 +8,24 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import { SharedService } from 'src/app/services/shared.service';
 import { UploadComponent } from '../upload/upload.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { LoginComponent } from '../login/login.component';
+import { LoginComponent } from '../../login/login.component';
 import { FormGroup } from '@angular/forms';
 import { lastValueFrom, Subscription } from 'rxjs';
-import { UserpostsComponent } from '../userposts/userposts.component';
+import { PublicationsComponent } from '../publications/publications.component';
 import { User } from 'src/app/interfaces/user';
 import { Publication} from 'src/app/interfaces/publication';
-import { AvatarComponent } from '../shared/dialogs/avatar/avatar.component';
-import { FollowingComponent } from '../shared/dialogs/following/following.component';
-import { FollowerComponent } from '../shared/dialogs/follower/follower.component';
+import { AvatarComponent } from '../../shared/dialogs/avatar/avatar.component';
+import { FollowingComponent } from '../../shared/dialogs/following/following.component';
+import { FollowerComponent } from '../../shared/dialogs/follower/follower.component';
 
 @Component({
-  selector: 'app-userpage',
-  templateUrl: './userpage.component.html',
-  styleUrls: ['./userpage.component.css'],
+  selector: 'userpage-head',
+  templateUrl: './head.component.html',
+  styleUrls: ['./head.component.css'],
 })
-export class UserPageComponent implements OnInit {
+export class HeadComponent implements OnInit {
   @ViewChild('input') input!: ElementRef;
-  @ViewChild(UserpostsComponent) userposts: any;
+  @ViewChild(PublicationsComponent) userposts: any;
 
   isMyPage!: boolean;
   username!: string;
@@ -48,13 +48,14 @@ export class UserPageComponent implements OnInit {
 
   selectedIndex!: number;
 
-   async ngOnInit() {
-    this.activatedRoute.paramMap.subscribe(async (param) => {
+   ngOnInit() {
+    this.activatedRoute.paramMap.subscribe((param) => {
       this.username = param.get('username')!;
       this.sharedService.setTitle('@' + this.username);
-      await this.get_user_data(this.username);
+      this.get_user_data(this.username);
       this.isMyPage = this.username == this.tokenService.getUser().username;
     });
+
     this.activatedRoute.firstChild?.paramMap.subscribe((params) => {
       const tab = params.get('tabname');
       this.selectedIndex = tab == 'favorites' ? 1 : 0;
@@ -68,20 +69,18 @@ export class UserPageComponent implements OnInit {
     private readonly tokenService: TokenStorageService,
     private readonly sharedService: SharedService,
     public dialog: MatDialog
-  ) {}
+  ) { }
 
-  async get_user_data(username: string) {
-    lastValueFrom(await this.userService.getUser(username)).then(
-      (response) => {
-        this.user = response;
+  get_user_data(username: string) {
+    this.userService.getUser(username).subscribe({
+      next: (data) => {
+        this.user = data
       },
-      (error) => {
-        console.log(error);
+      error: (e) => {
+        console.error(e);
       }
-    ).finally(
-      () => {
-        this.isContent = true;
-      }
+    }).add(
+      () => { this.isContent = true }
     );   
   }
 
@@ -107,15 +106,12 @@ export class UserPageComponent implements OnInit {
     this.isBtnOverlayed = true;
       lastValueFrom(await this.userService.follow(this.user.username))
       .then(
-        (_data) => {
-          this.user.followed = true;
-        },
-        (error) => {
-          console.log(error);
-        }
-      ).finally(() => {
-          this.isBtnOverlayed = false;
-        }
+        (_data) => this.user.followed = true
+      ).catch(
+        (e) => console.error(e)
+      )
+      .finally(
+        () => this.isBtnOverlayed = false
       );
   }
 
@@ -154,7 +150,7 @@ export class UserPageComponent implements OnInit {
     }
   }
 
-  on_file_change(e: any) {
+  async on_file_change(e: any) {
     if (e.target.files && e.target.files.length) {
       this.fileData = e.target.files[0];
     }
@@ -162,7 +158,7 @@ export class UserPageComponent implements OnInit {
     if (this.avatarRef !== undefined) {
       this.avatarRef.close();
     }
-    this.submit_avatar();
+    await this.submit_avatar();
   }
 
   async submit_avatar() {
@@ -175,18 +171,14 @@ export class UserPageComponent implements OnInit {
           (response: any) => {
             this.user.avatar = response.avatar;
             this.user.has_avatar = response.has_avatar;
-          },
-          (error) => {
-            this.sharedService.showSnackbar(
-              'La demande a échoué avec le statut http ' + error.status,
-              'Dismiss',
-              7000
-            );
           }
         )
-        .finally(() => {
-          this.isOverlayed = false;
-        });
+        .catch(
+          (e) => this.sharedService.showSnackbar('La demande a échoué avec le statut http ' + e.status, 'Dismiss', 7000)
+        )
+        .finally(
+          () => this.isOverlayed = false
+        );
   }
 
   open_subscriptions_dialog(): void {

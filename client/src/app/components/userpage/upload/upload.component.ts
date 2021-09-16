@@ -4,14 +4,15 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { lastValueFrom } from 'rxjs';
 import { PostService } from 'src/app/services/post.service';
 import { SharedService } from 'src/app/services/shared.service';
-import { UserpostsComponent } from '../userposts/userposts.component';
+import { PublicationsComponent } from '../publications/publications.component';
 
 @Component({
-    selector: 'app-upload',
+    selector: 'userpage-upload',
     templateUrl: './upload.component.html',
     styleUrls: ['./upload.component.css']
 })
 export class UploadComponent {
+    
     imageFile!: string;
     fileData!: Blob;
     isSending!: boolean;
@@ -24,7 +25,7 @@ export class UploadComponent {
 
     constructor(
         public dialogRef: MatDialogRef<UploadComponent>,
-        @Inject(MAT_DIALOG_DATA) public userposts: UserpostsComponent,
+        @Inject(MAT_DIALOG_DATA) public userposts: PublicationsComponent,
         private postService: PostService,
         private sharedService: SharedService
     ) {}
@@ -62,18 +63,14 @@ export class UploadComponent {
             (_data) => {
                 this.isSent = true;
                 this.close_dialog();
-            },
-            (error) => {
-                this.isSending = false;
-                this.sharedService.showSnackbar(
-                    JSON.stringify(
-                        'POST request failed with status code ' + error.status
-                    ),
-                    'Dismiss',
-                    7000
-                );
             }
-        );
+        )
+        .catch(
+            (e) => {
+                this.sharedService.showSnackbar(JSON.stringify('POST request failed with status code ' + e.status), 'Dismiss', 7000);
+            }
+        )
+        .finally(() => this.isSending = false)
     }
 
     close_dialog() {

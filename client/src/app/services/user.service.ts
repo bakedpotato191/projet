@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Publication } from '../interfaces/publication';
 import { User } from '../interfaces/user';
 
@@ -13,7 +14,7 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  async getUser(username: string) {
+  getUser(username: string): Observable<any> {
     return this.http.get<User>(`${this.API}/info/${username}`);
   }
 

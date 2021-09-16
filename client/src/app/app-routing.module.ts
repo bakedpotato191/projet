@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { FavoritesComponent } from './components/favorites/favorites.component';
-import { UserPageComponent } from './components/userpage/userpage.component';
 import { LoginComponent } from './components/login/login.component';
 import { PostComponent } from './components/post/post.component';
 import { RegisterComponent } from './components/register/register.component';
@@ -18,12 +16,8 @@ const routes: Routes = [
   { path: 'explore', component: ExploreComponent, canActivate: [AuthGuard] },
   { path: 'password_reset', redirectTo: 'password_reset/', pathMatch: 'full' },
   { path: 'password_reset/:token', component: RestoreComponent, canActivate:[LoggedInAuthGuard] },
-  { path: 'profile', redirectTo:'/login', pathMatch:'full' },
-  { path: 'profile/:username', component: UserPageComponent,
-  children: [
-      { path:':tabname', component: FavoritesComponent }
-    ] 
-  },
+  { path: 'p/:id', component: PostComponent },
+  { path: 'profile', loadChildren: () => import('./components/userpage/userpage.module').then(m => m.UserpageModule)},
   { path: 'p/:id', component: PostComponent }
 ];
 
