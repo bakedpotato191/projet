@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { lastValueFrom } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { SharedService } from 'src/app/services/shared.service';
 
@@ -60,20 +59,19 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  async submit(): Promise<void> {
+  submit() {
     if (this.registrationForm.invalid) {
       return;
     }
 
-    lastValueFrom(await this.authService.register(this.registrationForm.value))
-    .then(
-      (_data) => {
+    this.authService.register(this.registrationForm.value).subscribe({
+      next: (_data) => {
         this.isSuccessful = true;
         this.isSignUpFailed = false;
       },
-      (error) => {
-        console.log(error);
-        if (error.status === 409) {
+      error: (e) => {
+        console.error(e);
+        if (e.status === 409) {
           this.sharedService.showSnackbar(
             "Le nom d'utilisateur est déjà utilisé",
             'Dismiss',
@@ -84,7 +82,7 @@ export class RegisterComponent implements OnInit {
           });
         }
         this.isSignUpFailed = true;
-      }
-    );
+      },
+    });
   }
 }

@@ -5,77 +5,78 @@ import { SharedService } from 'src/app/services/shared.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 
 @Component({
-    selector: 'app-login',
-    templateUrl: './login.component.html',
-    styleUrls: ['./login.component.css']
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-    isHiden = true;
-    loginForm!: FormGroup;
+  isHiden = true;
+  loginForm!: FormGroup;
 
-    isLoggedIn = false;
-    isLoginFailed = false;
-    isLoading!: boolean;
-    errorMessage = '';
-    roles: string[] = [];
+  isLoggedIn = false;
 
-    constructor(
-        private authService: AuthService,
-        private tokenStorage: TokenStorageService,
-        private sharedService: SharedService,
-        private fb: FormBuilder
-    ) {}
+  isLoading!: boolean;
+  errorMessage = '';
+  roles: string[] = [];
 
-    ngOnInit(): void {
-        this.sharedService.setTitle('Connexion');
-        this.init_login_form();
-        if (this.tokenStorage.getToken()) {
-            this.isLoggedIn = true;
-            this.roles = this.tokenStorage.getUser().roles;
+  constructor(
+    private authService: AuthService,
+    private tokenStorage: TokenStorageService,
+    private sharedService: SharedService,
+    private fb: FormBuilder
+  ) {}
+
+  ngOnInit(): void {
+    this.sharedService.setTitle('Connexion');
+    this.init_login_form();
+    if (this.tokenStorage.getToken()) {
+      this.isLoggedIn = true;
+      this.roles = this.tokenStorage.getUser().roles;
+    }
+  }
+
+  init_login_form(): void {
+    this.loginForm = this.fb.group({
+      email: [
+        '',
+        [Validators.required, Validators.email, Validators.maxLength(128)],
+      ],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.maxLength(32),
+        ],
+      ],
+    });
+  }
+
+  submit() {
+    if (this.loginForm.invalid) {
+      return;
+    }
+    this.isLoading = true;
+    this.authService.login(this.loginForm.value).subscribe({
+      next: (data) => {
+        this.tokenStorage.saveToken(data.accessToken);
+        this.tokenStorage.saveUser(data);
+        this.isLoggedIn = true;
+        this.roles = this.tokenStorage.getUser().roles;
+        window.location.reload();
+      },
+      error: (e) => {
+        console.error(e);
+
+        this.isLoading = false;
+        if (e.status === 401) {
+          this.sharedService.showSnackbar(
+            'Email et/ou mot de passe incorrect(s)',
+            'Dismiss',
+            7000
+          );
         }
-    }
-
-    init_login_form(): void {
-        this.loginForm = this.fb.group({
-            email: [
-                '',
-                [Validators.required, Validators.email, Validators.maxLength(128)]
-            ],
-            password: [
-                '',
-                [Validators.required, Validators.minLength(8), Validators.maxLength(32)]
-            ]
-        });
-    }
-
-    async submit() {
-        if (this.loginForm.invalid) {
-            return;
-        }
-        this.isLoading = true;
-        (await this.authService.login(this.loginForm.value))
-        .toPromise()
-        .then(
-            (response: any) => {
-                this.tokenStorage.saveToken(response.accessToken);
-                this.tokenStorage.saveUser(response);
-
-                this.isLoginFailed = false;
-                this.isLoggedIn = true;
-                this.roles = this.tokenStorage.getUser().roles;
-                window.location.reload();
-            },
-            (error) => {
-                this.isLoginFailed = true;
-                this.isLoading = false;
-                if (error.status === 401) {
-                    this.sharedService.showSnackbar(
-                        'Email et/ou mot de passe incorrect(s)',
-                        'Dismiss',
-                        7000
-                    );
-                }
-            }
-        );
-    }
+      },
+    });
+  }
 }

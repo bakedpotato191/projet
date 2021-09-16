@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,23 +11,23 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  async login(formData: FormData) {
+  login(formData: FormData): Observable<any> {
     return this.http.post(this.AUTH_API + 'signin', formData);
   }
 
-  async register(formData: FormData) {
+  register(formData: FormData): Observable<any> {
     return this.http.post(this.AUTH_API + 'signup', formData);
   }
 
-  async restore(formData: FormData) {
+  restore(formData: FormData): Observable<any> {
     return this.http.post(this.AUTH_API + 'restore', formData);
   }
 
-  async verifyToken(json: any) {
+  verifyToken(json: any): Observable<any> {
     return this.http.post(this.AUTH_API + 'verify_token', json);
   }
 
-  async reset(formData: FormData) {
+  reset(formData: FormData): Observable<any> {
     return this.http.post(this.AUTH_API + 'reset_password', formData);
   }
 
