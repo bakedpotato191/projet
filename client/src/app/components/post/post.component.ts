@@ -54,11 +54,9 @@ export class PostComponent implements OnInit {
   }
 
   get_post_by_id(id: number) {
-    this.postService
-      .getPostById(id)
-      .subscribe({
-        next: (r) => {
-          this.post = r;
+    this.postService.getPostById(id).subscribe({
+        next: (data) => {
+          this.post = data;
 
           if (this.post.utilisateur.username === this.tokenService.getUser().username) {
             this.isMyPost = true;
@@ -74,25 +72,31 @@ export class PostComponent implements OnInit {
       this.dialog.open(LoginComponent);
     }
     lastValueFrom(await this.postService.likePost(id))
-      .then((_response) => (this.post.liked = true))
-      .catch((e) => console.log(e));
+      .then(
+        (_data) => this.post.liked = true
+      )
+      .catch(
+        (e) => console.error(e)
+      );
   }
 
   async dislike(id: number): Promise<void> {
     lastValueFrom(await this.postService.dislikePost(id))
-      .then((_data) => this.post.liked = false)
-      .catch((e) => console.log(e));
+      .then(
+        (_data) => this.post.liked = false
+      )
+      .catch(
+        (e) => console.error(e)
+      );
   }
 
   async remove_publication(id: number) {
     lastValueFrom(await this.postService.removePost(id))
-      .then((_data) =>
-        this.router.navigate([
-          `/profile/${this.tokenService.getUser().username}`,
-        ])
+      .then(
+        (_data) => this.router.navigate([`/profile/${this.tokenService.getUser().username}`])
       )
       .catch((e) => {
-        console.log(e);
+        console.error(e);
         this.sharedService.showSnackbar(
           'Request failed with status code ' + e.status,
           'Dismiss',
