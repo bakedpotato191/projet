@@ -47,8 +47,8 @@ public class PublicationServiceImpl implements PublicationService {
 	private CommentRepository cRepository;
 	
 	@Autowired
-    @Qualifier("mainExecutor") 
-    private Executor existingThreadPool; 
+    	@Qualifier("mainExecutor") 
+    	private Executor existingThreadPool; 
 
 	@Override
 	@Async
