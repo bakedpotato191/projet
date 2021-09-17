@@ -6,30 +6,40 @@ import { UserService } from 'src/app/services/user.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { SnackBarService } from 'src/app/services/snackbar.service';
-import { UploadComponent } from '../upload/upload.component';
+import { UploadComponent } from './dialogs/upload/upload.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { LoginComponent } from '../../login/login.component';
+import { LoginComponent } from '../login/login.component';
 import { FormGroup } from '@angular/forms';
 import { lastValueFrom, Subscription } from 'rxjs';
-import { PublicationsComponent } from '../publications/publications.component';
 import { User } from 'src/app/interfaces/user';
 import { Publication} from 'src/app/interfaces/publication';
-import { AvatarComponent } from '../dialogs/avatar/avatar.component';
-import { FollowingComponent } from '../dialogs/followings/following.component';
-import { FollowerComponent } from '../dialogs/followers/follower.component';
+import { AvatarComponent } from './dialogs/avatar/avatar.component';
+import { FollowingComponent } from './dialogs/followings/following.component';
+import { FollowerComponent } from './dialogs/followers/follower.component';
 import { Title } from '@angular/platform-browser';
+
+export class Notifier {
+  valueChanged: (data: string) => void = (d: string) => { };
+}
 
 @Component({
   selector: 'app-userpage',
-  templateUrl: './head.component.html',
-  styleUrls: ['./head.component.css'],
+  templateUrl: './userpage.component.html',
+  styleUrls: ['./userpage.component.css'],
 })
-export class HeadComponent implements OnInit {
+export class UserpageComponent implements OnInit {
+  @ViewChild('publications') publications!: ElementRef;
   @ViewChild('input') input!: ElementRef;
-  @ViewChild(PublicationsComponent) userposts: any;
+
+  notifyObj = new Notifier();
+  tellChild(value: string) {
+      this.notifyObj.valueChanged(value);
+  }
 
   isMyPage!: boolean;
   isContent: boolean = false;
+  isFavorites: boolean = false;
+  isPublications: boolean = false;
   user!: User;
   posts!: Publication[];
 
@@ -66,10 +76,14 @@ export class HeadComponent implements OnInit {
       this.isMyPage = username == this.tokenService.getUser().username;
     });
 
-    this.activatedRoute.firstChild?.paramMap.subscribe((params) => {
-      const tab = params.get('tabname');
-      this.selectedIndex = tab == 'favorites' ? 1 : 0;
-    });
+    if (this.router.url.endsWith('favorites')) {
+        this.selectedIndex = 1;
+        this.isFavorites = true;
+      }
+      else {
+        this.selectedIndex = 0;
+        this.isPublications = true;
+      }
   }
 
   get_user_data(username: string) {
@@ -87,14 +101,13 @@ export class HeadComponent implements OnInit {
 
   open_upload_dialog(): void {
     this.uploadRef = this.dialog.open(UploadComponent, {
-      data: this.userposts,
       width: '500px',
       autoFocus: false,
     });
 
     this.uploadRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.userposts.get_latest_post();
+        this.tellChild('fetch');
       }
     });
   }
@@ -139,9 +152,11 @@ export class HeadComponent implements OnInit {
   on_tab_change(event: MatTabChangeEvent): void {
     switch (event.index) {
       case 0:
+        this.isPublications = true;
         this.router.navigate(['profile/' + this.user.username]);
         break;
       case 1:
+        this.isFavorites = true;
         this.router.navigate(['favorites'], {
           relativeTo: this.activatedRoute,
         });
@@ -249,9 +264,5 @@ export class HeadComponent implements OnInit {
       data: this.input,
       autoFocus: false,
     })
-  }
-
-  scroll_till_publications(elRef: ElementRef) {
-    elRef.nativeElement.scrollIntoView({behavior: 'smooth'});
   }
 }

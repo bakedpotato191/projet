@@ -101,16 +101,17 @@
     border-top: 1px solid rgb(58, 58, 58);
 }
 
-#numberPub,
-#numberSubs,
-#numberSubbed {
+#data li {
   width: 33%;
   align-items: center;
 }
 
-.count{
+#data li span {
   margin-bottom: 2px;
   color: #e1b649;
+}
+
+#data li .clickable {
   cursor: pointer;
 }
 

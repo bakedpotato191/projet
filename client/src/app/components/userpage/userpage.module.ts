@@ -1,30 +1,28 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HeadComponent } from './head/head.component';
-import { PublicationsComponent } from './publications/publications.component';
-import { FavoritesComponent } from './favorites/favorites.component';
 import { RouterModule, Routes } from '@angular/router';
-import { MaterialModule } from 'src/app/material.module';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { UserpageComponent } from './userpage.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { UploadComponent } from './upload/upload.component';
+import { MaterialModule } from 'src/app/material.module';
+import { UploadComponent } from './dialogs/upload/upload.component';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DialogsModule } from './dialogs/dialogs.module';
-import { NotFoundModule } from '../../components/shared/notfound.module';
+import { FavoritesModule } from './favorites/favorites.module';
+import { NotFoundModule } from './../shared/notfound.module';
+import { PublicationsModule } from './publications/publications.module';
 
 const routes: Routes = [
-  { path: ':username', component: HeadComponent,
+  { path: ':username', component: UserpageComponent,
   children: [
-      { path:':tabname', component: FavoritesComponent }
+      { path: 'favorites', loadChildren: () => import('./favorites/favorites.module').then((m) => m.FavoritesModule) }
     ] 
   }
 ];
 
 @NgModule({
   declarations: [
-    HeadComponent,
-    PublicationsComponent,
-    FavoritesComponent,
+    UserpageComponent,
     UploadComponent
   ],
   imports: [
@@ -34,6 +32,8 @@ const routes: Routes = [
     FlexLayoutModule,
     ReactiveFormsModule,
     DialogsModule,
+    FavoritesModule,
+    PublicationsModule,
     NotFoundModule,
     RouterModule.forChild(routes)
   ],

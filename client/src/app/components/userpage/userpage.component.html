@@ -42,14 +42,14 @@
                     </ul>
                 </div>
                 <ul fxLayout="row" id="data" fxLayout="row">
-                    <li id="numberPub" fxLayout="column">
-                        <span class="count" (click)="scroll_till_publications(userposts.postsEl)">{{ user.postCount }}</span> publications
+                    <li fxLayout="column">
+                        <span>{{ user.postCount }}</span> publications
                     </li>
-                    <li id="numberSubs" fxLayout="column">
-                        <span class="count" (click)="open_subscribers_dialog()">{{ user.followerCount }}</span> abonnés
+                    <li fxLayout="column">
+                        <span class="clickable" (click)="open_subscribers_dialog()">{{ user.followerCount }}</span> abonnés
                     </li>
-                    <li id="numberSubbed" fxLayout="column">
-                        <span class="count" (click)="open_subscriptions_dialog()">{{
+                    <li fxLayout="column">
+                        <span class="clickable" (click)="open_subscriptions_dialog()">{{
                             user.followingCount
                             }}</span>
                         abonnements
@@ -59,19 +59,28 @@
             <mat-tab-group class="tab-group" (selectedTabChange)="on_tab_change($event)" [selectedIndex]="selectedIndex"
                 mat-stretched-tabs animationDuration="700ms" mat-align-tabs="center" color="accent">
                 <mat-tab id="first-tab" mat-tab-link>
+            
                     <ng-template mat-tab-label>
                         <mat-icon class="example-tab-icon" fontSet="material-icons">photo_library</mat-icon>
                         <span>Publications</span>
                     </ng-template>
-                    <userpage-publications [username]="user.username" #userposts></userpage-publications>
+
+                    <div *ngIf="isPublications">
+                        <userpage-publications #publications [username]="user.username" [notify]="notifyObj"></userpage-publications>
+                    </div>
                 </mat-tab>
 
                 <mat-tab *ngIf="isMyPage" mat-tab-link>
+                    
                     <ng-template mat-tab-label>
                         <mat-icon class="example-tab-icon" fontSet="material-icons">star</mat-icon>
                         <span>Enregistrements</span>
                     </ng-template>
-                    <userpage-favorites></userpage-favorites>
+                    
+                    <div *ngIf='isFavorites'>
+                        <userpage-favorites [selected]="isFavorites"></userpage-favorites>
+                    </div>
+                    
                 </mat-tab>
             </mat-tab-group>
         </div>

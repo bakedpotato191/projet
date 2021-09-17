@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { Publication } from 'src/app/interfaces/publication';
@@ -11,6 +11,8 @@ import { UserService } from 'src/app/services/user.service';
     styleUrls: ['./favorites.component.css']
 })
 export class FavoritesComponent implements OnInit {
+    @Input() selected!: boolean;
+    
     favorites: Publication[] = [];
     post!: Publication;
     canLoad: boolean = false;

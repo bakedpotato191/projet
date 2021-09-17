@@ -1,10 +1,9 @@
-import { Component, Inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { lastValueFrom } from 'rxjs';
 import { PostService } from 'src/app/services/post.service';
 import { SnackBarService } from 'src/app/services/snackbar.service';
-import { PublicationsComponent } from '../publications/publications.component';
 
 @Component({
     selector: 'userpage-upload',
@@ -25,7 +24,6 @@ export class UploadComponent {
 
     constructor(
         public dialogRef: MatDialogRef<UploadComponent>,
-        @Inject(MAT_DIALOG_DATA) public userposts: PublicationsComponent,
         private postService: PostService,
         private sbService: SnackBarService
     ) {}

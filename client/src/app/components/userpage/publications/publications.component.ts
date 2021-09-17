@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { Publication } from 'src/app/interfaces/publication';
 import { UserService } from 'src/app/services/user.service';
+import { Notifier } from '../userpage.component';
 
 @Component({
     selector: 'userpage-publications',
@@ -21,6 +22,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class PublicationsComponent implements OnInit {
     @Input() username!: string;
+    @Input() notify = new Notifier();
     @ViewChild("list") postsEl!: ElementRef;
 
     posts: Publication[] = [];
@@ -40,27 +42,26 @@ export class PublicationsComponent implements OnInit {
     async ngOnInit() {
         this.canLoad = true;
         await this.get_user_posts();
+        this.notify.valueChanged = async (s: string) => {
+            console.log(`Parent has notified changes to ${s}`);
+            await this.get_latest_post();
+        };
     }
-
     open_post_page(pub: Publication) {
         this.router.navigate(['publication', pub.id], {state: { data: pub }});
     }
 
     async get_latest_post() {
-        lastValueFrom(await this.userService
-            .getUserPosts(this.username, 0, 1, this.sort))
+        lastValueFrom(await this.userService.getUserPosts(this.username, 0, 1, this.sort))
             .then(
-                (data) => {
-                this.posts = data.concat(this.posts);
-            },
-            (error) => {
-                console.log(error);
-            });
+                (data) => this.posts = data.concat(this.posts)
+            ).catch(
+                (e) => console.error(e)
+            )
     }
 
     async get_user_posts() {
-        lastValueFrom(await this.userService
-            .getUserPosts(this.username, this.page, this.size, this.sort))
+        lastValueFrom(await this.userService.getUserPosts(this.username, this.page, this.size, this.sort))
             .then(
                 (data) => {
                     if (data.length !== 0) {
@@ -77,7 +78,7 @@ export class PublicationsComponent implements OnInit {
                 }
             )
             .catch(
-                (e) => console.log(e)
+                (e) => console.error(e)
             )
             .finally(
                 () => this.isLoading = false
