@@ -137,12 +137,9 @@ export class UserpageComponent implements OnInit {
     this.isBtnOverlayed = true;
       lastValueFrom(await this.userService.unfollow(this.user.username))
       .then(
-        (_response) => {
-          this.user.followed = false;
-        },
-        (error) => {
-          console.log(error);
-        }
+        (_data) => this.user.followed = false
+       ).catch(
+        (e) => console.error(e)
       ).finally(() => {
           this.isBtnOverlayed = false;
         }
