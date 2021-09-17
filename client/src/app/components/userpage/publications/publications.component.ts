@@ -1,10 +1,9 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 import { Publication } from 'src/app/interfaces/publication';
 import { UserService } from 'src/app/services/user.service';
-import { HeadComponent } from '../head/head.component';
 
 @Component({
     selector: 'userpage-publications',
@@ -21,6 +20,7 @@ import { HeadComponent } from '../head/head.component';
     ]
 })
 export class PublicationsComponent implements OnInit {
+    @Input() username!: string;
     @ViewChild("list") postsEl!: ElementRef;
 
     posts: Publication[] = [];
@@ -34,8 +34,7 @@ export class PublicationsComponent implements OnInit {
 
     constructor(
         private readonly router: Router,
-        private readonly userService: UserService,
-        private readonly parent: HeadComponent
+        private readonly userService: UserService
     ) {}
 
     async ngOnInit() {
@@ -49,7 +48,7 @@ export class PublicationsComponent implements OnInit {
 
     async get_latest_post() {
         lastValueFrom(await this.userService
-            .getUserPosts(this.parent.username, 0, 1, this.sort))
+            .getUserPosts(this.username, 0, 1, this.sort))
             .then(
                 (data) => {
                 this.posts = data.concat(this.posts);
@@ -61,7 +60,7 @@ export class PublicationsComponent implements OnInit {
 
     async get_user_posts() {
         lastValueFrom(await this.userService
-            .getUserPosts(this.parent.username, this.page, this.size, this.sort))
+            .getUserPosts(this.username, this.page, this.size, this.sort))
             .then(
                 (data) => {
                     if (data.length !== 0) {

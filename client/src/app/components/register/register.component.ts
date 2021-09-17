@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { AuthService } from 'src/app/services/auth.service';
-import { SharedService } from 'src/app/services/shared.service';
+import { SnackBarService } from 'src/app/services/snackbar.service';
 
 @Component({
   selector: 'app-register',
@@ -17,12 +18,13 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private sharedService: SharedService,
+    private sbService: SnackBarService,
+    private readonly titleService: Title,
     private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
-    this.sharedService.setTitle('Inscription');
+    this.titleService.setTitle('Inscription');
     this.init_signup_form();
   }
 
@@ -72,7 +74,7 @@ export class RegisterComponent implements OnInit {
       error: (e) => {
         console.error(e);
         if (e.status === 409) {
-          this.sharedService.showSnackbar(
+          this.sbService.showSnackbar(
             "Le nom d'utilisateur est déjà utilisé",
             'Dismiss',
             7000

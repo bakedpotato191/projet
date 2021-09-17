@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-import { SharedService } from 'src/app/services/shared.service';
+import { SnackBarService } from 'src/app/services/snackbar.service';
 
 @Component({
     selector: 'app-restore',
@@ -23,9 +24,10 @@ export class RestoreComponent implements OnInit {
     uuid!: string | null;
 
     constructor(
+        private readonly titleService: Title,
         private readonly route: ActivatedRoute,
         private readonly authService: AuthService,
-        private readonly sharedService: SharedService,
+        private readonly sbService: SnackBarService,
         private fb: FormBuilder
     ) {}
 
@@ -43,7 +45,7 @@ export class RestoreComponent implements OnInit {
                     console.error(e);
                     this.isInvalid = true;
                     this.init_restore_form();
-                    this.sharedService.showSnackbar(
+                    this.sbService.showSnackbar(
                         'Il semble que vous ayez cliqué sur un lien de réinitialisation de mot de passe invalide. Veuillez réessayer.',
                         'Fermer',
                         0
@@ -51,9 +53,9 @@ export class RestoreComponent implements OnInit {
                 }
             }
             );
-            this.sharedService.setTitle('Mis a jour de mot de passe');
+            this.titleService.setTitle('Mis a jour de mot de passe');
         } else {
-            this.sharedService.setTitle('Reinitialisation');
+            this.titleService.setTitle('Reinitialisation');
             this.init_restore_form();
         }
     }
@@ -90,7 +92,7 @@ export class RestoreComponent implements OnInit {
         next: (_data) => this.isSent = true,
         error: (e) => {
                 console.log(e);
-                this.sharedService.showSnackbar(e.error, 'Dismiss', 0);
+                this.sbService.showSnackbar(e.error, 'Dismiss', 0);
             }
         })
         .add(
@@ -106,7 +108,7 @@ export class RestoreComponent implements OnInit {
         next: (_data) => this.isUpdated = true,
         error: (e) => {
                 console.log(e);
-                this.sharedService.showSnackbar(e.error, 'Dismiss', 0);
+                this.sbService.showSnackbar(e.error, 'Dismiss', 0);
             }
         }
     );

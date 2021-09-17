@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PostService } from 'src/app/services/post.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
-import { SharedService } from 'src/app/services/shared.service';
+import { SnackBarService } from 'src/app/services/snackbar.service';
 import { LoginComponent } from '../../login/login.component';
 import { Commentaire } from 'src/app/interfaces/commentaire';
 import { Publication } from 'src/app/interfaces/publication';
@@ -28,7 +28,7 @@ export class ContentComponent implements OnInit {
 
   constructor(
     private readonly postService: PostService,
-    private readonly sharedService: SharedService,
+    private readonly sbService: SnackBarService,
     private readonly tokenService: TokenStorageService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
@@ -97,7 +97,7 @@ export class ContentComponent implements OnInit {
       )
       .catch((e) => {
         console.error(e);
-        this.sharedService.showSnackbar(
+        this.sbService.showSnackbar(
           'Request failed with status code ' + e.status,
           'Dismiss',
           5000

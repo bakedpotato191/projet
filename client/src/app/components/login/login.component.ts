@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { AuthService } from 'src/app/services/auth.service';
-import { SharedService } from 'src/app/services/shared.service';
+import { SnackBarService } from 'src/app/services/snackbar.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 
 @Component({
@@ -22,12 +23,13 @@ export class LoginComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private tokenStorage: TokenStorageService,
-    private sharedService: SharedService,
+    private sbService: SnackBarService,
+    private readonly titleService: Title,
     private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
-    this.sharedService.setTitle('Connexion');
+    this.titleService.setTitle('Connexion');
     this.init_login_form();
     if (this.tokenStorage.getToken()) {
       this.isLoggedIn = true;
@@ -67,16 +69,14 @@ export class LoginComponent implements OnInit {
       },
       error: (e) => {
         console.error(e);
-
-        this.isLoading = false;
         if (e.status === 401) {
-          this.sharedService.showSnackbar(
+          this.sbService.showSnackbar(
             'Email et/ou mot de passe incorrect(s)',
             'Dismiss',
             7000
           );
         }
       },
-    });
+    }).add(() => this.isLoading = false);
   }
 }

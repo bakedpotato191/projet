@@ -25,13 +25,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HttpClientModule,
     BrowserModule,
     BrowserAnimationsModule,
+    HeaderModule,
     UserpageModule,
     NotFoundModule,
     RestoreModule,
     LoginModule,
     RegisterModule,
-    ExploreModule,
-    HeaderModule
+    ExploreModule
   ],
   declarations: [
     AppComponent

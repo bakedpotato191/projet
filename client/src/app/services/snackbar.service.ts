@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Title } from '@angular/platform-browser';
+
 @Injectable({
   providedIn: 'root'
 })
-export class SharedService {
+export class SnackBarService {
 
-  constructor(private matSnackBar: MatSnackBar,
-              private titleService: Title) { }
+  constructor(private matSnackBar: MatSnackBar) { }
 
   showSnackbar(content: any, action: any, duration: number): void {
     let sb = this.matSnackBar.open(content, action, {
@@ -20,9 +19,5 @@ export class SharedService {
     sb.onAction().subscribe(() => {
       sb.dismiss();
     });
-  }
-
-  async setTitle(newTitle: string) {
-    this.titleService.setTitle(newTitle);
   }
 }

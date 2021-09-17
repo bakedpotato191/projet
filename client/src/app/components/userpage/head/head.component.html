@@ -63,7 +63,7 @@
                         <mat-icon class="example-tab-icon" fontSet="material-icons">photo_library</mat-icon>
                         <span>Publications</span>
                     </ng-template>
-                    <userpage-publications #userposts></userpage-publications>
+                    <userpage-publications [username]="user.username" #userposts></userpage-publications>
                 </mat-tab>
 
                 <mat-tab *ngIf="isMyPage" mat-tab-link>

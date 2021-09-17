@@ -2,7 +2,7 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Commentaire } from 'src/app/interfaces/commentaire';
 import { CommentService } from 'src/app/services/comment.service';
-import { SharedService } from 'src/app/services/shared.service';
+import { SnackBarService } from 'src/app/services/snackbar.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { LoginComponent } from '../../login/login.component';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -39,7 +39,7 @@ export class CommentsComponent implements OnInit {
 
     constructor(
         private readonly commentService: CommentService,
-        private readonly sharedService: SharedService,
+        private readonly sbService: SnackBarService,
         private readonly tokenService: TokenStorageService,
         public dialog: MatDialog,
         private readonly parent: ContentComponent,
@@ -141,7 +141,7 @@ export class CommentsComponent implements OnInit {
                 .catch(
                     (e) => {
                         console.error(e);
-                        this.sharedService.showSnackbar(
+                        this.sbService.showSnackbar(
                             'La demande a échoué avec le statut http ' + e.status,
                             'Dismiss',
                             5000

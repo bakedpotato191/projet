@@ -5,7 +5,7 @@ import { UserService } from 'src/app/services/user.service';
 
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { SharedService } from 'src/app/services/shared.service';
+import { SnackBarService } from 'src/app/services/snackbar.service';
 import { UploadComponent } from '../upload/upload.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { LoginComponent } from '../../login/login.component';
@@ -17,6 +17,7 @@ import { Publication} from 'src/app/interfaces/publication';
 import { AvatarComponent } from '../dialogs/avatar/avatar.component';
 import { FollowingComponent } from '../dialogs/followings/following.component';
 import { FollowerComponent } from '../dialogs/followers/follower.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-userpage',
@@ -28,7 +29,6 @@ export class HeadComponent implements OnInit {
   @ViewChild(PublicationsComponent) userposts: any;
 
   isMyPage!: boolean;
-  username!: string;
   isContent: boolean = false;
   user!: User;
   posts!: Publication[];
@@ -48,12 +48,22 @@ export class HeadComponent implements OnInit {
 
   selectedIndex!: number;
 
+  constructor(
+    private userService: UserService,
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly router: Router,
+    private readonly tokenService: TokenStorageService,
+    private readonly sbService: SnackBarService,
+    private readonly titleService: Title,
+    public dialog: MatDialog
+  ) { }
+
    ngOnInit() {
     this.activatedRoute.paramMap.subscribe((param) => {
-      this.username = param.get('username')!;
-      this.sharedService.setTitle('@' + this.username);
-      this.get_user_data(this.username);
-      this.isMyPage = this.username == this.tokenService.getUser().username;
+      let username = param.get('username')!;
+      this.titleService.setTitle('@' + username);
+      this.get_user_data(username);
+      this.isMyPage = username == this.tokenService.getUser().username;
     });
 
     this.activatedRoute.firstChild?.paramMap.subscribe((params) => {
@@ -61,15 +71,6 @@ export class HeadComponent implements OnInit {
       this.selectedIndex = tab == 'favorites' ? 1 : 0;
     });
   }
-
-  constructor(
-    private userService: UserService,
-    private readonly activatedRoute: ActivatedRoute,
-    private readonly router: Router,
-    private readonly tokenService: TokenStorageService,
-    private readonly sharedService: SharedService,
-    public dialog: MatDialog
-  ) { }
 
   get_user_data(username: string) {
     this.userService.getUser(username).subscribe({
@@ -138,7 +139,7 @@ export class HeadComponent implements OnInit {
   on_tab_change(event: MatTabChangeEvent): void {
     switch (event.index) {
       case 0:
-        this.router.navigate(['profile/' + this.username]);
+        this.router.navigate(['profile/' + this.user.username]);
         break;
       case 1:
         this.router.navigate(['favorites'], {
@@ -174,7 +175,7 @@ export class HeadComponent implements OnInit {
           }
         )
         .catch(
-          (e) => this.sharedService.showSnackbar('La demande a échoué avec le statut http ' + e.status, 'Dismiss', 7000)
+          (e) => this.sbService.showSnackbar('La demande a échoué avec le statut http ' + e.status, 'Dismiss', 7000)
         )
         .finally(
           () => this.isOverlayed = false
@@ -185,7 +186,7 @@ export class HeadComponent implements OnInit {
     this.dialog.open(FollowingComponent, {
       height: '450px',
       width: '500px',
-      data: this.username,
+      data: this.user.username,
       panelClass: ['dialog-window-style'],
       autoFocus: false
     });
@@ -195,7 +196,7 @@ export class HeadComponent implements OnInit {
     this.dialog.open(FollowerComponent, {
       height: '450px',
       width: '500px',
-      data: this.username,
+      data: this.user.username,
       panelClass: ['dialog-window-style'],
       autoFocus: false
     });
@@ -228,7 +229,7 @@ export class HeadComponent implements OnInit {
           this.user.avatar = response.avatar;
         },
         (error) => {
-          this.sharedService.showSnackbar(
+          this.sbService.showSnackbar(
             'La requete DELETE a échoué avec le code statut' +
               error.status,
             'Dismiss',
