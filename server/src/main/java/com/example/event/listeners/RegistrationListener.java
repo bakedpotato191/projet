@@ -19,13 +19,13 @@ import com.example.service.AuthService;
 public class RegistrationListener {
 
 	@Autowired
-    private AuthService authService;
+    	private AuthService authService;
 	
 	@Autowired
-    private MessageSource messages;
+    	private MessageSource messages;
 	
 	@Autowired
-    private JavaMailSender mailSender;
+    	private JavaMailSender mailSender;
 
 	@Value("${support.email}")
 	private String supportEmail;
@@ -40,28 +40,27 @@ public class RegistrationListener {
 	}
 	
 	private void confirmRegistration(final OnRegistrationCompleteEvent event) {
-        var user = event.getUser();
-        var token = UUID.randomUUID().toString();
-        authService.createVerificationTokenForUser(user, token);
+        	var user = event.getUser();
+        	var token = UUID.randomUUID().toString();
+        	authService.createVerificationTokenForUser(user, token);
 
-        final SimpleMailMessage email = constructEmailMessage(event, user, token);
-        mailSender.send(email);
-    }
+        	final SimpleMailMessage email = constructEmailMessage(event, user, token);
+        	mailSender.send(email);
+    	}
 
-    private SimpleMailMessage constructEmailMessage(final OnRegistrationCompleteEvent event, final User user, final String token) {
-        var recipientAddress = user.getEmail();
-        var subject = "Registration Confirmation";
-        var confirmationUrl = url + "/confirmation/" + token;
-        var message = messages.getMessage("message.regSuccLink", null, "Votre compte a été enregistré avec succès. "
-        		+ "Pour confirmer votre email, veuillez cliquer sur le lien ci-dessous.", event.getLocale());
-        var email = new SimpleMailMessage();
+    	private SimpleMailMessage constructEmailMessage(final OnRegistrationCompleteEvent event, final User user, final String token) {
+        	var recipientAddress = user.getEmail();
+        	var subject = "Registration Confirmation";
+		var confirmationUrl = url + "/confirmation/" + token;
+		var message = messages.getMessage("message.regSuccLink", null, "Votre compte a été enregistré avec succès. "
+				+ "Pour confirmer votre email, veuillez cliquer sur le lien ci-dessous.", event.getLocale());
+		var email = new SimpleMailMessage();
+
+		email.setTo(recipientAddress);
+		email.setSubject(subject);
+		email.setText(message + " \r\n" + confirmationUrl);
+		email.setFrom(supportEmail);
         
-        email.setTo(recipientAddress);
-        email.setSubject(subject);
-        email.setText(message + " \r\n" + confirmationUrl);
-        email.setFrom(supportEmail);
-        
-        return email;
-    }
-
+        	return email;
+    	}
 }
