@@ -44,7 +44,7 @@ export class PublicationsComponent implements OnInit {
     }
 
     open_post_page(pub: Publication) {
-        this.router.navigate(['p', pub.id], {state: { data: pub }});
+        this.router.navigate(['publication', pub.id], {state: { data: pub }});
     }
 
     async get_latest_post() {

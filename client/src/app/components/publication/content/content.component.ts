@@ -4,18 +4,18 @@ import { PostService } from 'src/app/services/post.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { SharedService } from 'src/app/services/shared.service';
-import { LoginComponent } from '../login/login.component';
+import { LoginComponent } from '../../login/login.component';
 import { Commentaire } from 'src/app/interfaces/commentaire';
 import { Publication } from 'src/app/interfaces/publication';
-import { ConfirmationDialogComponent } from '../shared/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogComponent } from '../../userpage/dialogs/confirmation/confirmation-dialog.component';
 import { lastValueFrom } from 'rxjs';
 
 @Component({
-  selector: 'app-post',
-  templateUrl: './post.component.html',
-  styleUrls: ['./post.component.css'],
+  selector: 'app-publication',
+  templateUrl: './content.component.html',
+  styleUrls: ['./content.component.css'],
 })
-export class PostComponent implements OnInit {
+export class ContentComponent implements OnInit {
   
   id!: number;
   post!: Publication;

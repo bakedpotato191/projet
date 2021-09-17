@@ -39,14 +39,11 @@
         </div>
       </mat-card-actions>
     </mat-card>
-    <app-comments [id]="post.id" [param]="id"></app-comments>
+    <publication-comments [id]="post.id" [param]="id"></publication-comments>
   </ng-template>
 
     <ng-template #error>
-      <div id="notfound" fxLayout="column">
-        <span id="error">404</span>
-        <span>Post n'a pas ététrouvé ou a été supprimé par son auteur.</span>
-      </div>
+      <shared-notfound></shared-notfound>
     </ng-template>
 </div>
 </div>

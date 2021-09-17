@@ -2,7 +2,7 @@ import { Component, ElementRef, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
-    selector: 'app-avatar',
+    selector: 'userpage-shared-avatar',
     templateUrl: './avatar.component.html',
     styleUrls: ['./avatar.component.css']
 })

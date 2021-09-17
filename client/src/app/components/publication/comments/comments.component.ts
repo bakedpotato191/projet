@@ -3,15 +3,15 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Commentaire } from 'src/app/interfaces/commentaire';
 import { CommentService } from 'src/app/services/comment.service';
 import { SharedService } from 'src/app/services/shared.service';
-import { PostComponent } from '../post/post.component';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
-import { LoginComponent } from '../login/login.component';
+import { LoginComponent } from '../../login/login.component';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ConfirmationDialogComponent } from '../shared/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogComponent } from '../../userpage/dialogs/confirmation/confirmation-dialog.component';
 import { lastValueFrom } from 'rxjs';
+import { ContentComponent } from '../content/content.component';
 
 @Component({
-    selector: 'app-comments',
+    selector: 'publication-comments',
     templateUrl: './comments.component.html',
     styleUrls: ['./comments.component.css']
 })
@@ -42,7 +42,7 @@ export class CommentsComponent implements OnInit {
         private readonly sharedService: SharedService,
         private readonly tokenService: TokenStorageService,
         public dialog: MatDialog,
-        private readonly parent: PostComponent,
+        private readonly parent: ContentComponent,
         private fb: FormBuilder
     ) {
         this.options = fb.group({

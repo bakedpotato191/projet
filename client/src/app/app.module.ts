@@ -1,4 +1,5 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
+import { AppRoutingModule } from './app.routes';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -6,7 +7,6 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 import { TimeSinceModule } from '@thisissoon/angular-timesince';
 
 import { HttpClientModule } from '@angular/common/http';
-import { AppRoutingModule } from './app-routing.module';
 
 import { MaterialModule } from './material.module';
 
@@ -16,16 +16,14 @@ import { AuthGuard } from './guards/AuthGuard.guard';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
-import { RegisterComponent } from './components/register/register.component';
-import { LoginComponent } from './components/login/login.component';
-import { PostComponent } from './components/post/post.component';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { CommentsComponent } from './components/comments/comments.component';
-import { RestoreComponent } from './components/restore/restore.component';
-import { ExploreComponent } from './components/explore/explore.component';
 import { HomepageComponent } from './components/homepage/homepage.component';
-import { SharedModule } from './components/shared/shared.module';
 import { UserpageModule } from './components/userpage/userpage.module';
+import { NotFoundModule } from './components/shared/notfound.module';
+import { RouterModule } from '@angular/router';
+import { RestoreModule } from './components/restore/restore.module';
+import { LoginModule } from './components/login/login.module';
+import { RegisterModule } from './components/register/register.module';
+import { ExploreModule } from './components/explore/explore.module';
 
 @NgModule({
   imports: [
@@ -38,21 +36,20 @@ import { UserpageModule } from './components/userpage/userpage.module';
     FlexLayoutModule,
     MaterialModule,
     TimeSinceModule,
-    InfiniteScrollModule,
-    SharedModule,
-    UserpageModule
+    UserpageModule,
+    NotFoundModule,
+    RestoreModule,
+    LoginModule,
+    RegisterModule,
+    ExploreModule
   ],
   declarations: [
     AppComponent,
     HeaderComponent,
-    RegisterComponent,
-    LoginComponent,
-    PostComponent,
-    CommentsComponent,
-    RestoreComponent,
-    ExploreComponent,
     HomepageComponent,
-    PostComponent
+  ],
+  exports: [
+    RouterModule
   ],
   providers: [
     authInterceptorProviders, 
@@ -60,8 +57,7 @@ import { UserpageModule } from './components/userpage/userpage.module';
     AuthGuard,
     Title
   ],
-  bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  bootstrap: [AppComponent]
 })
 
 export class AppModule { }

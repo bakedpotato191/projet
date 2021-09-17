@@ -7,7 +7,7 @@ import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
-  selector: 'app-follower',
+  selector: 'userpage-shared-follower',
   templateUrl: './follower.component.html',
   styleUrls: ['../css/styles.css'],
 })

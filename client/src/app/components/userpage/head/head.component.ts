@@ -14,12 +14,12 @@ import { lastValueFrom, Subscription } from 'rxjs';
 import { PublicationsComponent } from '../publications/publications.component';
 import { User } from 'src/app/interfaces/user';
 import { Publication} from 'src/app/interfaces/publication';
-import { AvatarComponent } from '../../shared/dialogs/avatar/avatar.component';
-import { FollowingComponent } from '../../shared/dialogs/following/following.component';
-import { FollowerComponent } from '../../shared/dialogs/follower/follower.component';
+import { AvatarComponent } from '../dialogs/avatar/avatar.component';
+import { FollowingComponent } from '../dialogs/followings/following.component';
+import { FollowerComponent } from '../dialogs/followers/follower.component';
 
 @Component({
-  selector: 'userpage-head',
+  selector: 'app-userpage',
   templateUrl: './head.component.html',
   styleUrls: ['./head.component.css'],
 })

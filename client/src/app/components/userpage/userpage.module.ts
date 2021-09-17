@@ -9,6 +9,8 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { UploadComponent } from './upload/upload.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DialogsModule } from './dialogs/dialogs.module';
+import { NotFoundModule } from '../../components/shared/notfound.module';
 
 const routes: Routes = [
   { path: ':username', component: HeadComponent,
@@ -31,6 +33,8 @@ const routes: Routes = [
     InfiniteScrollModule,
     FlexLayoutModule,
     ReactiveFormsModule,
+    DialogsModule,
+    NotFoundModule,
     RouterModule.forChild(routes)
   ],
   exports: [RouterModule],
