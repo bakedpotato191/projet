@@ -1,10 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomepageComponent } from './components/homepage/homepage.component';
-import { LoggedInAuthGuard } from './guards/loggedinauthguard.guard';
 
 const routes: Routes = [
-    { path: '', pathMatch: 'full', component:HomepageComponent, canActivate:[LoggedInAuthGuard] },
+    { path: '', pathMatch: 'full', loadChildren: () => import('./components/homepage/homepage.module').then(m => m.HomepageModule) },
     { path: 'signup', loadChildren: () => import('./components/register/register.module').then(m => m.RegisterModule) },
     { path: 'login', loadChildren: () => import('./components/login/login.module').then(m => m.LoginModule)},
     { path: 'explore', loadChildren: () => import('./components/explore/explore.module').then(m => m.ExploreModule) },
