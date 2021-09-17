@@ -10,11 +10,9 @@ import { SnackBarService } from 'src/app/services/snackbar.service';
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent implements OnInit {
-  
   registrationForm!: FormGroup;
   isHidden: boolean = true;
   isSignUpFailed!: boolean;
-
 
   constructor(
     private readonly authService: AuthService,
@@ -42,23 +40,16 @@ export class RegisterComponent implements OnInit {
     if (this.registrationForm.invalid) {
       return;
     }
-
     this.authService.register(this.registrationForm.value).subscribe({
       next: (_data) => {
         this.isSuccessful = true;
         this.isSignUpFailed = false;
       },
-      error: (e) => {
+      error: (e) => { 
         console.error(e);
         if (e.status === 409) {
-          this.sbService.showSnackbar(
-            "Le nom d'utilisateur est déjà utilisé",
-            'Dismiss',
-            7000
-          );
-          this.registrationForm.controls['username'].setErrors({
-            incorrect: true,
-          });
+          this.sbService.showSnackbar("Le nom d'utilisateur est déjà utilisé", 'Dismiss', 7000);
+          this.registrationForm.controls['username'].setErrors({ incorrect: true });
         }
         this.isSignUpFailed = true;
       },
