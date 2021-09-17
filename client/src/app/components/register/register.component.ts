@@ -10,17 +10,17 @@ import { SnackBarService } from 'src/app/services/snackbar.service';
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent implements OnInit {
+  
   registrationForm!: FormGroup;
   isHidden: boolean = true;
-  isSuccessful: boolean = false;
-  isSignUpFailed: boolean = false;
-  errorMessage: string = '';
+  isSignUpFailed!: boolean;
+
 
   constructor(
-    private authService: AuthService,
-    private sbService: SnackBarService,
+    private readonly authService: AuthService,
+    private readonly sbService: SnackBarService,
     private readonly titleService: Title,
-    private fb: FormBuilder
+    private readonly fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -30,34 +30,11 @@ export class RegisterComponent implements OnInit {
 
   init_signup_form() {
     this.registrationForm = this.fb.group({
-      nom: [
-        '',
-        Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(16),
-      ],
-      prenom: [
-        '',
-        Validators.required,
-        Validators.minLength(2),
-        Validators.maxLength(16),
-      ],
-      username: [
-        '',
-        Validators.required,
-        Validators.minLength(4),
-        Validators.maxLength(20),
-      ],
-      email: [
-        '',
-        [Validators.required, Validators.email, Validators.maxLength(128)],
-      ],
-      password: [
-        '',
-        Validators.required,
-        Validators.minLength(8),
-        Validators.maxLength(32),
-      ],
+      nom: [ '', Validators.required, Validators.minLength(2), Validators.maxLength(16) ],
+      prenom: [ '', Validators.required, Validators.minLength(2), Validators.maxLength(16) ],
+      username: [ '', Validators.required, Validators.minLength(4), Validators.maxLength(20) ],
+      email: [ '', [Validators.required, Validators.email, Validators.maxLength(128)] ],
+      password: [ '', Validators.required, Validators.minLength(8), Validators.maxLength(32) ],
     });
   }
 
