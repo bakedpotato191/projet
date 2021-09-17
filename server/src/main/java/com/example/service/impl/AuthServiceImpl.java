@@ -37,7 +37,7 @@ import com.example.web.exception.UsernameAlreadyExistsException;
 @Transactional
 public class AuthServiceImpl implements AuthService {
 	
-	private static final String TOKEN_INVALID = "invalidToken";
+    private static final String TOKEN_INVALID = "invalidToken";
     private static final String TOKEN_EXPIRED = "expired";
     private static final String TOKEN_VALID = "valid";
     
@@ -65,7 +65,7 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private SessionRegistry sessionRegistry;
 
-	@Override
+    @Override
     public User registerUser(final SignupDto signupDto) {
 		
         if (userRepository.findByUsername(signupDto.getUsername()).isPresent()) {
@@ -75,13 +75,13 @@ public class AuthServiceImpl implements AuthService {
         	throw new EmailAlreadyExistsException("Email is already in use.");
         }
         
-		var user = new User();
-		user.setNom(signupDto.getNom());
-		user.setPrenom(signupDto.getPrenom());
-		user.setPassword(passwordEncoder.encode(signupDto.getPassword()));
-		user.setUsername(signupDto.getUsername());
-		user.setEmail(signupDto.getEmail());
-		user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
+	var user = new User();
+	user.setNom(signupDto.getNom());
+	user.setPrenom(signupDto.getPrenom());
+	user.setPassword(passwordEncoder.encode(signupDto.getPassword()));
+	user.setUsername(signupDto.getUsername());
+	user.setEmail(signupDto.getEmail());
+	user.setRoles(Arrays.asList(roleRepository.findByName("ROLE_USER")));
         return userRepository.save(user);
     }
 
