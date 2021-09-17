@@ -50,19 +50,19 @@ public class UserController {
 	private PublicationService publicationService;
 
 	@GetMapping(value= "/info/{username}")
-    public CompletableFuture<UserDto> getUser(@PathVariable("username") String username) throws InterruptedException, ExecutionException {
+    	public CompletableFuture<UserDto> getUser(@PathVariable("username") String username) throws InterruptedException, ExecutionException {
 		return userService.getUserData(username);
-    }
+    	}
 
 	@PostMapping(value= "/follow")
-    public void follow(@RequestBody @Valid final String username) {
+    	public void follow(@RequestBody @Valid final String username) {
 		userService.follow(username);	
-    }
+    	}
 	
 	@PostMapping(value= "/unfollow")
-    public void unfollow(@RequestBody @Valid final String username) {
+    	public void unfollow(@RequestBody @Valid final String username) {
 		userService.unfollow(username);
-    }
+    	}
 	
 	@GetMapping(value = "/favorites")
 	public CompletableFuture<List<PublicationDto>> getFavorites(	@RequestParam Integer page, 
@@ -104,15 +104,15 @@ public class UserController {
 	}
 	
 	@PostMapping(value= "/profile_picture")
-    public CompletableFuture<AvatarResponse> setProfilePicture(@RequestPart("avatar") MultipartFile file) throws IncorrectFileExtensionException, IOException {
+    	public CompletableFuture<AvatarResponse> setProfilePicture(@RequestPart("avatar") MultipartFile file) throws IncorrectFileExtensionException, IOException {
 		return storageService.saveAvatar(file);
 
-    }
+    	}
 	
 	@DeleteMapping(value= "/reset_profile_picture")
-    public CompletableFuture<AvatarResponse> resetProfilePicture() {
+    	public CompletableFuture<AvatarResponse> resetProfilePicture() {
 		return userService.resetProfilePicture();
-    }
+    	}
 	
 	@GetMapping("/profile_picture/{filename:.+}")
 	public ResponseEntity<Resource> getFile(@PathVariable String filename) throws IOException {
