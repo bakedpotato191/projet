@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeadComponent } from './head/head.component';
 import { PublicationsComponent } from './publications/publications.component';
@@ -37,7 +37,6 @@ const routes: Routes = [
     NotFoundModule,
     RouterModule.forChild(routes)
   ],
-  exports: [RouterModule],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  exports: [RouterModule]
 })
 export class UserpageModule { }

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { lastValueFrom } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { SharedService } from 'src/app/services/shared.service';
 
@@ -30,35 +29,36 @@ export class RestoreComponent implements OnInit {
         private fb: FormBuilder
     ) {}
 
-    async ngOnInit(): Promise<void> {
-        this.uuid = this.route.snapshot.paramMap.get('token');
+    ngOnInit() {
+        let uuid = this.route.snapshot.paramMap.get('token');
 
-        if (this.uuid !== null && this.uuid !== '') {
-            const json = { token: this.uuid };
-            lastValueFrom(await this.authService.verifyToken(json))
-            .then(
-                (_data) => {
+        if (uuid) {
+            const json = { token: uuid };
+            this.authService.verifyToken(json).subscribe({
+                next: (_data) => {
                     this.isRequest = true;
                     this.init_password_form();
                 },
-                (_error) => {
+                error: (e) => {
+                    console.error(e);
                     this.isInvalid = true;
-                    this.init_login_form();
+                    this.init_restore_form();
                     this.sharedService.showSnackbar(
                         'Il semble que vous ayez cliqué sur un lien de réinitialisation de mot de passe invalide. Veuillez réessayer.',
                         'Fermer',
                         0
                     );
                 }
+            }
             );
             this.sharedService.setTitle('Mis a jour de mot de passe');
         } else {
             this.sharedService.setTitle('Reinitialisation');
-            this.init_login_form();
+            this.init_restore_form();
         }
     }
 
-    init_login_form() {
+    init_restore_form() {
         this.restoreForm = this.fb.group({
             email: [
                 '',
@@ -81,38 +81,34 @@ export class RestoreComponent implements OnInit {
         });
     }
 
-    async submit_email(): Promise<void> {
+    submit_email() {
         if (this.restoreForm.invalid) {
             return;
         }
         this.isLoading = true;
-        lastValueFrom(await this.authService.restore(this.restoreForm.value))
-        .then(
-            (_data) => {
-                this.isSent = true;
-            },
-            (error) => {
-                console.log(error);
-                this.sharedService.showSnackbar(error.error, 'Dismiss', 0);
+        this.authService.restore(this.restoreForm.value).subscribe({
+        next: (_data) => this.isSent = true,
+        error: (e) => {
+                console.log(e);
+                this.sharedService.showSnackbar(e.error, 'Dismiss', 0);
             }
-        ).finally(() => {
-            this.isLoading = false;
-        });
+        })
+        .add(
+            () => this.isLoading = false
+        )
     }
 
-    async submit_new_password() {
+    submit_new_password() {
         this.passwordForm.patchValue({
             token: this.uuid
         });
-        lastValueFrom(await this.authService.reset(this.passwordForm.value))
-        .then(
-            (_data) => {
-                this.isUpdated = true;
-            },
-            (error) => {
-                console.log(error);
-                this.sharedService.showSnackbar(error.error, 'Dismiss', 0);
+        this.authService.reset(this.passwordForm.value).subscribe({
+        next: (_data) => this.isUpdated = true,
+        error: (e) => {
+                console.log(e);
+                this.sharedService.showSnackbar(e.error, 'Dismiss', 0);
             }
-        );
+        }
+    );
     }
 }
