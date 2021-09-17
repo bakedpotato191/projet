@@ -28,23 +28,23 @@ import com.example.web.dto.request.TokenDto;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    @Autowired
-    private AuthService authService;
+    	@Autowired
+    	private AuthService authService;
     
-    @Autowired
-    private ApplicationEventPublisher eventPublisher;
+    	@Autowired
+    	private ApplicationEventPublisher eventPublisher;
 
-    @PostMapping("/signin")
-    public JwtResponse authenticateUser(@RequestBody @Valid final LoginDto request){
+    	@PostMapping("/signin")
+    	public JwtResponse authenticateUser(@RequestBody @Valid final LoginDto request){
 		return authService.authenticateUser(request);
-    }
+    	}
     
-	@PostMapping("/signup")
-	public ResponseEntity<String> registerUser(@RequestBody @Valid final SignupDto signUpRequest, final HttpServletRequest request) {
+    	@PostMapping("/signup")
+    	public ResponseEntity<String> registerUser(@RequestBody @Valid final SignupDto signUpRequest, final HttpServletRequest request) {
 		var registered = authService.registerUser(signUpRequest);
 		eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, request.getLocale()));
-        return new ResponseEntity<>("{\"success\": true}", HttpStatus.OK);
-	}
+        	return new ResponseEntity<>("{\"success\": true}", HttpStatus.OK);
+    	}
 	
 	@PostMapping("/restore")
 	public ResponseEntity<String> restorePassword(@RequestBody @Valid final PasswordResetDto dto, final HttpServletRequest request) {
