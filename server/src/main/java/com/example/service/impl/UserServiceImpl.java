@@ -65,7 +65,6 @@ public class UserServiceImpl implements UserService {
 	
 
 	@Override
-	@Async
 	public void follow(String username) {
 		
 		var user = userRepository.findByUsername(username);
@@ -79,7 +78,6 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	@Async
 	public void unfollow(String username) {
 		
 		int row = followerRepository.unfollow(getAuthenticatedUser(), username);
