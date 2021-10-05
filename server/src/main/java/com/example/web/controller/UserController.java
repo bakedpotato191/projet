@@ -2,6 +2,7 @@ package com.example.web.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -77,7 +78,7 @@ public class UserController {
 	}
 	
 	@GetMapping(value = "/posts/{username}")
-	public CompletableFuture<List<PublicationDto>> getPosts( @PathVariable("username") String username,
+	public Map<String, Object> getPosts( @PathVariable("username") String username,
 												@RequestParam Integer page, 
 									            @RequestParam Integer size,
 									            @RequestParam String sort) {

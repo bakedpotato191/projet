@@ -16,8 +16,7 @@ import { ContentComponent } from '../content/content.component';
     styleUrls: ['./comments.component.css']
 })
 export class CommentsComponent implements OnInit {
-    @Input() param!: number;
-    @Input() id!: number;
+    @Input() comments!: Commentaire[];
     @ViewChild('textarea') inputName!: ElementRef;
 
     current_id!: number;
@@ -27,7 +26,6 @@ export class CommentsComponent implements OnInit {
     hideRequiredControl = new FormControl(false);
     floatLabelControl = new FormControl('auto');
 
-    comments: Commentaire[] = [];
     comment!: Commentaire;
     loginRef!: MatDialogRef<LoginComponent>;
 
@@ -51,17 +49,8 @@ export class CommentsComponent implements OnInit {
           });
     }
 
-    async ngOnInit(): Promise<void> {
-        this.init_comment_form();
-
-        if (this.id !== null) {
-            this.current_id = this.id;
-            await this.get_all_comments(this.id);
-        }
-        else if (this.param !== null){
-            this.current_id = this.param;
-            await this.get_all_comments(this.param);
-        }
+    ngOnInit(): void {
+        this.init_comment_form(); 
     }
 
     init_comment_form(): void {

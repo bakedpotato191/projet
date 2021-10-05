@@ -3,6 +3,7 @@ package com.example.rest.dao;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,8 +24,7 @@ public interface PublicationRepository extends JpaRepository<Publication, Long> 
 	@Async
 	CompletableFuture<Optional<Publication>> findOneById(final Long id);
 	
-	@Async
-	CompletableFuture<Slice<Publication>> findAllByUtilisateurUsername(String username, Pageable paging);
+	Page<Publication> findAllByUtilisateurUsername(String username, Pageable paging);
 	
 	@Async
 	@Query("SELECT p FROM Publication p JOIN FETCH p.comments WHERE p.id = (:id)")

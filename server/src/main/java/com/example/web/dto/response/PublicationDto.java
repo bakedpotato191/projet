@@ -1,6 +1,7 @@
 package com.example.web.dto.response;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class PublicationDto {
 	
@@ -21,6 +22,16 @@ public class PublicationDto {
 	private int commentsCount;
 	
 	private boolean isAuthor;
+	
+	private List<CommentResDto> comments;
+	
+	public List<CommentResDto> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<CommentResDto> comments) {
+		this.comments = comments;
+	}
 
 	public Long getId() {
 		return id;

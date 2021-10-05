@@ -1,7 +1,11 @@
 package com.example.service.impl;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
@@ -51,22 +55,43 @@ public class PublicationServiceImpl implements PublicationService {
     private Executor existingThreadPool; 
 
 	@Override
-	@Async
-	public CompletableFuture<List<PublicationDto>> getUserPublications(String username, Integer pageNo, Integer pageSize, String sortBy) {
+	public Map<String, Object> getUserPublications(String username, Integer pageNo, Integer pageSize, String sortBy) {
 		
 		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
-		var publications = publicationRepository.findAllByUtilisateurUsername(username, paging);
+		var page = publicationRepository.findAllByUtilisateurUsername(username, paging);
 		
-		return publications.thenApplyAsync(pbs -> 
-			pbs.stream().map(p -> {
-				var pub = mapper.pubToPubDto(p);
-				pub.setLiked(userService.isAnonymous() ? false : likeRepository.isLiked(userService.getAuthenticatedUser(), p));
-				pub.setCountLike(likeRepository.countByPost(p));
-				pub.setCommentsCount(cRepository.countByPost(p));
-				pub.setAuthor(userService.isAnonymous() ? false : userService.getAuthenticatedUser().equals(p.getUtilisateur()));
-				return pub;
-			}).collect(Collectors.toList()), existingThreadPool);
+		if (!page.hasContent()) {
+			return new HashMap<>();
+		}
+		
+		Map<String, Object> information = new HashMap<>();
+		List<Object> publications = new ArrayList<>();
+
+		page.forEach(p -> {
+			var pub = mapper.pubToPubDto(p);
+			pub.setLiked(userService.isAnonymous() ? false : likeRepository.isLiked(userService.getAuthenticatedUser(), p));
+			pub.setCountLike(likeRepository.countByPost(p));
+			pub.setCommentsCount(cRepository.countByPost(p));
+			pub.setAuthor(userService.isAnonymous() ? false : userService.getAuthenticatedUser().equals(p.getUtilisateur()));
+			
+			Pageable pagging = PageRequest.of(0, 10, Sort.by(sortBy).descending());
+			
+			
+			pub.setComments(cRepository.findAllByPostId(p.getId(), pagging).map(mapper::commToCommDto).getContent());
+			
+			publications.add(pub);
+		});
+		
+		information.put("number_of_elements", page.getSize());
+		information.put("total_number_of_elements", page.getTotalElements());
+		information.put("total_number_of_pages", page.getTotalPages());
+		information.put("sorting_method", page.getSort());
+		information.put("has_next_page", page.hasNext());
+		information.put("publications", publications);
+		
+		return information;
 	}
+	
 	
 
 	@Override

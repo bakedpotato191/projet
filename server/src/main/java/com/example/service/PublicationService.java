@@ -1,6 +1,7 @@
 package com.example.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import com.example.rest.model.Publication;
@@ -20,7 +21,7 @@ public interface PublicationService {
 
 	CompletableFuture<List<PublicationDto>> getFavorites(Integer pageNo, Integer pageSize, String sortBy);
 
-	CompletableFuture<List<PublicationDto>> getUserPublications(String username, Integer pageNo, Integer pageSize, String sortBy);
+	Map<String, Object> getUserPublications(String username, Integer pageNo, Integer pageSize, String sortBy);
 
 	CompletableFuture<List<PublicationDto>> getNewPublications(Integer pageNo, Integer pageSize);
 
