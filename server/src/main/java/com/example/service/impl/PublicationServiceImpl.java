@@ -63,6 +63,7 @@ public class PublicationServiceImpl implements PublicationService {
 				pub.setLiked(userService.isAnonymous() ? false : likeRepository.isLiked(userService.getAuthenticatedUser(), p));
 				pub.setCountLike(likeRepository.countByPost(p));
 				pub.setCommentsCount(cRepository.countByPost(p));
+				pub.setAuthor(userService.isAnonymous() ? false : userService.getAuthenticatedUser().equals(p.getUtilisateur()));
 				return pub;
 			}).collect(Collectors.toList()), existingThreadPool);
 	}
@@ -80,6 +81,7 @@ public class PublicationServiceImpl implements PublicationService {
 				pub.setLiked(likeRepository.isLiked(userService.getAuthenticatedUser(), p));
 				pub.setCountLike(likeRepository.countByPost(p));
 				pub.setCommentsCount(cRepository.countByPost(p));
+				pub.setAuthor(userService.isAnonymous() ? false : userService.getAuthenticatedUser().equals(p.getUtilisateur()));
 				return pub;
 			}).collect(Collectors.toList()), existingThreadPool);
 	}
@@ -113,7 +115,7 @@ public class PublicationServiceImpl implements PublicationService {
 			result.setLiked(userService.isAnonymous() ? false : likeRepository.isLiked(userService.getAuthenticatedUser(), publication));
 			result.setCountLike(publication.getLikes().size());
 			result.setCommentsCount(publication.getComments().size());
-			
+			result.setAuthor(userService.isAnonymous() ? false : userService.getAuthenticatedUser().equals(publication.getUtilisateur()));
 			return result;
 		} 
 		else {
@@ -121,8 +123,8 @@ public class PublicationServiceImpl implements PublicationService {
 		}
 	}
 	
-	@Override
 	@Async
+	@Override
 	public void like(Long id) {
 		var post = new Publication();
 		post.setId(id);		
@@ -132,15 +134,15 @@ public class PublicationServiceImpl implements PublicationService {
 		likeRepository.save(favori);
 	}
 
-	@Override
 	@Async
+	@Override
 	public void dislike(Long id) {
 			var currentUser = userService.getAuthenticatedUser();
 			likeRepository.dislike(currentUser, id);
 	}
 	
-	@Override
 	@Async
+	@Override
 	public CompletableFuture<List<PublicationDto>> getFavorites(Integer pageNo, Integer pageSize, String sortBy) {
 		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
 		var favorites = likeRepository.findAllByUtilisateurUsername(userService.getAuthenticatedUser().getUsername(), paging);
@@ -151,6 +153,7 @@ public class PublicationServiceImpl implements PublicationService {
 				fav.setLiked(likeRepository.isLiked(userService.getAuthenticatedUser(), f.getPost()));
 				fav.setCountLike(likeRepository.countByPost(f.getPost()));
 				fav.setCommentsCount(cRepository.countByPost(f.getPost()));
+				fav.setAuthor(userService.isAnonymous() ? false : userService.getAuthenticatedUser().equals(f.getUtilisateur()));
 				return fav;
 			}).collect(Collectors.toList()), existingThreadPool);
 	}

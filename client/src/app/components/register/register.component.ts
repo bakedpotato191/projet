@@ -12,15 +12,13 @@ import { SnackBarService } from 'src/app/services/snackbar.service';
 export class RegisterComponent implements OnInit {
   registrationForm!: FormGroup;
   isHidden: boolean = true;
-  isSuccessful: boolean = false;
-  isSignUpFailed: boolean = false;
-  errorMessage: string = '';
+  isSignUpFailed!: boolean;
 
   constructor(
-    private authService: AuthService,
-    private sbService: SnackBarService,
+    private readonly authService: AuthService,
+    private readonly sbService: SnackBarService,
     private readonly titleService: Title,
-    private fb: FormBuilder
+    private readonly fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
@@ -68,22 +66,24 @@ export class RegisterComponent implements OnInit {
 
     this.authService.register(this.registrationForm.value).subscribe({
       next: (_data) => {
-        this.isSuccessful = true;
         this.isSignUpFailed = false;
       },
       error: (e) => {
         console.error(e);
+        this.isSignUpFailed = true;
         if (e.status === 409) {
           this.sbService.showSnackbar(
             "Le nom d'utilisateur est déjà utilisé",
             'Dismiss',
             7000
           );
+
           this.registrationForm.controls['username'].setErrors({
             incorrect: true,
           });
         }
-        this.isSignUpFailed = true;
+
+
       },
     });
   }

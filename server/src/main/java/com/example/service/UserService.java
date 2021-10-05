@@ -20,9 +20,9 @@ public interface UserService {
 	
 	CompletableFuture<List<UserDto>> getSubscriptions(String username, int pageNo, int pageSize) throws InterruptedException;
 
-	CompletableFuture<AvatarResponse> resetProfilePicture();
+	AvatarResponse resetProfilePicture();
 
-	CompletableFuture<AvatarResponse> getProfilePicture();
+	AvatarResponse getProfilePicture();
 
 	CompletableFuture<List<UserDto>> getSubscribers(String username, int pageNo, int pageSize);
 

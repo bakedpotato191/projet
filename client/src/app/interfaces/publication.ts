@@ -12,4 +12,5 @@ export interface Publication {
     liked: boolean;
     countLike: number;
     commentsCount: number;
+    author: boolean;
 }

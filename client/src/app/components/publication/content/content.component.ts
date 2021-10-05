@@ -21,7 +21,6 @@ export class ContentComponent implements OnInit {
   post!: Publication;
   comment!: Commentaire;
   isLoading = false;
-  isMyPost!: boolean;
   isContent: boolean = false;
 
   loginRef!: MatDialogRef<LoginComponent>;
@@ -57,10 +56,6 @@ export class ContentComponent implements OnInit {
     this.postService.getPostById(id).subscribe({
         next: (data) => {
           this.post = data;
-
-          if (this.post.utilisateur.username === this.tokenService.getUser().username) {
-            this.isMyPost = true;
-          }
         },
         error: (e) => console.error(e),
       })

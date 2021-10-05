@@ -1,11 +1,12 @@
 package com.example.rest.dao;
 
 import java.util.Date;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,9 +26,9 @@ public interface VerificationTokenRepository extends JpaRepository<VerificationT
     @Modifying
     @Transactional
     void deleteByExpiryDateLessThan(Date now);
-
+    
+    @Async
     @Modifying
     @Transactional
-    @Query("delete from VerificationToken t where t.expiryDate <= ?1")
-    void deleteAllExpiredSince(Date now);
+    CompletableFuture<Void> deleteAllByExpiryDateLessThan(Date now);
 }

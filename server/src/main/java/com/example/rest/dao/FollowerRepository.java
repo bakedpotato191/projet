@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,4 +37,8 @@ public interface FollowerRepository extends JpaRepository<Follower, Long> {
 	Slice<Follower> findAllToByFromUsername(String username, Pageable paging);
 
 	Slice<Follower> findAllFromByToUsername(String username, Pageable paging);
+	
+	@Override
+	@Async
+    public <S extends Follower> S save(S entity);
 }

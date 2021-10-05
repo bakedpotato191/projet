@@ -38,10 +38,8 @@ public interface PublicationRepository extends JpaRepository<Publication, Long> 
     CompletableFuture<Slice<Publication>> findNewPublications(@Param("username") String username, Pageable page);
 	
 	@Async
-	Long countByUtilisateur(User user);
+	CompletableFuture<Long> countByUtilisateur(User user);
 	
-
-	@Async
 	@Query("SELECT COUNT(p)>0 from Publication p WHERE p.photo like (%:name)")
 	boolean existsByFilepath(@Param("name") String filename);
 	

@@ -1,7 +1,7 @@
 <div class="wrapper image">
     <mat-card class="card">
 
-        <div *ngIf="!isSuccessful; then card else elseBlock"></div>
+        <div *ngIf="!isSignUpFailed; then card else elseBlock"></div>
 
         <ng-template #card>
             <mat-card-header class="card-header">
@@ -60,7 +60,7 @@
                 <button mat-stroked-button class="btn-block">Register</button>
             </form>
             <mat-divider></mat-divider>
-            <mat-card-footer class="card-footer" *ngIf="!isSuccessful">
+            <mat-card-footer class="card-footer" *ngIf="!isSignUpFailed">
                 <div class="card-footer-element restore">
                     Vouz avez deja un compte?<span><a routerLink="/login"> Connectez-vous</a></span>
                 </div>

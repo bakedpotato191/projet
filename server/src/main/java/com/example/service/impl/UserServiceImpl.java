@@ -73,9 +73,6 @@ public class UserServiceImpl implements UserService {
 		if (user.isPresent()) {
 			followerRepository.save(new Follower(getAuthenticatedUser(), user.get()));
 		}
-		else {
-			throw new EntityNotFoundException(User.class, USERNAME, username);
-		}
 	}
 	
 	@Override
@@ -100,19 +97,17 @@ public class UserServiceImpl implements UserService {
 	
 
 	@Override
-	@Async
-	public CompletableFuture<AvatarResponse> getProfilePicture() {
+	public AvatarResponse getProfilePicture() {
 		var records = userRepository.getProfilePicture(getAuthenticatedUser());
 	    Object[] userDetails = records.get(0);
 	    var avatar = String.valueOf(userDetails[0]);
 	    var has_avatar = Boolean.valueOf(String.valueOf(userDetails[1]));
-		return CompletableFuture.completedFuture(new AvatarResponse(has_avatar, avatar, HttpStatus.OK));
+		return new AvatarResponse(has_avatar, avatar, HttpStatus.OK);
 	}
 	
 
 	@Override
-	@Async
-	public CompletableFuture<AvatarResponse> resetProfilePicture() {
+	public AvatarResponse resetProfilePicture() {
 		userRepository.resetProfilePicture(getAuthenticatedUser());
 		return getProfilePicture();
 	}

@@ -54,7 +54,7 @@ public class User implements Serializable, UserDetails {
 	@Column(length = 60)
 	private String password;
     
-    @Column(columnDefinition="varchar(255) default 'http://localhost:8081/api/user/profile_picture/default.jpg'", nullable=false)
+    @Column(columnDefinition="varchar(255) default 'http://localhost:8081/api/user/profile_picture/default.jpeg'", nullable=false)
     private String avatar;
     
     @Column(columnDefinition="boolean default false")

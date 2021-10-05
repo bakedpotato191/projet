@@ -64,7 +64,7 @@ public class PublicationController {
 	
 	@GetMapping("/view/{filename:.+}")
 	public ResponseEntity<Resource> getFile(@PathVariable String filename) throws IOException {
-		Resource file = storageService.load(filename);
+		Resource file = storageService.loadPhoto(filename);
 		return ResponseEntity.ok()
 				.header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + file.getFilename() + "\"")
 				.contentType(MediaType.IMAGE_JPEG)

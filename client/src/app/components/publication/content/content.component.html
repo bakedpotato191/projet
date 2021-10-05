@@ -33,7 +33,7 @@
           </button>
           <button mat-button id="shareBtn"><mat-icon aria-hidden="true" fontSet="material-icons" aria-label="like icon">share</mat-icon></button>
           <button mat-button id="fullscrnBtn" (click)="open_image(post.photo)"><mat-icon aria-hidden="true" fontSet="material-icons">fullscreen</mat-icon></button>
-          <button *ngIf="isMyPost" mat-button id="deleteBtn" (click)="open_delete_post_dialog(post.id)">
+          <button *ngIf="post.author" mat-button id="deleteBtn" (click)="open_delete_post_dialog(post.id)">
             <mat-icon aria-hidden="true" fontSet="material-icons" aria-label="like icon">delete</mat-icon>
           </button>
         </div>

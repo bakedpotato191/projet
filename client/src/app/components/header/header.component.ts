@@ -47,9 +47,7 @@ export class HeaderComponent implements OnInit {
   }
 
   open_feed_page() {
-    this.router.navigate(['/explore/']).then((_page) => {
-      window.location.reload();
-    });
+    this.router.navigate(['explore'], { relativeTo: this.activatedRoute })
   }
 
   open_favorites_page() {
@@ -63,6 +61,14 @@ export class HeaderComponent implements OnInit {
   }
 
   open_settings_page(): void {}
+
+  open_login_page() {
+    this.router.navigate(['login'], { relativeTo: this.activatedRoute })
+  }
+
+  signup() {
+    this.router.navigate(['signup'], { relativeTo: this.activatedRoute })
+  }
 
   sign_out() {
     this.tokenStorageService.signOut();

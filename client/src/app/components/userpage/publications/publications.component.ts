@@ -43,7 +43,6 @@ export class PublicationsComponent implements OnInit {
         this.canLoad = true;
         await this.get_user_posts();
         this.notify.valueChanged = async (s: string) => {
-            console.log(`Parent has notified changes to ${s}`);
             await this.get_latest_post();
         };
     }

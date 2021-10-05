@@ -24,8 +24,15 @@
                                     <button id="profile" (click)="open_home_page()" mat-menu-item>
                                         <mat-icon aria-hidden="true" fontSet="material-icons" aria-label="my account icon">account_circle</mat-icon>Mon profil
                                     </button>
-                                    <button id="favorites" (click)="open_favorites_page()" mat-menu-item><mat-icon aria-hidden="true" fontSet="material-icons" aria-label="bookmarked icon">star_border</mat-icon>Enregistrements</button>
-                                    <button id="settings" routerLink="/settings" mat-menu-item><mat-icon aria-hidden="true" fontSet="material-icons" aria-label="settings icon">settings</mat-icon>Préferences</button>
+                                    <button id="explore" (click)="open_feed_page()" mat-menu-item>
+                                        <mat-icon aria-hidden="true" fontSet="material-icons" aria-label="explore icon">explore</mat-icon>Explorer
+                                    </button>
+                                    <button id="favorites" (click)="open_favorites_page()" mat-menu-item>
+                                        <mat-icon aria-hidden="true" fontSet="material-icons" aria-label="bookmarked icon">star_border</mat-icon>Enregistrements
+                                    </button>
+                                    <button id="settings" routerLink="/settings" mat-menu-item>
+                                        <mat-icon aria-hidden="true" fontSet="material-icons" aria-label="settings icon">settings</mat-icon>Préferences
+                                    </button>
                                     <button id="disconnect" (click)="sign_out()" mat-menu-item>
                                         <mat-icon aria-hidden="true" fontSet="material-icons" aria-label="logout icon">logout</mat-icon>
                                         Deconnexion
@@ -37,7 +44,7 @@
                 </ng-template>
                 <ng-template #anon>
                     <ul *ngIf="!isLoggedIn" fxLayout="row">
-                        <li class="flex"><a class="flex" mat-stroked-button routerLink="/login">Login</a></li>
+                        <li class="flex"><a class="flex" mat-stroked-button (click)="open_login_page()">Login</a></li>
                         <li class="flex"><a class="flex button" mat-stroked-button routerLink="/signup">Sign up</a></li>
                     </ul>
                 </ng-template>

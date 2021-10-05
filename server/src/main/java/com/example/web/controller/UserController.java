@@ -99,7 +99,7 @@ public class UserController {
 	}
 	
 	@GetMapping(value="/profile_picture")
-	public CompletableFuture<AvatarResponse> getProfilePicture() {
+	public AvatarResponse getProfilePicture() {
 		return userService.getProfilePicture();
 	}
 	
@@ -110,7 +110,7 @@ public class UserController {
     }
 	
 	@DeleteMapping(value= "/reset_profile_picture")
-    public CompletableFuture<AvatarResponse> resetProfilePicture() {
+    public AvatarResponse resetProfilePicture() {
 		return userService.resetProfilePicture();
     }
 	

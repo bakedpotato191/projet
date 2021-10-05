@@ -276,7 +276,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	 * @param ex the FileNotFoundException
 	 * @return the ApiError object
 	 */
-	@ExceptionHandler(value = { MalformedURLException.class, FileNotFoundException.class })
+	@ExceptionHandler(value = FileNotFoundException.class)
 	protected ResponseEntity<Object> handleMalformedURLException(MalformedURLException ex) {
 		var apiError = new ApiError(HttpStatus.NOT_FOUND);
 		apiError.setMessage(ex.getMessage());

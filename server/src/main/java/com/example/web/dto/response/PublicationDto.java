@@ -19,6 +19,8 @@ public class PublicationDto {
 	private int countLike;
 	
 	private int commentsCount;
+	
+	private boolean isAuthor;
 
 	public Long getId() {
 		return id;
@@ -82,5 +84,13 @@ public class PublicationDto {
 
 	public void setCommentsCount(int commentsCount) {
 		this.commentsCount = commentsCount;
+	}
+
+	public boolean isAuthor() {
+		return isAuthor;
+	}
+
+	public void setAuthor(boolean isAuthor) {
+		this.isAuthor = isAuthor;
 	}
 }

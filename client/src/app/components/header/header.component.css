@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Lobster&family=Poiret+One&family=Rampart+One&display=swap');
 
-
 header {
     height: 55px;
     padding: 0;
@@ -100,7 +99,8 @@ img {
 
 #profile .mat-icon, 
 #favorites .mat-icon, 
-#settings .mat-icon {
+#settings .mat-icon,
+#explore .mat-icon {
     margin-right: 5px!important;
 }
 

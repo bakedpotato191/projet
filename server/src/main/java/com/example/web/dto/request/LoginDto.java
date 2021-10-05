@@ -10,7 +10,7 @@ public class LoginDto {
 	@ValidEmail
 	private String email;
 
-    @NotNull
+    @NotNull 
     @Size(min=8, max=32)
 	private String password;
 
