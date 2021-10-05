@@ -20,11 +20,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	public UserDetails loadUserByUsername(final String email) throws UsernameNotFoundException {
 		var user = userRepository.findByEmail(email);
 	
-		if (user.isPresent()) {
-			return user.get();
+		if (user.isEmpty()) {
+			throw new UsernameNotFoundException("No user found with email: " + email);	
         }
-		else {
-			throw new UsernameNotFoundException("No user found with email: " + email);
-		}       
+		return user.get();
 	}
 }
