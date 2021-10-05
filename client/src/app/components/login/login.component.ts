@@ -13,12 +13,9 @@ import { TokenStorageService } from 'src/app/services/token-storage.service';
 export class LoginComponent implements OnInit {
   isHiden = true;
   loginForm!: FormGroup;
-
   isLoggedIn = false;
-
   isLoading!: boolean;
   errorMessage = '';
-  roles: string[] = [];
 
   constructor(
     private authService: AuthService,
@@ -31,10 +28,6 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.titleService.setTitle('Connexion');
     this.init_login_form();
-    if (this.tokenStorage.getToken()) {
-      this.isLoggedIn = true;
-      this.roles = this.tokenStorage.getUser().roles;
-    }
   }
 
   init_login_form(): void {
@@ -54,7 +47,6 @@ export class LoginComponent implements OnInit {
         this.tokenStorage.saveToken(data.accessToken);
         this.tokenStorage.saveUser(data);
         this.isLoggedIn = true;
-        this.roles = this.tokenStorage.getUser().roles;
         window.location.reload();
       },
       error: (e) => {
