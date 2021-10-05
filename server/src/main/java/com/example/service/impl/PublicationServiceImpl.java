@@ -2,7 +2,6 @@ package com.example.service.impl;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,60 +54,59 @@ public class PublicationServiceImpl implements PublicationService {
     private Executor existingThreadPool; 
 
 	@Override
-	public Map<String, Object> getUserPublications(String username, Integer pageNo, Integer pageSize, String sortBy) {
+	public List<PublicationDto> getUserPublications(String username, Integer pageNo, Integer pageSize, String sortBy) {
 		
 		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
 		var page = publicationRepository.findAllByUtilisateurUsername(username, paging);
 		
-		if (!page.hasContent()) {
+		/*if (!page.hasContent()) {
 			return new HashMap<>();
-		}
+		}*/
 		
-		Map<String, Object> information = new HashMap<>();
-		List<Object> publications = new ArrayList<>();
+		/*Map<String, Object> information = new HashMap<>();*/
+		List<PublicationDto> publications = new ArrayList<>();
 
-		page.forEach(p -> {
+		page.stream().forEach(p -> {
 			var pub = mapper.pubToPubDto(p);
 			pub.setLiked(userService.isAnonymous() ? false : likeRepository.isLiked(userService.getAuthenticatedUser(), p));
 			pub.setCountLike(likeRepository.countByPost(p));
 			pub.setCommentsCount(cRepository.countByPost(p));
 			pub.setAuthor(userService.isAnonymous() ? false : userService.getAuthenticatedUser().equals(p.getUtilisateur()));
 			
-			Pageable pagging = PageRequest.of(0, 10, Sort.by(sortBy).descending());
-			
-			
-			pub.setComments(cRepository.findAllByPostId(p.getId(), pagging).map(mapper::commToCommDto).getContent());
+			/*Pageable pagging = PageRequest.of(0, 10, Sort.by(sortBy).descending());
+			pub.setComments(cRepository.findAllByPostId(p.getId(), pagging).map(mapper::commToCommDto).getContent());*/
 			
 			publications.add(pub);
 		});
 		
-		information.put("number_of_elements", page.getSize());
+		/*information.put("number_of_elements", page.getSize());
 		information.put("total_number_of_elements", page.getTotalElements());
 		information.put("total_number_of_pages", page.getTotalPages());
 		information.put("sorting_method", page.getSort());
 		information.put("has_next_page", page.hasNext());
-		information.put("publications", publications);
+		information.put("publications", publications);*/
 		
-		return information;
+		return publications;
 	}
 	
 	
 
 	@Override
-	@Async
-	public CompletableFuture<List<PublicationDto>> getNewPublications(Integer pageNo, Integer pageSize) {
+	public List<PublicationDto> getNewPublications(Integer pageNo, Integer pageSize) {
 		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by("date").descending());
-		var publications = publicationRepository.findNewPublications(userService.getAuthenticatedUser().getUsername(), paging);
+		var news = publicationRepository.findNewPublications(userService.getAuthenticatedUser().getUsername(), paging);
 		
-		return publications.thenApplyAsync(pbs -> 
-			pbs.stream().map(p -> {
-				var pub = mapper.pubToPubDto(p);
-				pub.setLiked(likeRepository.isLiked(userService.getAuthenticatedUser(), p));
-				pub.setCountLike(likeRepository.countByPost(p));
-				pub.setCommentsCount(cRepository.countByPost(p));
-				pub.setAuthor(userService.isAnonymous() ? false : userService.getAuthenticatedUser().equals(p.getUtilisateur()));
-				return pub;
-			}).collect(Collectors.toList()), existingThreadPool);
+		List<PublicationDto> publications = new ArrayList<>();
+		
+		news.stream().forEach(n -> {
+				var pub = mapper.pubToPubDto(n);
+				pub.setLiked(likeRepository.isLiked(userService.getAuthenticatedUser(), n));
+				pub.setCountLike(likeRepository.countByPost(n));
+				pub.setCommentsCount(cRepository.countByPost(n));
+				pub.setAuthor(userService.isAnonymous() ? false : userService.getAuthenticatedUser().equals(n.getUtilisateur()));
+				publications.add(pub);
+			});
+		return publications;
 	}
 
 	@Override
@@ -166,20 +164,22 @@ public class PublicationServiceImpl implements PublicationService {
 			likeRepository.dislike(currentUser, id);
 	}
 	
-	@Async
+
 	@Override
-	public CompletableFuture<List<PublicationDto>> getFavorites(Integer pageNo, Integer pageSize, String sortBy) {
+	public List<PublicationDto> getFavorites(Integer pageNo, Integer pageSize, String sortBy) {
 		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
 		var favorites = likeRepository.findAllByUtilisateurUsername(userService.getAuthenticatedUser().getUsername(), paging);
 		
-		return favorites.thenApplyAsync(favs -> 
-			 favs.stream().map(f -> {
+		List<PublicationDto> publications = new ArrayList<>();
+		
+		favorites.stream().forEach(f -> {
 				var fav = mapper.pubToPubDto(f.getPost());
 				fav.setLiked(likeRepository.isLiked(userService.getAuthenticatedUser(), f.getPost()));
 				fav.setCountLike(likeRepository.countByPost(f.getPost()));
 				fav.setCommentsCount(cRepository.countByPost(f.getPost()));
 				fav.setAuthor(userService.isAnonymous() ? false : userService.getAuthenticatedUser().equals(f.getUtilisateur()));
-				return fav;
-			}).collect(Collectors.toList()), existingThreadPool);
+				publications.add(fav);
+			});
+		return publications;
 	}
 }

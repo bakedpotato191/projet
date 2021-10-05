@@ -2,7 +2,6 @@ package com.example.web.controller;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -66,19 +65,19 @@ public class UserController {
     }
 	
 	@GetMapping(value = "/favorites")
-	public CompletableFuture<List<PublicationDto>> getFavorites(	@RequestParam Integer page, 
+	public List<PublicationDto> getFavorites(	@RequestParam Integer page, 
 						            @RequestParam Integer size,
 						            @RequestParam String sort) {
 		return postService.getFavorites(page, size, sort);
 	}
 	
 	@GetMapping(value = "/new")
-	public  CompletableFuture<List<PublicationDto>> getNewPublications(@RequestParam Integer page, @RequestParam Integer size) {
+	public  List<PublicationDto> getNewPublications(@RequestParam Integer page, @RequestParam Integer size) {
 		return publicationService.getNewPublications(page, size);
 	}
 	
 	@GetMapping(value = "/posts/{username}")
-	public Map<String, Object> getPosts( @PathVariable("username") String username,
+	public List<PublicationDto> getPosts( @PathVariable("username") String username,
 												@RequestParam Integer page, 
 									            @RequestParam Integer size,
 									            @RequestParam String sort) {

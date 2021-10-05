@@ -37,7 +37,6 @@ export class ContentComponent implements OnInit {
   }
 
   ngOnInit() {
-    
     if (this.post) { /* https://stackoverflow.com/a/44017547 */
       this.isContent = true;
       return;
@@ -55,9 +54,9 @@ export class ContentComponent implements OnInit {
   get_post_by_id(id: number) {
     this.postService.getPostById(id).subscribe({
         next: (data) => {
-          this.post = data;
+          this.post = data
         },
-        error: (e) => console.error(e),
+        error: (e) => console.error(e)
       })
       .add(() => this.isContent = true);
   }

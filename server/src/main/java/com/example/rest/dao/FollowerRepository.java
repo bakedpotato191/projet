@@ -38,7 +38,8 @@ public interface FollowerRepository extends JpaRepository<Follower, Long> {
 
 	Slice<Follower> findAllFromByToUsername(String username, Pageable paging);
 	
-	@Override
 	@Async
+	@Override
+	@Transactional
     public <S extends Follower> S save(S entity);
 }

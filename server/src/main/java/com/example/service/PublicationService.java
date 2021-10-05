@@ -19,10 +19,10 @@ public interface PublicationService {
 
 	void dislike(Long id);
 
-	CompletableFuture<List<PublicationDto>> getFavorites(Integer pageNo, Integer pageSize, String sortBy);
+	List<PublicationDto> getFavorites(Integer pageNo, Integer pageSize, String sortBy);
 
-	Map<String, Object> getUserPublications(String username, Integer pageNo, Integer pageSize, String sortBy);
+	List<PublicationDto> getUserPublications(String username, Integer pageNo, Integer pageSize, String sortBy);
 
-	CompletableFuture<List<PublicationDto>> getNewPublications(Integer pageNo, Integer pageSize);
+	List<PublicationDto> getNewPublications(Integer pageNo, Integer pageSize);
 
 }

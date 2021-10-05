@@ -2,9 +2,6 @@ package com.example.web.dto.response;
 
 import java.util.Collection;
 
-
-import com.example.rest.model.Role;
-
 public class UserDto {
 
 	private String nom;
@@ -27,7 +24,7 @@ public class UserDto {
 	
 	private boolean followed;
 	
-	private Collection<Role> roles;
+	private Collection<RoleDto> roles;
 
 	public String getNom() {
 		return nom;
@@ -109,11 +106,11 @@ public class UserDto {
 		this.followed = followed;
 	}
 
-	public Collection<Role> getRoles() {
+	public Collection<RoleDto> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(Collection<Role> roles) {
+	public void setRoles(Collection<RoleDto> roles) {
 		this.roles = roles;
 	}
 }

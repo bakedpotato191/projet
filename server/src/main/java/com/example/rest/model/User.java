@@ -63,14 +63,13 @@ public class User implements Serializable, UserDetails {
 	@Column(columnDefinition="boolean default false")
     private boolean enabled;
 
-    @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "utilisateur_roles", 
-    			joinColumns = @JoinColumn(
-    					name = "role_id",
-    					referencedColumnName = "id"),
-    			inverseJoinColumns = @JoinColumn(
-    					name = "user_id",
-    					referencedColumnName = "id"))
+    @ManyToMany(fetch = FetchType.EAGER) 
+    @JoinTable( 
+        name = "users_roles", 
+        joinColumns = @JoinColumn(
+          name = "user_id", referencedColumnName = "id"), 
+        inverseJoinColumns = @JoinColumn(
+          name = "role_id", referencedColumnName = "id")) 
     private Collection<Role> roles;
     
 	@LazyCollection(LazyCollectionOption.EXTRA)

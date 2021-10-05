@@ -89,7 +89,7 @@ export class ExploreComponent implements OnInit {
   }
 
   open_post_page(id: number) {
-    this.router.navigate(['p', id]);
+    this.router.navigate(['publication', id]);
   }
 
   handle_scroll_down() {
