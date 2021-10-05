@@ -89,13 +89,13 @@ export class UserpageComponent implements OnInit {
   get_user_data(username: string) {
     this.userService.getUser(username).subscribe({
       next: (data) => {
-        this.user = data
+        this.user = data;
       },
       error: (e) => {
         console.error(e);
       }
     }).add(
-      () => { this.isContent = true }
+      () => this.isContent = true 
     );   
   }
 
