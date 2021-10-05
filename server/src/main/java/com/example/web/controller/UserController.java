@@ -50,19 +50,19 @@ public class UserController {
 	private PublicationService publicationService;
 
 	@GetMapping(value= "/info/{username}")
-    public UserDto getUser(@PathVariable("username") String username) throws InterruptedException, ExecutionException {
+    	public UserDto getUser(@PathVariable("username") String username) throws InterruptedException, ExecutionException {
 		return userService.getUserData(username);
-    }
+    	}
 
 	@PostMapping(value= "/follow")
-    public void follow(@RequestBody @Valid final String username) {
+    	public void follow(@RequestBody @Valid final String username) {
 		userService.follow(username);	
-    }
+    	}
 	
 	@PostMapping(value= "/unfollow")
-    public void unfollow(@RequestBody @Valid final String username) {
+    	public void unfollow(@RequestBody @Valid final String username) {
 		userService.unfollow(username);
-    }
+    	}
 	
 	@GetMapping(value = "/favorites")
 	public CompletableFuture<List<PublicationDto>> getFavorites(	@RequestParam Integer page, 
