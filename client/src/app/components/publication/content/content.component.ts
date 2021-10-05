@@ -85,19 +85,18 @@ export class ContentComponent implements OnInit {
       );
   }
 
-  async remove_publication(id: number) {
-    lastValueFrom(await this.postService.removePost(id))
-      .then(
-        (_data) => this.router.navigate([`/profile/${this.tokenService.getUser().username}`])
-      )
-      .catch((e) => {
-        console.error(e);
-        this.sbService.showSnackbar(
-          'Request failed with status code ' + e.status,
-          'Dismiss',
-          5000
-        );
-      });
+  remove_publication(id: number) {
+    this.postService.removePost(id).subscribe({
+        next: (_data) => this.router.navigate([`/profile/${this.tokenService.getUser().username}`]),
+        error: (e) => {
+            console.error(e);
+            this.sbService.showSnackbar(
+              'Request failed with status code ' + e.status,
+              'Dismiss',
+              5000
+          );
+        }
+    });
   }
 
   open_image(url: string) {
