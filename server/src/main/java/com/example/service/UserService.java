@@ -10,7 +10,7 @@ import com.example.web.dto.response.UserDto;
 
 public interface UserService {
 
-	CompletableFuture<UserDto> getUserData(String username) throws InterruptedException, ExecutionException;
+	UserDto getUserData(String username) throws InterruptedException, ExecutionException;
 
 	void follow(String username);
 

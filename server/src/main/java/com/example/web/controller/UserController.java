@@ -50,7 +50,7 @@ public class UserController {
 	private PublicationService publicationService;
 
 	@GetMapping(value= "/info/{username}")
-    public CompletableFuture<UserDto> getUser(@PathVariable("username") String username) throws InterruptedException, ExecutionException {
+    public UserDto getUser(@PathVariable("username") String username) throws InterruptedException, ExecutionException {
 		return userService.getUserData(username);
     }
 

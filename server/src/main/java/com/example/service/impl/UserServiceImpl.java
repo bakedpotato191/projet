@@ -43,29 +43,26 @@ public class UserServiceImpl implements UserService {
     private MapstructMapper mapper;
     
 	@Override
-	@Async
-	public CompletableFuture<UserDto> getUserData(String username){
+	public UserDto getUserData(String username){
 		
 		var optional = userRepository.findByUsername(username);
 		
-		if(optional.isPresent())
-		{	
-			var user = optional.get();
-			var result = mapper.userToUserDto(user);
-			result.setPostCount(user.getPosts().size());
-			result.setFollowed(isAnonymous() ? false : followerRepository.isFollowed(getAuthenticatedUser(), user));
-			result.setFollowerCount(user.getFollowers().size());
-			result.setFollowingCount(user.getFollowing().size());
-			return CompletableFuture.completedFuture(result);
-        }
-		else {
+		if(optional.isEmpty()){
 			throw new EntityNotFoundException(User.class, USERNAME, username);
-		}
+        }
+		
+		var user = optional.get();
+		var result = mapper.userToUserDto(user);
+		result.setPostCount(user.getPosts().size());
+		result.setFollowed(isAnonymous() ? false : followerRepository.isFollowed(getAuthenticatedUser(), user));
+		result.setFollowerCount(user.getFollowers().size());
+		result.setFollowingCount(user.getFollowing().size());
+		return result;
 	}
 	
 
-	@Override
 	@Async
+	@Override
 	public void follow(String username) {
 		
 		var user = userRepository.findByUsername(username);
@@ -75,15 +72,10 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 	
-	@Override
 	@Async
+	@Override
 	public void unfollow(String username) {
-		
-		int row = followerRepository.unfollow(getAuthenticatedUser(), username);
-		
-		if (row == 0) {
-			throw new EntityNotFoundException(User.class, USERNAME, username);
-		}
+		followerRepository.unfollow(getAuthenticatedUser(), username);
 	}
 	
 
