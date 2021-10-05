@@ -32,7 +32,7 @@ import com.example.web.dto.response.PublicationDto;
 import com.example.web.dto.response.UserDto;
 import com.example.web.exception.IncorrectFileExtensionException;
 
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
