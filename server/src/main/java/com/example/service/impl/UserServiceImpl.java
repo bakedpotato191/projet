@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
     private static final String USERNAME = "username";
 	
-	@Autowired
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -42,23 +42,23 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private MapstructMapper mapper;
     
-	@Override
-	public UserDto getUserData(String username){
+    @Override
+    public UserDto getUserData(String username){
 		
-		var optional = userRepository.findByUsername(username);
+    	var optional = userRepository.findByUsername(username);
 		
-		if(optional.isEmpty()){
-			throw new EntityNotFoundException(User.class, USERNAME, username);
-        }
-		
-		var user = optional.get();
-		var result = mapper.userToUserDto(user);
-		result.setPostCount(user.getPosts().size());
-		result.setFollowed(isAnonymous() ? false : followerRepository.isFollowed(getAuthenticatedUser(), user));
-		result.setFollowerCount(user.getFollowers().size());
-		result.setFollowingCount(user.getFollowing().size());
-		return result;
-	}
+    	if(optional.isEmpty()){
+		throw new EntityNotFoundException(User.class, USERNAME, username);
+    	}
+	
+	var user = optional.get();
+	var result = mapper.userToUserDto(user);
+	result.setPostCount(user.getPosts().size());
+	result.setFollowed(isAnonymous() ? false : followerRepository.isFollowed(getAuthenticatedUser(), user));
+	result.setFollowerCount(user.getFollowers().size());
+	result.setFollowingCount(user.getFollowing().size());
+	return result;
+}
 	
 
 	@Async
